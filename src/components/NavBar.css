@@ -1,38 +1,25 @@
 .bar {
-  width: 100%; /* Use 100% width instead of 100vh */
-  height: 5vh;
+  width: 100%;
+  height: 4.5vh;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; /* This ensures items are spaced between left and right ends */
+  justify-content: space-between;
   overflow: hidden;
 }
 
 .name {
   font-size: 2.5vh;
-  margin-left: 2vh;
   font-weight: bold;
-}
-
-.fork {
-  font-size: 2vh;
-  font-weight: bold;
-  background-color: #939fa1;
-  padding: 0 0.5vh;
-  border-radius: 10px;
-  margin-right: 2vh; /* Ensure there's a margin at the right end */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  padding: 2vh;
 }
 
 @media (max-width: 768px) {
-  .name,
-  .fork {
-    font-size: 2vh; /* Slightly smaller font on smaller screens */
-    padding: 0.3vh; /* Adjust padding to be smaller on mobile */
-  }
   .bar {
-    height: 6vh; /* Increase the height to better accommodate smaller items */
+    height: 6vh;
+  }
+  .name {
+    font-size: 2vh; /* Ensure font size is responsive */
+    padding: 0.3vh;
   }
 }

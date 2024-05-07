@@ -1,35 +1,52 @@
 .logo {
-  height: 20vw;
-  margin-top: 10vw;
-  margin-bottom: 20vw;
-  margin-left: 10vw;
+  height: 18rem; /* Use rem for scalability */
+  margin-top: 4rem; /* Uniform margin */
 }
 
 .background {
   background-color: #e1eef3;
-  height: 100vh;
+  min-height: 100vh; /* Ensure at least the height of the viewport */
   width: 100vw;
   display: flex;
-  justify-content: left;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
   overflow: hidden;
 }
 
 .landing-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 14vh;
-  margin-right: 40vh;
-  margin-bottom: 50vh;
+  text-align: center;
+  /* margin: 2rem; */
 }
-
 .landing-text-1 {
-  font-size: 3vw;
-  font-weight: bold;
-  color: black;
+  margin-bottom: 0;
 }
 
 .landing-text-2 {
-  font-size: 2vw;
+  margin-bottom: 3vh;
+}
+
+.landing-text-1,
+.landing-text-2 {
   color: black;
+  padding: 0.5rem;
+}
+
+.stats-link {
+  display: block; /* Make each link a block to enhance clickability */
+  margin: 0.5rem;
+  background: #939fa1;
+  color: white; /* Improved contrast */
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none; /* Remove underline */
+}
+
+@media (max-width: 768px) {
+  .logo {
+    height: 8rem;
+  }
+  .landing-text-1,
+  .landing-text-2 {
+    font-size: 1rem;
+  }
 }

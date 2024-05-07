@@ -1,16 +1,28 @@
 import React from "react";
+import Button from "@mui/material/Button";
+import { FaGithub } from "react-icons/fa";
 import "./NavBar.css";
-import { FaGithub } from "react-icons/fa"; // Importing the GitHub icon
 
-export default function NavBar() {
+interface NavBarProps {}
+
+const NavBar: React.FC<NavBarProps> = () => {
   return (
     <div className="bar">
       <div className="name">Jenkins</div>
-      <div className="fork">
+      <Button
+        variant="contained"
+        startIcon={<FaGithub />}
+        href="https://www.github.com"
+        style={{
+          marginRight: "2vh",
+          backgroundColor: "#939FA1",
+          fontWeight: "bold",
+        }}
+      >
         Fork Me on GitHub
-        <FaGithub style={{ marginLeft: "8px", verticalAlign: "middle" }} />{" "}
-        {/* GitHub Icon */}
-      </div>
+      </Button>
     </div>
   );
-}
+};
+
+export default NavBar;
