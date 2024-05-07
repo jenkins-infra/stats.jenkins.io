@@ -1,0 +1,14 @@
+.logo {
+  height: 20vw;
+  margin-top: 10vw;
+  margin-bottom: 20vw;
+  margin-left: 10vw;
+}
+
+.background {
+  background-color: #e1eef3;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: left;
+}

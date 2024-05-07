@@ -1,0 +1,21 @@
+.bar {
+  width: 100vh;
+  height: 4vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.name {
+  font-size: 2.5vh;
+  margin-left: 2vh;
+  font-weight: bold;
+}
+
+.fork {
+  font-size: 2vh;
+  font-weight: bold;
+  background-color: #939fa1;
+  padding: 0em 0.5em;
+  border-radius: 0.5em;
+  margin: 0.3em;
+}
