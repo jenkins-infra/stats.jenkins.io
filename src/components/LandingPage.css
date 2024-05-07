@@ -11,4 +11,25 @@
   width: 100vw;
   display: flex;
   justify-content: left;
+  overflow: hidden;
+}
+
+.landing-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 14vh;
+  margin-right: 40vh;
+  margin-bottom: 50vh;
+}
+
+.landing-text-1 {
+  font-size: 3vw;
+  font-weight: bold;
+  color: black;
+}
+
+.landing-text-2 {
+  font-size: 2vw;
+  color: black;
 }

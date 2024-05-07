@@ -1,8 +1,11 @@
 .bar {
-  width: 100vh;
-  height: 4vh;
+  width: 100%; /* Use 100% width instead of 100vh */
+  height: 5vh;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between; /* This ensures items are spaced between left and right ends */
+  overflow: hidden;
 }
 
 .name {
@@ -15,7 +18,21 @@
   font-size: 2vh;
   font-weight: bold;
   background-color: #939fa1;
-  padding: 0em 0.5em;
-  border-radius: 0.5em;
-  margin: 0.3em;
+  padding: 0 0.5vh;
+  border-radius: 10px;
+  margin-right: 2vh; /* Ensure there's a margin at the right end */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .name,
+  .fork {
+    font-size: 2vh; /* Slightly smaller font on smaller screens */
+    padding: 0.3vh; /* Adjust padding to be smaller on mobile */
+  }
+  .bar {
+    height: 6vh; /* Increase the height to better accommodate smaller items */
+  }
 }
