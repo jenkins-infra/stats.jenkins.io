@@ -31,16 +31,6 @@
   padding: 0.5rem;
 }
 
-.stats-link {
-  display: block; /* Make each link a block to enhance clickability */
-  margin: 0.5rem;
-  background: #939fa1;
-  color: white; /* Improved contrast */
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  text-decoration: none; /* Remove underline */
-}
-
 @media (max-width: 768px) {
   .logo {
     height: 8rem;
