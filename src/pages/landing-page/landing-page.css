@@ -1,6 +1,6 @@
 .logo {
     height: 18rem; /* Use rem for scalability */
-    margin-top: 4rem; /* Uniform margin */
+    margin-top: 10rem; /* Uniform margin */
 }
 
 .background {
@@ -15,14 +15,6 @@
 
 .landing-text {
     text-align: center;
-    /* margin: 2rem; */
-}
-.landing-text-1 {
-    margin-bottom: 0;
-}
-
-.landing-text-2 {
-    margin-bottom: 3vh;
 }
 
 .landing-text-1,
@@ -33,7 +25,8 @@
 
 @media (max-width: 768px) {
     .logo {
-        height: 8rem;
+        height: 12rem;
+        margin-top: 5rem;
     }
     .landing-text-1,
     .landing-text-2 {
