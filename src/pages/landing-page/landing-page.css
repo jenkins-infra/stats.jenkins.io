@@ -1,42 +1,42 @@
 .logo {
-  height: 18rem; /* Use rem for scalability */
-  margin-top: 4rem; /* Uniform margin */
+    height: 18rem; /* Use rem for scalability */
+    margin-top: 4rem; /* Uniform margin */
 }
 
 .background {
-  background-color: #e1eef3;
-  min-height: 100vh; /* Ensure at least the height of the viewport */
-  width: 100vw;
-  display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally */
-  overflow: hidden;
+    background-color: #e1eef3;
+    min-height: 100vh; /* Ensure at least the height of the viewport */
+    width: 100vw;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    overflow: hidden;
 }
 
 .landing-text {
-  text-align: center;
-  /* margin: 2rem; */
+    text-align: center;
+    /* margin: 2rem; */
 }
 .landing-text-1 {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .landing-text-2 {
-  margin-bottom: 3vh;
+    margin-bottom: 3vh;
 }
 
 .landing-text-1,
 .landing-text-2 {
-  color: black;
-  padding: 0.5rem;
+    color: black;
+    padding: 0.5rem;
 }
 
 @media (max-width: 768px) {
-  .logo {
-    height: 8rem;
-  }
-  .landing-text-1,
-  .landing-text-2 {
-    font-size: 1rem;
-  }
+    .logo {
+        height: 8rem;
+    }
+    .landing-text-1,
+    .landing-text-2 {
+        font-size: 1rem;
+    }
 }
