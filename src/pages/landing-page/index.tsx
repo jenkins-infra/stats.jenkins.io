@@ -41,7 +41,8 @@ export default function landingPage() {
                         sx={{
                             margin: '3rem 0 2.3rem 0',
                             '@media (max-width: 768px)': {
-                                marginTop: '1.2rem',
+                                marginTop: '0.8rem',
+                                marginBottom: '1.5rem',
                             },
                         }}
                     >

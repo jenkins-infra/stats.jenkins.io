@@ -24,7 +24,8 @@ export default function Footer() {
                 sx={{
                     fontWeight: 'bold',
                     fontFamily: 'Montserrat, serif',
-                    padding: '1rem',
+                    color: 'white',
+                    padding: '0.5rem',
                 }}
             >
                 © 2024 Jenkins Infra-Statistics. All rights reserved.
