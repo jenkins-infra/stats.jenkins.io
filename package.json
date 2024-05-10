@@ -13,6 +13,7 @@
     "dependencies": {
         "@emotion/react": "^11.11.4",
         "@emotion/styled": "^11.11.5",
+        "@fontsource/roboto": "^5.0.13",
         "@mui/material": "^5.15.16",
         "localforage": "^1.10.0",
         "match-sorter": "^6.3.4",

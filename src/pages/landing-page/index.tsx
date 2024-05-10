@@ -1,6 +1,7 @@
 // import React from 'react'
 import jenkinsButler from '../../assets/jenkins-butler.svg'
 import NavBar from '../../components/NavBar'
+import Footer from '../../components/Footer'
 import './landing-page.css'
 import { NavLink } from 'react-router-dom'
 import { styled } from '@mui/system'
@@ -8,14 +9,23 @@ import { Box, Typography } from '@mui/material'
 
 const StatsLink = styled(NavLink)({
     display: 'block',
-    margin: '0.5rem',
+    width: 'full',
+    marginBottom: '1rem',
     background: '#939fa1',
     color: 'white',
     padding: '0.5rem 1rem',
     borderRadius: '0.5rem',
-    textDecoration: 'none',
     fontWeight: 'bold',
+    fontSize: '1rem',
     fontFamily: 'Montserrat, Times, “Times New Roman”, serif',
+    '&:hover': {
+        color: 'blue',
+    },
+    boxShadow: '1px 4px 5px 0 rgba(0, 0, 0, 0.2)',
+    '@media (max-width: 768px)': {
+        fontSize: '0.8rem',
+        marginBottom: '0.5rem',
+    },
 })
 
 export default function landingPage() {
@@ -26,16 +36,19 @@ export default function landingPage() {
                 <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">
                     <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
                 </a>
-                <Box className="landing-text">
-                    <Box sx={{ margin: '3rem 0 1.5rem 0' }}>
-                        <Typography
-                            variant="h3"
-                            className="landing-text-1"
-                            sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}
-                        >
+                <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem', zIndex: '999' }}>
+                    <Box
+                        sx={{
+                            margin: '3rem 0 2.3rem 0',
+                            '@media (max-width: 768px)': {
+                                marginTop: '1.2rem',
+                            },
+                        }}
+                    >
+                        <Typography variant="h3" sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}>
                             Jenkins Infra-Statistics
                         </Typography>
-                        <Typography className="landing-text-2" sx={{ fontFamily: 'Montserrat' }}>
+                        <Typography sx={{ fontFamily: 'Montserrat' }}>
                             Graphical representation of numbers and information around Jenkins
                         </Typography>
                     </Box>
@@ -47,6 +60,7 @@ export default function landingPage() {
                     </nav>
                 </Box>
             </Box>
+            <Footer />
         </>
     )
 }
