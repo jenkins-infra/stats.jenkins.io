@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import './statistics.css'
 
 export default function statistics() {
