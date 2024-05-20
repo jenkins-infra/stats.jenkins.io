@@ -7,13 +7,13 @@ export default function Footer() {
             sx={{
                 width: '100vw',
                 height: '70vh',
-                backgroundImage: `url(${waves})`,
+                backgroundImage: `url(${waves})`, //https://app.haikei.app/
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 display: 'flex',
-                flexDirection: 'column', // Sets the primary axis to vertical
-                justifyContent: 'flex-end', // Aligns children to the end of the container along the primary axis
-                alignItems: 'center', // Centers children along the cross axis (horizontally)
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
                 position: 'absolute',
                 color: 'black',
                 bottom: 0,
