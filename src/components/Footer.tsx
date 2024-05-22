@@ -1,15 +1,14 @@
 import { Box, Typography } from '@mui/material'
-import waves from '../assets/waves.svg'
+// import waves from '../assets/waves.svg'
 
 export default function Footer() {
     return (
         <Box
             sx={{
                 width: '100vw',
-                height: '70vh',
-                backgroundImage: `url(${waves})`, //https://app.haikei.app/
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
+                height: '20vh',
+                backgroundColor: '#1077ad',
+                // backgroundImage: 'linear-gradient(180deg, white 0%, #1077ad 30%)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
@@ -22,8 +21,51 @@ export default function Footer() {
             <Typography
                 variant="body1"
                 sx={{
-                    fontWeight: 'bold',
-                    fontFamily: 'Montserrat, serif',
+                    fontFamily: 'Georgia, serif',
+                    color: 'white',
+                    padding: '0.5rem',
+                }}
+            >
+                Jenkins-stats maintained by{' '}
+                <a
+                    href="https://github.com/jenkinsci/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: 'white' }}
+                >
+                    <strong>community</strong>
+                </a>
+            </Typography>
+
+            <Typography
+                variant="body1"
+                sx={{
+                    fontFamily: 'Georgia, serif',
+                    color: 'white',
+                    padding: '0.5rem',
+                }}
+            >
+                Published with{' '}
+                <a
+                    href="https://github.com/jenkinsci/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: 'white' }}
+                >
+                    <strong>GitHub Pages</strong>
+                </a>
+            </Typography>
+            <Box
+                sx={{
+                    padding: '2rem',
+                }}
+            ></Box>
+
+            <Typography
+                variant="body1"
+                sx={{
+                    fontWeight: 'semi-bold',
+                    fontFamily: 'Georgia, serif',
                     color: 'white',
                     padding: '0.5rem',
                 }}

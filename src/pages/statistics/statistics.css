@@ -17,10 +17,7 @@
 }
 
 .background {
-    background-color: #e1eef3;
-    background-image: url('../../assets/blurry-gradient.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-color: white;
     min-height: 100vh;
     width: 100vw;
     display: flex;

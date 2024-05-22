@@ -5,6 +5,7 @@ import theme from '../theme/theme'
 
 const StyledBar = styled(Box)(({ theme }) => ({
     width: '100%',
+    backgroundColor: '#212529',
     height: '4.5vh',
     display: 'flex',
     flexDirection: 'row',
@@ -38,12 +39,15 @@ const NavBar: React.FC<NavBarProps> = () => {
                 href="https://github.com/shlomomdahan/stats2.jenkins.io"
                 sx={{
                     margin: '0.5rem',
-                    backgroundColor: '#939FA1',
+                    backgroundColor: '#ebedf0',
+                    borderRadius: '1rem',
+                    color: '#808080',
                     fontWeight: 'bold',
                     fontFamily: 'Montserrat, serif',
                     '&:hover': {
-                        backgroundColor: '#939FA1',
-                        color: 'blue',
+                        backgroundColor: 'white',
+                        border: '2px solid #5468ff',
+                        color: 'black',
                     },
                     [theme.breakpoints.down('sm')]: {
                         fontSize: '0.8rem',
@@ -58,57 +62,3 @@ const NavBar: React.FC<NavBarProps> = () => {
 }
 
 export default NavBar
-
-// import React from 'react'
-// import { Box, Button, Typography } from '@mui/material'
-// import { FaGithub } from 'react-icons/fa'
-// import './NavBar.css'
-
-// interface NavBarProps {}
-
-// const NavBar: React.FC<NavBarProps> = () => {
-//     return (
-//         <div className="bar">
-//             <Box className="name">
-//                 <Typography
-//                     sx={{
-//                         fontFamily: 'Georgia, Times, “Times New Roman”, serif',
-//                         fontWeight: 'bold',
-//                         fontSize: '1.5rem',
-//                         '@media (max-width:600px)': {
-//                             fontSize: '1.3rem',
-//                             padding: '0.5rem',
-//                         },
-//                     }}
-//                 >
-//                     Jenkins
-//                 </Typography>
-//             </Box>
-//             <Box sx={{ marginLeft: 'auto' }}>
-//                 <Button
-//                     variant="contained"
-//                     startIcon={<FaGithub />}
-//                     href="https://github.com/shlomomdahan/stats2.jenkins.io"
-//                     sx={{
-//                         margin: '0.5rem',
-//                         backgroundColor: '#939FA1',
-//                         fontWeight: 'bold',
-//                         fontFamily: 'Montserrat, Times, “Times New Roman”, serif',
-//                         '&:hover': {
-//                             // backgroundColor: '#939FA1', // Maintain background color on hover
-//                             color: 'orange', // Change text color to orange on hover
-//                         },
-//                         '@media (max-width:600px)': {
-//                             fontSize: '1rem',
-//                             padding: '0.2rem 0.5rem 0.2rem 0.5rem',
-//                         },
-//                     }}
-//                 >
-//                     Fork Me on GitHub
-//                 </Button>
-//             </Box>
-//         </div>
-//     )
-// }
-
-// export default NavBar

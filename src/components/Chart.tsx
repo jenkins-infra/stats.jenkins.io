@@ -32,6 +32,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '800px', height =
                 const month = dateStr.slice(4, 6)
                 return `${month}-${year}`
             })
+
             const values = data.map((row) => parseInt(row[1], 10))
 
             const option: echarts.EChartsOption = {
@@ -41,9 +42,22 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '800px', height =
                 tooltip: {},
                 xAxis: {
                     type: 'category',
+                    nameLocation: 'middle',
                     data: dates,
                     axisLabel: {
-                        show: false, // Hide the axis labels
+                        show: false,
+                    },
+                    axisTick: {
+                        show: false,
+                    },
+                    axisLine: {
+                        symbol: ['none', 'arrow'],
+                        symbolSize: [5, 5],
+                        symbolOffset: [0, 6],
+                        lineStyle: {
+                            type: 'solid',
+                            color: 'black',
+                        },
                     },
                 },
                 yAxis: {

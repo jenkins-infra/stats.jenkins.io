@@ -29,3 +29,12 @@ const theme = createTheme({
 })
 
 export default theme
+
+// colors:
+
+// background: white
+// navbar: #212529
+// navbar fork me button: #ebedf0
+// navbar fork me button hover: #5468ff
+// navbar fork me button hover border: #5468ff
+// footer: #1077ad
