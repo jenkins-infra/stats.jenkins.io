@@ -66,7 +66,7 @@ export default function landingPage() {
                         </Box>
                         <nav className="stats">
                             <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
-                            <StatsLink to={'/'}>Plugin Installation Trend</StatsLink>
+                            <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
                             <StatsLink to="https://www.jenkins.io">Plugin Versions by Jenkins Version</StatsLink>
                             <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
                         </nav>

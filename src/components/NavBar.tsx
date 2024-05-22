@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Button, Typography, styled } from '@mui/material'
 import { FaGithub } from 'react-icons/fa'
+import { Link } from 'react-router-dom' // Import Link from react-router-dom
 import theme from '../theme/theme'
 
 const StyledBar = styled(Box)(({ theme }) => ({
@@ -14,6 +15,9 @@ const StyledBar = styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
         height: '6vh',
     },
+    position: 'fixed',
+    top: 0,
+    zIndex: 1000,
 }))
 
 const StyledName = styled(Typography)(({ theme }) => ({
@@ -32,7 +36,9 @@ interface NavBarProps {}
 const NavBar: React.FC<NavBarProps> = () => {
     return (
         <StyledBar>
-            <StyledName variant="h6">Jenkins</StyledName>
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <StyledName variant="h6">Jenkins</StyledName>
+            </Link>
             <Button
                 variant="contained"
                 startIcon={<FaGithub />}

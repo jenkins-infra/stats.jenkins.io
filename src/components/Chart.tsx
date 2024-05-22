@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box, Link } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import * as echarts from 'echarts'
 import Papa from 'papaparse'
 
@@ -10,7 +10,7 @@ interface ChartProps {
     height?: string
 }
 
-const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '800px', height = '400px' }) => {
+const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = '100%' }) => {
     useEffect(() => {
         // Function to load and parse CSV file
         const loadCSVData = async () => {
@@ -30,7 +30,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '800px', height =
                 const dateStr = row[0]
                 const year = dateStr.slice(0, 4)
                 const month = dateStr.slice(4, 6)
-                return `${month}-${year}`
+                return { monthYear: `${month}-${year}`, year }
             })
 
             const values = data.map((row) => parseInt(row[1], 10))
@@ -38,37 +38,58 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '800px', height =
             const option: echarts.EChartsOption = {
                 title: {
                     text: title,
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                    },
                 },
-                tooltip: {},
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                    },
+                },
                 xAxis: {
                     type: 'category',
-                    nameLocation: 'middle',
-                    data: dates,
+                    data: dates.map((date) => date.monthYear),
                     axisLabel: {
-                        show: false,
+                        formatter: function (value, index) {
+                            const currentYear = dates[index].year
+                            const previousYear = index > 0 ? dates[index - 1].year : null
+                            return currentYear !== previousYear ? currentYear : ''
+                        },
+                        interval: 0,
+                        rotate: 45,
                     },
                     axisTick: {
-                        show: false,
-                    },
-                    axisLine: {
-                        symbol: ['none', 'arrow'],
-                        symbolSize: [5, 5],
-                        symbolOffset: [0, 6],
-                        lineStyle: {
-                            type: 'solid',
-                            color: 'black',
-                        },
+                        alignWithLabel: true,
                     },
                 },
                 yAxis: {
                     type: 'value',
+                    splitLine: {
+                        lineStyle: {
+                            type: 'dashed',
+                        },
+                    },
                 },
                 series: [
                     {
                         data: values,
                         type: 'bar',
+                        barWidth: '60%',
+                        itemStyle: {
+                            color: '#007FFF',
+                        },
                     },
                 ],
+                grid: {
+                    left: '3%',
+                    right: '3%',
+                    bottom: '3%',
+                    containLabel: true,
+                },
             }
 
             myChart.setOption(option)
@@ -78,9 +99,17 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '800px', height =
             setupChart(data as string[][])
         })
 
-        // Cleanup the chart on unmount
+        // Handle window resize
+        const handleResize = () => {
+            myChart.resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        // Cleanup the chart and event listener on unmount
         return () => {
             myChart.dispose()
+            window.removeEventListener('resize', handleResize)
         }
     }, [csvPath, title])
 
@@ -109,18 +138,30 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '800px', height =
     }
 
     return (
-        <Box>
-            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-                <Box>
-                    <Link onClick={handleCSVDownload} style={{ cursor: 'pointer', marginRight: '10px' }}>
-                        CSV
-                    </Link>
-                    <Link onClick={handleSVGDownload} style={{ cursor: 'pointer' }}>
-                        SVG
-                    </Link>
-                </Box>
-            </Box>
+        <Box
+            sx={{
+                width: '70vw',
+                height: '70vh',
+                marginTop: '2rem',
+            }}
+        >
             <div id={title} style={{ width, height }}></div>
+            <Box display="flex" alignItems="center" justifyContent="center" mt={2}>
+                <Button
+                    variant="contained"
+                    onClick={handleCSVDownload}
+                    sx={{ borderRadius: '20px', marginRight: '10px', padding: '8px 16px', backgroundColor: '#939FA1' }}
+                >
+                    Download CSV
+                </Button>
+                <Button
+                    variant="contained"
+                    onClick={handleSVGDownload}
+                    sx={{ borderRadius: '20px', padding: '8px 16px', backgroundColor: '#939FA1' }}
+                >
+                    Download SVG
+                </Button>
+            </Box>
         </Box>
     )
 }

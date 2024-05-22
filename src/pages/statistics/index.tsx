@@ -1,38 +1,208 @@
-import React from 'react'
-import { Box, Grid, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import {
+    Box,
+    Typography,
+    Drawer,
+    List,
+    ListItemButton,
+    ListItemText,
+    IconButton,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    styled,
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import NavBar from '../../components/NavBar'
 import Chart from '../../components/Chart'
+import StatisticsTable from '../../components/StatisticsTable'
+import { data } from '../../data/statisticsData'
 import './statistics.css'
 
+const ListButton = styled(ListItemButton)({
+    '&.Mui-selected': {
+        backgroundColor: '#007FFF',
+        '&:hover': {
+            backgroundColor: '#005BBB',
+        },
+    },
+    '&:hover': {
+        backgroundColor: '#CCCCCC',
+    },
+})
+
+const ListText = styled(ListItemText)({
+    color: 'white',
+    fontFamily: 'Georgia',
+    fontWeight: 'bold',
+})
+
+const drawerWidthOpen = '20vw'
+const drawerWidthClosed = '56px'
+
 const Statistics: React.FC = () => {
+    const [sidebarOpen, setSidebarOpen] = useState(true)
+    const [selectedChart, setSelectedChart] = useState<string | null>('plugins')
+    const [selectedTab, setSelectedTab] = useState<string | null>('overall')
+    const [selectedYear, setSelectedYear] = useState<number | null>(null)
+
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen)
+    }
+
+    const handleChartSelect = (chart: string) => {
+        setSelectedChart(chart)
+        setSelectedTab('overall')
+        setSelectedYear(null) // deselect any year when selecting a chart
+        if (window.innerWidth < 600) {
+            setSidebarOpen(false)
+        }
+    }
+
+    const handleYearSelect = (year: number | null) => {
+        setSelectedYear(year)
+        setSelectedTab('monthly')
+        setSelectedChart(null) // deselect any chart when selecting a year
+    }
+
+    useEffect(() => {
+        setSelectedChart('plugins')
+        setSelectedTab('overall')
+    }, [])
+
     return (
         <>
             <NavBar />
-            <Box className="background">
-                <Typography
-                    variant="h4"
-                    sx={{ fontFamily: 'Montserrat', fontWeight: 'bold', marginTop: '2rem', color: 'black' }}
+            <Box className="background" sx={{ display: 'flex', overflow: 'hidden' }}>
+                <Drawer
+                    variant="permanent"
+                    anchor="left"
+                    open={sidebarOpen}
+                    sx={{
+                        width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
+                            boxSizing: 'border-box',
+                            backgroundColor: '#2D2D2D', // dark background color
+                            marginTop: '4.5vh',
+                            transition: 'width 0.3s',
+                        },
+                    }}
                 >
-                    Jenkins Infra-Statistics In Detail
-                </Typography>
-                <Box sx={{ justifyContent: 'center', padding: '4rem' }}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12} md={6}>
-                            <Chart csvPath="/src/data/total-plugins.csv" title="Plugins Usage Over Time" />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Chart csvPath="/src/data/total-jobs.csv" title="Total Jobs Over Time" />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Chart
-                                csvPath="/src/data/total-jenkins.csv"
-                                title="Total Jenkins Installations Over Time"
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Chart csvPath="/src/data/total-nodes.csv" title="Total Nodes Over Time" />
-                        </Grid>
-                    </Grid>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '0.5rem' }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="toggle drawer"
+                            edge="start"
+                            onClick={toggleSidebar}
+                            sx={{ color: 'white' }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Box>
+                    {sidebarOpen && (
+                        <List>
+                            <Accordion defaultExpanded>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
+                                    sx={{ backgroundColor: '#3A3A3A', color: 'white' }}
+                                    onClick={() => setSelectedTab('overall')}
+                                >
+                                    <Typography>Overall Trends</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails sx={{ backgroundColor: '#1A1A1A' }}>
+                                    <List>
+                                        <ListButton
+                                            selected={selectedChart === 'plugins'}
+                                            onClick={() => handleChartSelect('plugins')}
+                                        >
+                                            <ListText primary="Plugins Usage Over Time" />
+                                        </ListButton>
+                                        <ListButton
+                                            selected={selectedChart === 'jobs'}
+                                            onClick={() => handleChartSelect('jobs')}
+                                        >
+                                            <ListText primary="Total Jobs Over Time" />
+                                        </ListButton>
+                                        <ListButton
+                                            selected={selectedChart === 'jenkins'}
+                                            onClick={() => handleChartSelect('jenkins')}
+                                        >
+                                            <ListText primary="Total Jenkins Installations Over Time" />
+                                        </ListButton>
+                                        <ListButton
+                                            selected={selectedChart === 'nodes'}
+                                            onClick={() => handleChartSelect('nodes')}
+                                        >
+                                            <ListText primary="Total Nodes Over Time" />
+                                        </ListButton>
+                                    </List>
+                                </AccordionDetails>
+                            </Accordion>
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
+                                    sx={{ backgroundColor: '#3A3A3A', color: 'white' }}
+                                    onClick={() => setSelectedTab('monthly')}
+                                >
+                                    <Typography>Monthly Analysis</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails
+                                    sx={{ backgroundColor: '#1A1A1A', maxHeight: '650px', overflowY: 'auto' }}
+                                >
+                                    <List>
+                                        <ListButton
+                                            selected={selectedYear === null}
+                                            onClick={() => handleYearSelect(null)}
+                                        >
+                                            <ListText primary="All Data" />
+                                        </ListButton>
+                                        {[...new Set(data.map((row) => row.year))].map((year) => (
+                                            <ListButton
+                                                key={year}
+                                                selected={selectedYear === year}
+                                                onClick={() => handleYearSelect(year)}
+                                            >
+                                                <ListText primary={year} />
+                                            </ListButton>
+                                        ))}
+                                    </List>
+                                </AccordionDetails>
+                            </Accordion>
+                        </List>
+                    )}
+                </Drawer>
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        p: 3,
+                        marginLeft: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
+                        transition: 'margin-left 0.3s',
+                        marginTop: '4.5vh',
+                    }}
+                >
+                    {selectedTab === 'monthly' && <StatisticsTable year={selectedYear || undefined} />}
+                    {selectedTab === 'overall' && (
+                        <>
+                            {selectedChart === 'plugins' && (
+                                <Chart csvPath="/src/data/total-plugins.csv" title="Plugins Usage Over Time" />
+                            )}
+                            {selectedChart === 'jobs' && (
+                                <Chart csvPath="/src/data/total-jobs.csv" title="Total Jobs Over Time" />
+                            )}
+                            {selectedChart === 'jenkins' && (
+                                <Chart
+                                    csvPath="/src/data/total-jenkins.csv"
+                                    title="Total Jenkins Installations Over Time"
+                                />
+                            )}
+                            {selectedChart === 'nodes' && (
+                                <Chart csvPath="/src/data/total-nodes.csv" title="Total Nodes Over Time" />
+                            )}
+                        </>
+                    )}
                 </Box>
             </Box>
         </>
@@ -40,88 +210,3 @@ const Statistics: React.FC = () => {
 }
 
 export default Statistics
-
-// import React, { useEffect } from 'react'
-// import { Box } from '@mui/material'
-// import NavBar from '../../components/NavBar'
-// import * as echarts from 'echarts'
-// import Papa from 'papaparse'
-// import './statistics.css'
-
-// const Statistics: React.FC = () => {
-//     useEffect(() => {
-//         // Function to load and parse CSV file
-//         const loadCSVData = async () => {
-//             const response = await fetch('/src/data/total-plugins.csv')
-//             const csvText = await response.text()
-//             const parsedData = Papa.parse(csvText, { header: false })
-//             return parsedData.data
-//         }
-
-//         // Initialize the chart
-//         const chartDom = document.getElementById('main') as HTMLElement
-//         const myChart = echarts.init(chartDom)
-
-//         // Set up the chart with data
-//         const setupChart = (data: string[][]) => {
-//             // const dates = data.map((row) => row[0])
-//             const dates = data.map((row) => {
-//                 const dateStr = row[0]
-//                 const year = dateStr.slice(0, 4)
-//                 const month = dateStr.slice(4, 6)
-//                 return `${month}-${year}`
-//             })
-//             const values = data.map((row) => parseInt(row[1], 10))
-
-//             const option: echarts.EChartsOption = {
-//                 title: {
-//                     text: 'Plugins Usage Over Time',
-//                 },
-//                 tooltip: {},
-//                 xAxis: {
-//                     type: 'category',
-//                     data: dates,
-//                     axisLabel: {
-//                         show: false, // Hide the axis labels
-//                     },
-//                 },
-//                 yAxis: {
-//                     type: 'value',
-//                 },
-//                 series: [
-//                     {
-//                         data: values,
-//                         type: 'bar',
-//                     },
-//                 ],
-//             }
-
-//             myChart.setOption(option)
-//         }
-
-//         loadCSVData().then((data) => {
-//             setupChart(data as string[][])
-//         })
-
-//         // Cleanup the chart on unmount
-//         return () => {
-//             myChart.dispose()
-//         }
-//     }, [])
-
-//     return (
-//         <>
-//             <NavBar />
-//             <Box className="background">
-//                 <div className="top">
-//                     Page Under Construction
-//                     <h1 className="sta">Statistics</h1>
-//                     <p>test</p>
-//                     <div id="main" style={{ width: '800px', height: '400px' }}></div>
-//                 </div>
-//             </Box>
-//         </>
-//     )
-// }
-
-// export default Statistics
