@@ -60,7 +60,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                             return currentYear !== previousYear ? currentYear : ''
                         },
                         interval: 0,
-                        rotate: 45,
+                        rotate: 0,
                     },
                     axisTick: {
                         alignWithLabel: true,
