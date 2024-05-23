@@ -6,9 +6,9 @@ import { KeyboardArrowDown } from '@mui/icons-material'
 import theme from '../theme/theme'
 
 const StyledBar = styled(Box)(({ theme }) => ({
+    height: '3.7rem',
     width: '100%',
     backgroundColor: '#212529',
-    height: '4.5vh',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -95,7 +95,8 @@ const NavBar: React.FC<NavBarProps> = () => {
                         borderRadius: '1rem',
                         color: '#808080',
                         fontWeight: 'bold',
-                        fontFamily: 'Montserrat, serif',
+                        fontFamily: 'Georgia, serif',
+
                         '&:hover': {
                             backgroundColor: 'white',
                             border: '2px solid #5468ff',
@@ -103,6 +104,10 @@ const NavBar: React.FC<NavBarProps> = () => {
                         },
                         [theme.breakpoints.down('sm')]: {
                             fontSize: '0.8rem',
+                            padding: '0.2rem 0.5rem',
+                        },
+                        [theme.breakpoints.down('xs')]: {
+                            fontSize: '0.7rem',
                             padding: '0.2rem 0.5rem',
                         },
                     }}

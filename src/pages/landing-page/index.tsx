@@ -28,52 +28,59 @@ const StatsLink = styled(NavLink)({
         fontSize: '0.8rem',
         marginBottom: '0.5rem',
     },
+    '@media (max-width: 1024px)': {
+        fontSize: '0.8rem',
+        marginBottom: '0.5rem',
+    },
 })
 
 export default function landingPage() {
     return (
-        <>
+        <Box className="background">
             <NavBar />
-            <Box className="background">
-                <Box
-                    sx={{
-                        height: '75.5vh', //100 - 4.5vh (NavBar) - 20vh (Footer)
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignContent: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">
-                        <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
-                    </a>
-                    <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem', zIndex: '999' }}>
-                        <Box
-                            sx={{
-                                margin: '3rem 0 2.3rem 0',
-                                '@media (max-width: 768px)': {
-                                    marginTop: '0.8rem',
-                                    marginBottom: '1.5rem',
-                                },
-                            }}
-                        >
-                            <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 'bold' }}>
-                                Jenkins Infra-Statistics
-                            </Typography>
-                            <Typography sx={{ fontFamily: 'Georgia' }}>
-                                Graphical representation of numbers and information around Jenkins
-                            </Typography>
-                        </Box>
-                        <nav className="stats">
-                            <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
-                            <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
-                            <StatsLink to="https://www.jenkins.io">Plugin Versions by Jenkins Version</StatsLink>
-                            <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
-                        </nav>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                    marginTop: '12vh',
+                    marginBottom: '16rem',
+                }}
+            >
+                <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">
+                    <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
+                </a>
+                <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem', zIndex: '999' }}>
+                    <Box
+                        sx={{
+                            margin: '3rem 0 2.3rem 0',
+                            '@media (max-width: 768px)': {
+                                marginTop: '0.8rem',
+                                marginBottom: '1.5rem',
+                            },
+                            '@media (max-width: 1024px)': {
+                                marginTop: '0.8rem',
+                                marginBottom: '1.5rem',
+                            },
+                        }}
+                    >
+                        <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 'bold' }}>
+                            Jenkins Infra-Statistics
+                        </Typography>
+                        <Typography sx={{ fontFamily: 'Georgia' }}>
+                            Graphical representation of numbers and information around Jenkins
+                        </Typography>
                     </Box>
+                    <nav className="stats">
+                        <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
+                        <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
+                        <StatsLink to="https://www.jenkins.io">Plugin Versions by Jenkins Version</StatsLink>
+                        <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
+                    </nav>
                 </Box>
             </Box>
             <Footer />
-        </>
+        </Box>
     )
 }
