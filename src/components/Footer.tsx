@@ -5,18 +5,16 @@ export default function Footer() {
     return (
         <Box
             sx={{
-                width: '100vw',
+                width: '100%',
                 height: '14rem',
                 backgroundColor: '#1077ad',
-                // backgroundImage: 'linear-gradient(180deg, white 0%, #1077ad 30%)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                position: 'fixed',
-                color: 'black',
-                bottom: 0,
-                zIndex: 1000,
+                // position: 'fixed',
+                // bottom: 0,
+                // zIndex: 1000,
             }}
         >
             <Typography

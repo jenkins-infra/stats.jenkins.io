@@ -36,7 +36,18 @@ const StatsLink = styled(NavLink)({
 
 export default function landingPage() {
     return (
-        <Box className="background">
+        <Box
+            sx={{
+                backgroundColor: 'white',
+                display: 'flex',
+                flexDirection: 'column',
+                // justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100vh',
+                minWidth: '100vw',
+                // overflow: 'hidden',
+            }}
+        >
             <NavBar />
             <Box
                 sx={{
@@ -44,8 +55,10 @@ export default function landingPage() {
                     flexDirection: 'column',
                     alignContent: 'center',
                     justifyContent: 'center',
-                    marginTop: '12vh',
-                    marginBottom: '16rem',
+                    flex: '1',
+                    marginTop: '4rem',
+                    marginBottom: '4rem',
+                    // width: '80vw',
                 }}
             >
                 <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">

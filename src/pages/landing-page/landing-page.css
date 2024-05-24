@@ -5,9 +5,12 @@
     margin-right: auto;
 }
 
-.background {
+/* .background {
     background-color: white;
-}
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+} */
 
 @media (max-width: 1024px) {
     .logo {
@@ -18,19 +21,5 @@
 @media (max-width: 768px) {
     .logo {
         height: 12rem;
-    }
-}
-
-/* @media (max-width: 475px) {
-    .logo {
-        height: 8rem;
-        display: none;
-    }
-} */
-
-@media (max-height: 700px) {
-    .logo {
-        height: 8rem;
-        display: none;
     }
 }
