@@ -5,17 +5,17 @@ import Footer from '../../components/Footer'
 import './landing-page.css'
 import { NavLink } from 'react-router-dom'
 import { styled } from '@mui/system'
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 
 const StatsLink = styled(NavLink)({
     display: 'block',
     width: 'full',
-    marginBottom: '1rem',
+    marginBottom: '1.2rem',
     background: '#ebedf0',
     color: 'black',
     padding: '0.5rem 1rem',
     border: '2px solid transparent',
-    borderRadius: '0.65rem',
+    borderRadius: '0.66rem',
     fontWeight: 'bold',
     fontSize: '1rem',
     fontFamily: 'Montserrat, Times, “Times New Roman”, serif',
@@ -24,11 +24,11 @@ const StatsLink = styled(NavLink)({
         border: '2px solid #5468ff',
     },
     boxShadow: '1.5px 4px 5px 0 rgba(0, 0, 0, 0.2)',
-    '@media (max-width: 768px)': {
-        fontSize: '0.8rem',
-        marginBottom: '0.5rem',
-    },
     '@media (max-width: 1024px)': {
+        fontSize: '0.8rem',
+        marginBottom: '0.8rem',
+    },
+    '@media (max-width: 768px)': {
         fontSize: '0.8rem',
         marginBottom: '0.5rem',
     },
@@ -36,16 +36,12 @@ const StatsLink = styled(NavLink)({
 
 export default function landingPage() {
     return (
-        <Box
+        <Stack
             sx={{
                 backgroundColor: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                // justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: '100vh',
                 minWidth: '100vw',
-                // overflow: 'hidden',
             }}
         >
             <NavBar />
@@ -94,6 +90,6 @@ export default function landingPage() {
                 </Box>
             </Box>
             <Footer />
-        </Box>
+        </Stack>
     )
 }

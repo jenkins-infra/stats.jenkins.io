@@ -1,25 +1,17 @@
 import React, { useState } from 'react'
-import { Box, Button, Typography, styled, Menu, MenuItem } from '@mui/material'
+import { Button, Stack, Typography, styled, Menu, MenuItem } from '@mui/material'
 import { FaGithub } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { KeyboardArrowDown } from '@mui/icons-material'
 import theme from '../theme/theme'
 
-const StyledBar = styled(Box)(({ theme }) => ({
-    height: '3.7rem',
+const StyledBar = styled(Stack)({
+    height: '60px',
     width: '100%',
     backgroundColor: '#212529',
-    display: 'flex',
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    [theme.breakpoints.down('sm')]: {
-        // height: '6vh',
-    },
-    // position: 'fixed',
-    // top: 0,
-    // zIndex: 1000,
-}))
+})
 
 const StyledName = styled(Typography)(({ theme }) => ({
     fontSize: '1.5rem',
@@ -46,11 +38,17 @@ const NavBar: React.FC<NavBarProps> = () => {
     }
 
     return (
-        <StyledBar>
+        <StyledBar direction="row">
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <StyledName variant="h6">Jenkins</StyledName>
             </Link>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Stack
+                sx={{
+                    // display: 'flex',
+                    alignItems: 'center',
+                }}
+                direction="row"
+            >
                 <Button
                     aria-controls="simple-menu"
                     aria-haspopup="true"
@@ -107,14 +105,14 @@ const NavBar: React.FC<NavBarProps> = () => {
                             padding: '0.2rem 0.5rem',
                         },
                         [theme.breakpoints.down('xs')]: {
-                            fontSize: '0.7rem',
+                            fontSize: '0.42rem',
                             padding: '0.2rem 0.5rem',
                         },
                     }}
                 >
                     Fork Me on GitHub
                 </Button>
-            </Box>
+            </Stack>
         </StyledBar>
     )
 }

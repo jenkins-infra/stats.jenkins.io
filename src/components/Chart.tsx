@@ -145,22 +145,60 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 marginTop: '2rem',
             }}
         >
-            <div id={title} style={{ width, height }}></div>
-            <Box display="flex" alignItems="center" justifyContent="center" mt={2}>
-                <Button
-                    variant="contained"
-                    onClick={handleCSVDownload}
-                    sx={{ borderRadius: '20px', marginRight: '10px', padding: '8px 16px', backgroundColor: '#939FA1' }}
-                >
-                    Download CSV
-                </Button>
-                <Button
-                    variant="contained"
-                    onClick={handleSVGDownload}
-                    sx={{ borderRadius: '20px', padding: '8px 16px', backgroundColor: '#939FA1' }}
-                >
-                    Download SVG
-                </Button>
+            <Box
+                sx={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <div id={title} style={{ width, height }}></div>
+                <Box display="flex" alignItems="center" justifyContent="center" mt={2}>
+                    <Button
+                        variant="contained"
+                        onClick={handleCSVDownload}
+                        sx={{
+                            margin: '0.5rem',
+                            backgroundColor: '#ebedf0',
+                            borderRadius: '1rem',
+                            color: '#808080',
+                            fontWeight: 'bold',
+                            fontFamily: 'Georgia, serif',
+
+                            '&:hover': {
+                                backgroundColor: 'white',
+                                border: '2px solid #5468ff',
+                                color: 'black',
+                            },
+                        }}
+                    >
+                        Download CSV
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleSVGDownload}
+                        sx={{
+                            margin: '0.5rem',
+                            backgroundColor: '#ebedf0',
+                            borderRadius: '1rem',
+                            color: '#808080',
+                            fontWeight: 'bold',
+                            fontFamily: 'Georgia, serif',
+                            border: '2px solid transparent',
+
+                            '&:hover': {
+                                backgroundColor: 'white',
+                                border: '2px solid #5468ff',
+                                color: 'black',
+                            },
+                        }}
+                    >
+                        Download SVG
+                    </Button>
+                </Box>
             </Box>
         </Box>
     )

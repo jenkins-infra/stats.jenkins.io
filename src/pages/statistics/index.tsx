@@ -19,6 +19,7 @@ import Chart from '../../components/Chart'
 import StatisticsTable from '../../components/StatisticsTable'
 import { data } from '../../data/statisticsData'
 import './statistics.css'
+import Footer from '../../components/Footer'
 
 const ListButton = styled(ListItemButton)({
     '&.Mui-selected': {
@@ -39,7 +40,7 @@ const ListText = styled(ListItemText)({
 })
 
 const drawerWidthOpen = '20vw'
-const drawerWidthClosed = '56px'
+const drawerWidthClosed = '4vw'
 
 const Statistics: React.FC = () => {
     const [sidebarOpen, setSidebarOpen] = useState(true)
@@ -72,9 +73,17 @@ const Statistics: React.FC = () => {
     }, [])
 
     return (
-        <>
+        <Box className="background" sx={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
             <NavBar />
-            <Box className="background" sx={{ display: 'flex', overflow: 'hidden' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexGrow: 1,
+                    overflow: 'hidden',
+                    width: '100%',
+                    flexDirection: 'row',
+                }}
+            >
                 <Drawer
                     variant="permanent"
                     anchor="left"
@@ -85,13 +94,24 @@ const Statistics: React.FC = () => {
                         '& .MuiDrawer-paper': {
                             width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
                             boxSizing: 'border-box',
-                            backgroundColor: '#2D2D2D', // dark background color
-                            marginTop: '4.5vh',
+                            backgroundColor: '#2D2D2D',
                             transition: 'width 0.3s',
+                            position: 'relative',
+                            left: 0,
                         },
                     }}
                 >
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '0.5rem' }}>
+                    <Box
+                        sx={{
+                            position: 'sticky',
+                            top: 0,
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            backgroundColor: 'inherit',
+                            zIndex: 1000,
+                            padding: '0.5rem',
+                        }}
+                    >
                         <IconButton
                             color="inherit"
                             aria-label="toggle drawer"
@@ -102,6 +122,7 @@ const Statistics: React.FC = () => {
                             <MenuIcon />
                         </IconButton>
                     </Box>
+
                     {sidebarOpen && (
                         <List>
                             <Accordion defaultExpanded>
@@ -149,9 +170,7 @@ const Statistics: React.FC = () => {
                                 >
                                     <Typography>Monthly Analysis</Typography>
                                 </AccordionSummary>
-                                <AccordionDetails
-                                    sx={{ backgroundColor: '#1A1A1A', maxHeight: '650px', overflowY: 'auto' }}
-                                >
+                                <AccordionDetails sx={{ backgroundColor: '#1A1A1A', overflowY: 'auto' }}>
                                     <List>
                                         <ListButton
                                             selected={selectedYear === null}
@@ -174,13 +193,16 @@ const Statistics: React.FC = () => {
                         </List>
                     )}
                 </Drawer>
+
                 <Box
                     sx={{
                         flexGrow: 1,
-                        p: 3,
-                        marginLeft: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
-                        transition: 'margin-left 0.3s',
-                        marginTop: '4.5vh',
+                        overflow: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        // justifyContent: 'center',
+                        padding: '2rem',
                     }}
                 >
                     {selectedTab === 'monthly' && <StatisticsTable year={selectedYear || undefined} />}
@@ -205,7 +227,8 @@ const Statistics: React.FC = () => {
                     )}
                 </Box>
             </Box>
-        </>
+            <Footer />
+        </Box>
     )
 }
 
