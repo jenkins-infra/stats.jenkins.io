@@ -28,7 +28,7 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
-    overflow: hidden; /* Added this line to prevent vertical scrolling */
+    /* overflow: hidden; Added this line to prevent vertical scrolling */
 }
 
 h1 {

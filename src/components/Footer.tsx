@@ -1,35 +1,76 @@
-import { Box, Typography } from '@mui/material'
-import waves from '../assets/waves.svg'
+import { Box, Stack, Typography, useMediaQuery } from '@mui/material'
+import ForkMeButton from './ForkMeButton'
 
 export default function Footer() {
+    const isMobile = useMediaQuery('(max-width:600px)')
+
     return (
-        <Box
+        <Stack
             sx={{
-                width: '100vw',
-                height: '70vh',
-                backgroundImage: `url(${waves})`,
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                display: 'flex',
-                flexDirection: 'column', // Sets the primary axis to vertical
-                justifyContent: 'flex-end', // Aligns children to the end of the container along the primary axis
-                alignItems: 'center', // Centers children along the cross axis (horizontally)
-                position: 'absolute',
-                color: 'black',
-                bottom: 0,
+                width: '100%',
+                height: '10rem',
+                backgroundColor: '#1077ad',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                padding: '2rem 0',
             }}
         >
-            <Typography
-                variant="body1"
+            <Box
                 sx={{
-                    fontWeight: 'bold',
-                    fontFamily: 'Montserrat, serif',
-                    color: 'white',
-                    padding: '0.5rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    textAlign: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
                 }}
             >
-                © 2024 Jenkins Infra-Statistics. All rights reserved.
-            </Typography>
-        </Box>
+                {isMobile && (
+                    <Box
+                        sx={{
+                            padding: '1rem',
+                        }}
+                    >
+                        <ForkMeButton />
+                    </Box>
+                )}
+                <Typography
+                    variant="body1"
+                    sx={{
+                        fontFamily: 'Georgia, serif',
+                        color: 'white',
+                        padding: '0.5rem',
+                    }}
+                >
+                    Jenkins-stats maintained by{' '}
+                    <a
+                        href="https://github.com/jenkinsci/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: 'white' }}
+                    >
+                        <strong>community</strong>
+                    </a>
+                </Typography>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        fontFamily: 'Georgia, serif',
+                        color: 'white',
+                        padding: '0.5rem',
+                    }}
+                >
+                    Published with{' '}
+                    <a
+                        href="https://github.com/jenkinsci/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: 'white' }}
+                    >
+                        <strong>GitHub Pages</strong>
+                    </a>
+                </Typography>
+            </Box>
+        </Stack>
     )
 }

@@ -1,19 +1,17 @@
-import React from 'react'
-import { Box, Button, Typography, styled } from '@mui/material'
-import { FaGithub } from 'react-icons/fa'
-import theme from '../theme/theme'
+import React, { useState } from 'react'
+import { Button, Stack, Typography, styled, Menu, MenuItem, useMediaQuery } from '@mui/material'
+import { Link } from 'react-router-dom'
+import { KeyboardArrowDown } from '@mui/icons-material'
+import ForkMeButton from './ForkMeButton'
+import MenuIcon from '@mui/icons-material/Menu'
 
-const StyledBar = styled(Box)(({ theme }) => ({
+const StyledBar = styled(Stack)({
+    height: '60px',
     width: '100%',
-    height: '4.5vh',
-    display: 'flex',
-    flexDirection: 'row',
+    backgroundColor: '#212529',
     alignItems: 'center',
     justifyContent: 'space-between',
-    [theme.breakpoints.down('sm')]: {
-        height: '6vh',
-    },
-}))
+})
 
 const StyledName = styled(Typography)(({ theme }) => ({
     fontSize: '1.5rem',
@@ -23,92 +21,82 @@ const StyledName = styled(Typography)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: '1.3rem',
         padding: '0.5rem',
+        marginLeft: '0.5rem',
     },
 }))
 
 interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = () => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+
+    const isMobile = useMediaQuery('(max-width:600px)')
+
     return (
-        <StyledBar>
-            <StyledName variant="h6">Jenkins</StyledName>
-            <Button
-                variant="contained"
-                startIcon={<FaGithub />}
-                href="https://github.com/shlomomdahan/stats2.jenkins.io"
+        <StyledBar direction="row">
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <StyledName variant="h6">Jenkins</StyledName>
+            </Link>
+            <Stack
                 sx={{
-                    margin: '0.5rem',
-                    backgroundColor: '#939FA1',
-                    fontWeight: 'bold',
-                    fontFamily: 'Montserrat, serif',
-                    '&:hover': {
-                        backgroundColor: '#939FA1',
-                        color: 'blue',
-                    },
-                    [theme.breakpoints.down('sm')]: {
-                        fontSize: '0.8rem',
-                        padding: '0.2rem 0.5rem',
-                    },
+                    // display: 'flex',
+                    alignItems: 'center',
+                    paddingRight: isMobile ? '0.5rem' : '0',
                 }}
+                direction="row"
             >
-                Fork Me on GitHub
-            </Button>
+                <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                    sx={{
+                        color: 'gray',
+                        display: 'flex',
+                        alignItems: 'center',
+                        '&:hover': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        },
+                    }}
+                >
+                    {/* {!isMobile && <KeyboardArrowDown sx={{ marginLeft: '2px' }} />} */}
+                    {!isMobile && (
+                        <>
+                            <>Menu</>
+                            <KeyboardArrowDown sx={{ marginLeft: '2px' }} />
+                        </>
+                    )}
+                    {isMobile && <MenuIcon sx={{}} />}
+                </Button>
+                <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+                    <MenuItem onClick={handleClose} component={Link} to="/">
+                        Home
+                    </MenuItem>
+                    <MenuItem onClick={handleClose} component={Link} to="/statistics">
+                        Statistics
+                    </MenuItem>
+                    <MenuItem onClick={handleClose} component={Link} to="/plugin-detail">
+                        Plugin Installation Trend
+                    </MenuItem>
+                    <MenuItem onClick={handleClose} component={Link} to="/">
+                        Plugin Versions by Jenkins Version
+                    </MenuItem>
+                    <MenuItem onClick={handleClose} component={Link} to="/">
+                        Jenkins Plugin Dependency Graph
+                    </MenuItem>
+                    {/* Add more MenuItems as needed */}
+                </Menu>
+                {!isMobile && <ForkMeButton />}
+            </Stack>
         </StyledBar>
     )
 }
 
 export default NavBar
-
-// import React from 'react'
-// import { Box, Button, Typography } from '@mui/material'
-// import { FaGithub } from 'react-icons/fa'
-// import './NavBar.css'
-
-// interface NavBarProps {}
-
-// const NavBar: React.FC<NavBarProps> = () => {
-//     return (
-//         <div className="bar">
-//             <Box className="name">
-//                 <Typography
-//                     sx={{
-//                         fontFamily: 'Georgia, Times, “Times New Roman”, serif',
-//                         fontWeight: 'bold',
-//                         fontSize: '1.5rem',
-//                         '@media (max-width:600px)': {
-//                             fontSize: '1.3rem',
-//                             padding: '0.5rem',
-//                         },
-//                     }}
-//                 >
-//                     Jenkins
-//                 </Typography>
-//             </Box>
-//             <Box sx={{ marginLeft: 'auto' }}>
-//                 <Button
-//                     variant="contained"
-//                     startIcon={<FaGithub />}
-//                     href="https://github.com/shlomomdahan/stats2.jenkins.io"
-//                     sx={{
-//                         margin: '0.5rem',
-//                         backgroundColor: '#939FA1',
-//                         fontWeight: 'bold',
-//                         fontFamily: 'Montserrat, Times, “Times New Roman”, serif',
-//                         '&:hover': {
-//                             // backgroundColor: '#939FA1', // Maintain background color on hover
-//                             color: 'orange', // Change text color to orange on hover
-//                         },
-//                         '@media (max-width:600px)': {
-//                             fontSize: '1rem',
-//                             padding: '0.2rem 0.5rem 0.2rem 0.5rem',
-//                         },
-//                     }}
-//                 >
-//                     Fork Me on GitHub
-//                 </Button>
-//             </Box>
-//         </div>
-//     )
-// }
-
-// export default NavBar

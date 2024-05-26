@@ -5,23 +5,29 @@ import Footer from '../../components/Footer'
 import './landing-page.css'
 import { NavLink } from 'react-router-dom'
 import { styled } from '@mui/system'
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 
 const StatsLink = styled(NavLink)({
     display: 'block',
-    width: 'full',
-    marginBottom: '1rem',
-    background: '#939fa1',
-    color: 'white',
+    width: '70%',
+    marginBottom: '1.2rem',
+    background: '#ebedf0',
+    color: 'black',
     padding: '0.5rem 1rem',
-    borderRadius: '0.5rem',
+    border: '2px solid transparent',
+    borderRadius: '0.66rem',
     fontWeight: 'bold',
     fontSize: '1rem',
     fontFamily: 'Montserrat, Times, “Times New Roman”, serif',
     '&:hover': {
-        color: 'blue',
+        color: '#5468ff',
+        border: '2px solid #5468ff',
     },
-    boxShadow: '1px 4px 5px 0 rgba(0, 0, 0, 0.2)',
+    boxShadow: '1.5px 4px 5px 0 rgba(0, 0, 0, 0.2)',
+    '@media (max-width: 1024px)': {
+        fontSize: '0.8rem',
+        marginBottom: '0.8rem',
+    },
     '@media (max-width: 768px)': {
         fontSize: '0.8rem',
         marginBottom: '0.5rem',
@@ -30,13 +36,32 @@ const StatsLink = styled(NavLink)({
 
 export default function landingPage() {
     return (
-        <>
+        <Stack
+            sx={{
+                backgroundColor: 'white',
+                alignItems: 'center',
+                minHeight: '100vh',
+                minWidth: '100vw',
+            }}
+        >
             <NavBar />
-            <Box className="background">
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                    flex: '1',
+                    marginTop: '4rem',
+                    marginBottom: '4rem',
+
+                    // width: '80vw',
+                }}
+            >
                 <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">
                     <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
                 </a>
-                <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem', zIndex: '999' }}>
+                <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem' }}>
                     <Box
                         sx={{
                             margin: '3rem 0 2.3rem 0',
@@ -44,24 +69,33 @@ export default function landingPage() {
                                 marginTop: '0.8rem',
                                 marginBottom: '1.5rem',
                             },
+                            '@media (max-width: 1024px)': {
+                                marginTop: '0.8rem',
+                                marginBottom: '1.5rem',
+                            },
                         }}
                     >
-                        <Typography variant="h3" sx={{ fontFamily: 'Montserrat', fontWeight: 'bold' }}>
+                        <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 'bold' }}>
                             Jenkins Infra-Statistics
                         </Typography>
-                        <Typography sx={{ fontFamily: 'Montserrat' }}>
+                        <Typography sx={{ fontFamily: 'Georgia' }}>
                             Graphical representation of numbers and information around Jenkins
                         </Typography>
                     </Box>
-                    <nav className="stats">
+                    <Stack
+                        sx={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
-                        <StatsLink to={'/'}>Plugin Installation Trend</StatsLink>
+                        <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
                         <StatsLink to="https://www.jenkins.io">Plugin Versions by Jenkins Version</StatsLink>
                         <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
-                    </nav>
+                    </Stack>
                 </Box>
             </Box>
             <Footer />
-        </>
+        </Stack>
     )
 }
