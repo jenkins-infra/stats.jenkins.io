@@ -9,7 +9,7 @@ import { Box, Stack, Typography } from '@mui/material'
 
 const StatsLink = styled(NavLink)({
     display: 'block',
-    width: 'full',
+    width: '70%',
     marginBottom: '1.2rem',
     background: '#ebedf0',
     color: 'black',
@@ -54,13 +54,14 @@ export default function landingPage() {
                     flex: '1',
                     marginTop: '4rem',
                     marginBottom: '4rem',
+
                     // width: '80vw',
                 }}
             >
                 <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">
                     <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
                 </a>
-                <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem', zIndex: '999' }}>
+                <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem' }}>
                     <Box
                         sx={{
                             margin: '3rem 0 2.3rem 0',
@@ -81,12 +82,17 @@ export default function landingPage() {
                             Graphical representation of numbers and information around Jenkins
                         </Typography>
                     </Box>
-                    <nav className="stats">
+                    <Stack
+                        sx={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
                         <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
                         <StatsLink to="https://www.jenkins.io">Plugin Versions by Jenkins Version</StatsLink>
                         <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
-                    </nav>
+                    </Stack>
                 </Box>
             </Box>
             <Footer />

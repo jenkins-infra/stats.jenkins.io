@@ -54,7 +54,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                     type: 'category',
                     data: dates.map((date) => date.monthYear),
                     axisLabel: {
-                        formatter: function (value, index) {
+                        formatter: function (_value, index) {
                             const currentYear = dates[index].year
                             const previousYear = index > 0 ? dates[index - 1].year : null
                             return currentYear !== previousYear ? currentYear : ''
@@ -141,7 +141,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         <Box
             sx={{
                 width: '70vw',
-                height: '70vh',
+                height: '80vh',
                 marginTop: '2rem',
             }}
         >

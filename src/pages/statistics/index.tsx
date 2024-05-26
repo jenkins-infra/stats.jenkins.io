@@ -19,7 +19,6 @@ import Chart from '../../components/Chart'
 import StatisticsTable from '../../components/StatisticsTable'
 import { data } from '../../data/statisticsData'
 import './statistics.css'
-import Footer from '../../components/Footer'
 
 const ListButton = styled(ListItemButton)({
     '&.Mui-selected': {
@@ -73,7 +72,16 @@ const Statistics: React.FC = () => {
     }, [])
 
     return (
-        <Box className="background" sx={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Box
+            className="background"
+            sx={{
+                width: '100vw',
+                height: '100vh', //minheight causes the footer to be pushed out of view when opening monthly analysis accordion.
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: 'white',
+            }}
+        >
             <NavBar />
             <Box
                 sx={{
@@ -201,8 +209,8 @@ const Statistics: React.FC = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        // justifyContent: 'center',
                         padding: '2rem',
+                        // justifyContent: 'center',
                     }}
                 >
                     {selectedTab === 'monthly' && <StatisticsTable year={selectedYear || undefined} />}
@@ -227,7 +235,6 @@ const Statistics: React.FC = () => {
                     )}
                 </Box>
             </Box>
-            <Footer />
         </Box>
     )
 }

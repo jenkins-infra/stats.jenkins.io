@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Stack, Typography, styled, Menu, MenuItem } from '@mui/material'
-import { FaGithub } from 'react-icons/fa'
+import { Button, Stack, Typography, styled, Menu, MenuItem, useMediaQuery } from '@mui/material'
+
 import { Link } from 'react-router-dom'
 import { KeyboardArrowDown } from '@mui/icons-material'
-import theme from '../theme/theme'
+import ForkMeButton from './ForkMeButton'
+import MenuIcon from '@mui/icons-material/Menu'
 
 const StyledBar = styled(Stack)({
     height: '60px',
@@ -21,6 +22,7 @@ const StyledName = styled(Typography)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: '1.3rem',
         padding: '0.5rem',
+        marginLeft: '0.5rem',
     },
 }))
 
@@ -37,6 +39,8 @@ const NavBar: React.FC<NavBarProps> = () => {
         setAnchorEl(null)
     }
 
+    const isMobile = useMediaQuery('(max-width:600px)')
+
     return (
         <StyledBar direction="row">
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -46,6 +50,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                 sx={{
                     // display: 'flex',
                     alignItems: 'center',
+                    paddingRight: isMobile ? '0.5rem' : '0',
                 }}
                 direction="row"
             >
@@ -62,8 +67,14 @@ const NavBar: React.FC<NavBarProps> = () => {
                         },
                     }}
                 >
-                    Menu
-                    <KeyboardArrowDown sx={{ marginLeft: '2px' }} />
+                    {/* {!isMobile && <KeyboardArrowDown sx={{ marginLeft: '2px' }} />} */}
+                    {!isMobile && (
+                        <>
+                            <>Menu</>
+                            <KeyboardArrowDown sx={{ marginLeft: '2px' }} />
+                        </>
+                    )}
+                    {isMobile && <MenuIcon sx={{}} />}
                 </Button>
                 <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                     <MenuItem onClick={handleClose} component={Link} to="/">
@@ -83,35 +94,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                     </MenuItem>
                     {/* Add more MenuItems as needed */}
                 </Menu>
-                <Button
-                    variant="contained"
-                    startIcon={<FaGithub />}
-                    href="https://github.com/shlomomdahan/stats2.jenkins.io"
-                    sx={{
-                        margin: '0.5rem',
-                        backgroundColor: '#ebedf0',
-                        borderRadius: '1rem',
-                        color: '#808080',
-                        fontWeight: 'bold',
-                        fontFamily: 'Georgia, serif',
-
-                        '&:hover': {
-                            backgroundColor: 'white',
-                            border: '2px solid #5468ff',
-                            color: 'black',
-                        },
-                        [theme.breakpoints.down('sm')]: {
-                            fontSize: '0.8rem',
-                            padding: '0.2rem 0.5rem',
-                        },
-                        [theme.breakpoints.down('xs')]: {
-                            fontSize: '0.42rem',
-                            padding: '0.2rem 0.5rem',
-                        },
-                    }}
-                >
-                    Fork Me on GitHub
-                </Button>
+                {!isMobile && <ForkMeButton />}
             </Stack>
         </StyledBar>
     )

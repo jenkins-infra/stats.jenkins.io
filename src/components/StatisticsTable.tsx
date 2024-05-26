@@ -39,7 +39,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
     const filteredData = year ? data.filter((row) => row.year === year) : data
 
     return (
-        <TableContainer component={Paper} sx={{ maxHeight: 970, width: '95%' }}>
+        <TableContainer component={Paper} sx={{ maxHeight: '100%', width: '95%' }}>
             <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} aria-label="statistics table" stickyHeader>
                 <TableHead
                     sx={{

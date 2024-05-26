@@ -1,6 +1,9 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography, useMediaQuery } from '@mui/material'
+import ForkMeButton from './ForkMeButton'
 
 export default function Footer() {
+    const isMobile = useMediaQuery('(max-width:600px)')
+
     return (
         <Stack
             sx={{
@@ -12,7 +15,25 @@ export default function Footer() {
                 padding: '2rem 0',
             }}
         >
-            <Box sx={{ marginBottom: 'auto', textAlign: 'center' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    textAlign: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                }}
+            >
+                {isMobile && (
+                    <Box
+                        sx={{
+                            padding: '1rem',
+                        }}
+                    >
+                        <ForkMeButton />
+                    </Box>
+                )}
                 <Typography
                     variant="body1"
                     sx={{
@@ -31,7 +52,6 @@ export default function Footer() {
                         <strong>community</strong>
                     </a>
                 </Typography>
-
                 <Typography
                     variant="body1"
                     sx={{
@@ -51,17 +71,6 @@ export default function Footer() {
                     </a>
                 </Typography>
             </Box>
-            <Typography
-                variant="body1"
-                sx={{
-                    fontWeight: 'semi-bold',
-                    fontFamily: 'Georgia, serif',
-                    color: 'white',
-                    padding: '0.5rem',
-                }}
-            >
-                © 2024 Jenkins Infra-Statistics. All rights reserved.
-            </Typography>
         </Stack>
     )
 }
