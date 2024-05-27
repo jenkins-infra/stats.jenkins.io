@@ -3,7 +3,7 @@ import jenkinsButler from '../../assets/jenkins-butler.svg'
 import NavBar from '../../components/NavBar'
 import Footer from '../../components/Footer'
 import './landing-page.css'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { styled } from '@mui/system'
 import { Box, Paper, Stack, Typography, colors } from '@mui/material'
 
@@ -73,9 +73,18 @@ const LandingPage: React.FC = () => {
                     },
                 }}
             >
-                <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">
-                    <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
-                </a>
+                <Box
+                    sx={{
+                        marginTop: '1.5rem',
+                        '@media (max-width: 768px)': {
+                            marginTop: '0',
+                        },
+                    }}
+                >
+                    <Link to={'https://www.jenkins.io'} target="_blank" rel="noopener noreferrer">
+                        <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
+                    </Link>
+                </Box>
                 <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem' }}>
                     <Box
                         sx={{
