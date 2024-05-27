@@ -5,25 +5,30 @@ import Footer from '../../components/Footer'
 import './landing-page.css'
 import { NavLink } from 'react-router-dom'
 import { styled } from '@mui/system'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Paper, Stack, Typography, colors } from '@mui/material'
 
 const StatsLink = styled(NavLink)({
     display: 'block',
     width: '70%',
-    marginBottom: '1.2rem',
+    marginBottom: '1rem',
     background: '#ebedf0',
+    opacity: '0.9',
     color: 'black',
     padding: '0.5rem 1rem',
     border: '2px solid transparent',
     borderRadius: '0.66rem',
-    fontWeight: 'bold',
-    fontSize: '1rem',
-    fontFamily: 'Montserrat, Times, “Times New Roman”, serif',
-    '&:hover': {
-        color: '#5468ff',
-        border: '2px solid #5468ff',
-    },
     boxShadow: '1.5px 4px 5px 0 rgba(0, 0, 0, 0.2)',
+    fontSize: '0.9rem',
+    fontFamily: 'Georgia, Times, “Times New Roman”, serif',
+    '&:hover': {
+        backgroundColor: '#476485',
+
+        color: 'white',
+        fontWeight: 'bold',
+        opacity: '0.7',
+        // border: '2px solid #5468ff',
+    },
+
     '@media (max-width: 1024px)': {
         fontSize: '0.8rem',
         marginBottom: '0.8rem',
@@ -38,22 +43,34 @@ const LandingPage: React.FC = () => {
     return (
         <Stack
             sx={{
-                backgroundColor: 'white',
+                backgroundColor: '#f0f0f0',
                 alignItems: 'center',
                 minHeight: '100vh',
                 minWidth: '100vw',
             }}
         >
             <NavBar />
-            <Box
+            <Paper
+                elevation={16}
                 sx={{
+                    width: '70%',
                     display: 'flex',
-                    flexDirection: 'column',
+                    flexDirection: 'row',
                     alignContent: 'center',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     flex: '1',
                     marginTop: '4rem',
                     marginBottom: '4rem',
+                    gap: '5rem',
+                    backgroundColor: 'white',
+                    borderRadius: '1.5rem',
+                    padding: '6rem',
+                    '@media (max-width: 768px)': {
+                        padding: '2rem',
+                        flexDirection: 'column',
+                        gap: '2rem',
+                    },
                 }}
             >
                 <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">
@@ -92,7 +109,7 @@ const LandingPage: React.FC = () => {
                         <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
                     </Stack>
                 </Box>
-            </Box>
+            </Paper>
             <Footer />
         </Stack>
     )

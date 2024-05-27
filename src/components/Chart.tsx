@@ -78,7 +78,6 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                                 ? dates[index].year.slice(2, 4) + "'"
                                 : '',
                         interval: 0,
-                        rotate: 45,
                     },
                     axisTick: { show: false },
                 },
