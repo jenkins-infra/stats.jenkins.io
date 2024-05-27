@@ -117,7 +117,6 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                             '&:hover': {
                                                 backgroundColor: '#C7E4E8',
                                             },
-                                            color: '#212529',
                                         }}
                                     >
                                         SVG
@@ -132,7 +131,6 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                             '&:hover': {
                                                 backgroundColor: '#C7E4E8',
                                             },
-                                            color: '#212529',
                                         }}
                                     >
                                         CSV
