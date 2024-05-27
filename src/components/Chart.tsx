@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
-import { Box, Button } from '@mui/material'
+import { Box, Button, styled } from '@mui/material'
 import * as echarts from 'echarts'
 import Papa from 'papaparse'
+import axios from 'axios'
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import ImageIcon from '@mui/icons-material/Image'
 
 interface ChartProps {
     csvPath: string
@@ -10,26 +13,47 @@ interface ChartProps {
     height?: string
 }
 
+const DownloadButton = styled(Button)({
+    margin: '0.5rem',
+    padding: '0.75rem 1.5rem',
+    backgroundColor: '#ffffff',
+    borderRadius: '1rem',
+    color: '#007BFF',
+    fontWeight: '600',
+    fontFamily: 'Arial, sans-serif',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    transition: 'all 0.3s ease',
+    border: '1px solid #e0e0e0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:hover': {
+        backgroundColor: '#f0f0f0',
+        border: '1px solid #007BFF',
+        color: '#0056b3',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+    },
+    '@media (max-width: 900px)': {
+        padding: '0.5rem 1rem',
+        fontSize: '0.8rem',
+    },
+})
+
 const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = '100%' }) => {
     useEffect(() => {
-        // Function to load and parse CSV file
         const loadCSVData = async () => {
-            const response = await fetch(csvPath)
-            const csvText = await response.text()
-            const parsedData = Papa.parse(csvText, { header: false })
-            return parsedData.data
+            try {
+                const response = await axios.get(csvPath, { responseType: 'text' })
+                const csvText = response.data
+                return Papa.parse<string[]>(csvText, { header: false }).data
+            } catch (error) {
+                console.error('Error loading CSV data:', error)
+            }
         }
 
-        // Initialize the chart
-        const chartDom = document.getElementById(title) as HTMLElement
-        const myChart = echarts.init(chartDom)
-
-        // Set up the chart with data
         const setupChart = (data: string[][]) => {
             const dates = data.map((row) => {
-                const dateStr = row[0]
-                const year = dateStr.slice(0, 4)
-                const month = dateStr.slice(4, 6)
+                const [year, month] = [row[0].slice(0, 4), row[0].slice(4, 6)]
                 return { monthYear: `${month}-${year}`, year }
             })
 
@@ -39,74 +63,52 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 title: {
                     text: title,
                     left: 'center',
-                    textStyle: {
-                        fontSize: 18,
-                        fontWeight: 'bold',
-                    },
+                    textStyle: { fontSize: 18, fontWeight: 'bold' },
                 },
                 tooltip: {
                     trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow',
-                    },
+                    axisPointer: { type: 'shadow' },
                 },
                 xAxis: {
                     type: 'category',
                     data: dates.map((date) => date.monthYear),
                     axisLabel: {
-                        formatter: function (_value, index) {
-                            const currentYear = dates[index].year
-                            const previousYear = index > 0 ? dates[index - 1].year : null
-                            return currentYear !== previousYear ? currentYear : ''
-                        },
+                        formatter: (_value, index) =>
+                            index === 0 || dates[index].year !== dates[index - 1].year
+                                ? dates[index].year.slice(2, 4) + "'"
+                                : '',
                         interval: 0,
-                        rotate: 0,
+                        rotate: 45,
                     },
-                    axisTick: {
-                        alignWithLabel: true,
-                    },
+                    axisTick: { show: false },
                 },
                 yAxis: {
                     type: 'value',
-                    splitLine: {
-                        lineStyle: {
-                            type: 'dashed',
-                        },
-                    },
+                    splitLine: { lineStyle: { type: 'dashed' } },
                 },
                 series: [
                     {
                         data: values,
-                        type: 'bar',
-                        barWidth: '60%',
-                        itemStyle: {
-                            color: '#007FFF',
-                        },
+                        type: 'line',
+                        itemStyle: { color: '#007FFF' },
                     },
                 ],
-                grid: {
-                    left: '3%',
-                    right: '3%',
-                    bottom: '3%',
-                    containLabel: true,
-                },
+                grid: { left: '3%', right: '3%', bottom: '3%', containLabel: true },
             }
 
             myChart.setOption(option)
         }
 
+        const chartDom = document.getElementById(title) as HTMLElement
+        const myChart = echarts.init(chartDom)
+
         loadCSVData().then((data) => {
-            setupChart(data as string[][])
+            if (data) setupChart(data)
         })
 
-        // Handle window resize
-        const handleResize = () => {
-            myChart.resize()
-        }
-
+        const handleResize = () => myChart.resize()
         window.addEventListener('resize', handleResize)
 
-        // Cleanup the chart and event listener on unmount
         return () => {
             myChart.dispose()
             window.removeEventListener('resize', handleResize)
@@ -125,10 +127,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
     const handleSVGDownload = () => {
         const chartDom = document.getElementById(title) as HTMLElement
         const myChart = echarts.init(chartDom)
-        const svg = myChart.getDataURL({
-            type: 'svg',
-            backgroundColor: '#fff',
-        })
+        const svg = myChart.getDataURL({ type: 'svg', backgroundColor: '#fff' })
         const link = document.createElement('a')
         link.href = svg
         link.download = `${title}.svg`
@@ -140,65 +139,24 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
     return (
         <Box
             sx={{
-                width: '70vw',
-                height: '80vh',
-                marginTop: '2rem',
+                width: '90%',
+                height: '90%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
             }}
         >
-            <Box
-                sx={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <div id={title} style={{ width, height }}></div>
-                <Box display="flex" alignItems="center" justifyContent="center" mt={2}>
-                    <Button
-                        variant="contained"
-                        onClick={handleCSVDownload}
-                        sx={{
-                            margin: '0.5rem',
-                            backgroundColor: '#ebedf0',
-                            borderRadius: '1rem',
-                            color: '#808080',
-                            fontWeight: 'bold',
-                            fontFamily: 'Georgia, serif',
-
-                            '&:hover': {
-                                backgroundColor: 'white',
-                                border: '2px solid #5468ff',
-                                color: 'black',
-                            },
-                        }}
-                    >
-                        Download CSV
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={handleSVGDownload}
-                        sx={{
-                            margin: '0.5rem',
-                            backgroundColor: '#ebedf0',
-                            borderRadius: '1rem',
-                            color: '#808080',
-                            fontWeight: 'bold',
-                            fontFamily: 'Georgia, serif',
-                            border: '2px solid transparent',
-
-                            '&:hover': {
-                                backgroundColor: 'white',
-                                border: '2px solid #5468ff',
-                                color: 'black',
-                            },
-                        }}
-                    >
-                        Download SVG
-                    </Button>
-                </Box>
+            <div id={title} style={{ width, height }}></div>
+            <Box display="flex" alignItems="center" justifyContent="center" mt={3}>
+                <DownloadButton variant="contained" onClick={handleCSVDownload}>
+                    <InsertDriveFileIcon style={{ marginRight: '0.5rem' }} />
+                    CSV
+                </DownloadButton>
+                <DownloadButton variant="contained" onClick={handleSVGDownload}>
+                    <ImageIcon style={{ marginRight: '0.5rem' }} />
+                    SVG
+                </DownloadButton>
             </Box>
         </Box>
     )

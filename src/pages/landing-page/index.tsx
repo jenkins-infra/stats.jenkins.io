@@ -34,7 +34,7 @@ const StatsLink = styled(NavLink)({
     },
 })
 
-export default function landingPage() {
+const LandingPage: React.FC = () => {
     return (
         <Stack
             sx={{
@@ -54,14 +54,6 @@ export default function landingPage() {
                     flex: '1',
                     marginTop: '4rem',
                     marginBottom: '4rem',
-                    '@media (max-height: 1150px)': {
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '6rem',
-                    },
-
-                    // width: '80vw',
                 }}
             >
                 <a href="https://www.jenkins.io" target="_blank" rel="noopener noreferrer">
@@ -105,3 +97,5 @@ export default function landingPage() {
         </Stack>
     )
 }
+
+export default LandingPage
