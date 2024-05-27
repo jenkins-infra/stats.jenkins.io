@@ -54,6 +54,12 @@ export default function landingPage() {
                     flex: '1',
                     marginTop: '4rem',
                     marginBottom: '4rem',
+                    '@media (max-height: 1150px)': {
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '6rem',
+                    },
 
                     // width: '80vw',
                 }}

@@ -5,13 +5,6 @@
     margin-right: auto;
 }
 
-/* .background {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-} */
-
 @media (max-width: 1024px) {
     .logo {
         height: 14rem;
@@ -21,5 +14,12 @@
 @media (max-width: 768px) {
     .logo {
         height: 12rem;
+    }
+}
+
+@media (max-height: 1150px) {
+    .logo {
+        height: 22rem;
+        margin-top: 3rem;
     }
 }
