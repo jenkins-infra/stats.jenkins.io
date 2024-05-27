@@ -39,8 +39,12 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
     const filteredData = year === 'all' ? data : data.filter((row) => row.year === year)
 
     return (
-        <TableContainer component={Paper} sx={{ maxHeight: '100%', width: '95%' }}>
-            <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} aria-label="statistics table" stickyHeader>
+        <TableContainer
+            component={Paper}
+            elevation={16}
+            sx={{ maxHeight: '100%', width: '100%', borderRadius: '1rem' }}
+        >
+            <Table sx={{ minWidth: 900, tableLayout: 'fixed' }} aria-label="statistics table" stickyHeader>
                 <TableHead
                     sx={{
                         position: 'sticky',
@@ -50,8 +54,8 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                         '& th': {
                             fontSize: '0.875rem',
                             padding: '8px',
-                            backgroundColor: '#939FA1',
-                            color: 'black',
+                            backgroundColor: '#212529',
+                            color: 'white',
                             fontWeight: 'bold',
                         },
                     }}
@@ -108,12 +112,12 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                         size="small"
                                         onClick={() => downloadFile(type, row.month, row.year, 'SVG')}
                                         sx={{
-                                            marginRight: '5px',
                                             padding: '2px 5px',
                                             fontSize: '0.75rem',
                                             '&:hover': {
                                                 backgroundColor: '#C7E4E8',
                                             },
+                                            color: '#212529',
                                         }}
                                     >
                                         SVG
@@ -128,6 +132,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                             '&:hover': {
                                                 backgroundColor: '#C7E4E8',
                                             },
+                                            color: '#212529',
                                         }}
                                     >
                                         CSV

@@ -43,7 +43,7 @@ const AccordionSummaryBox = styled(AccordionSummary)({
 })
 
 const StyledAccordion = styled(Accordion)({
-    backgroundColor: '#212529',
+    backgroundColor: '#212529', //dark blue
     marginBottom: '8px',
     boxShadow: 'none',
     border: 'none',

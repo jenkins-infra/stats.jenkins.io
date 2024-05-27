@@ -21,8 +21,8 @@ const StatsLink = styled(NavLink)({
     fontSize: '0.9rem',
     fontFamily: 'Georgia, Times, “Times New Roman”, serif',
     '&:hover': {
-        backgroundColor: '#476485',
-
+        // backgroundColor: '#476485',
+        backgroundImage: 'linear-gradient(315deg, #007FFF 0%, #005BBB 74%)',
         color: 'white',
         fontWeight: 'bold',
         opacity: '0.7',
