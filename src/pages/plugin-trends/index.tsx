@@ -20,10 +20,17 @@ import ImageIcon from '@mui/icons-material/Image'
 import NavBar from '../../components/NavBar'
 import PluginCardChart from '../../components/PluginCardChart'
 import { pluginList } from '../../data/plugins'
+import { Link } from 'react-router-dom'
 
 interface Plugin {
     id: string
-    chartData?: string[][]
+    chartData?: {
+        name: string
+        installations: { [timestamp: string]: number }
+        installationsPercentage: { [timestamp: string]: number }
+        installationsPerVersion: { [version: string]: number }
+        installationsPercentagePerVersion: { [version: string]: number }
+    }
 }
 
 const PluginTrends: React.FC = () => {
@@ -100,7 +107,11 @@ const PluginTrends: React.FC = () => {
                         {paginatedPlugins.map((plugin) => (
                             <Grid xs={12} sm={6} md={4} xl={3} key={plugin.id}>
                                 <Card elevation={12} sx={{ borderRadius: '1rem', backgroundColor: 'white' }}>
-                                    <CardActionArea href={`/plugin/${plugin.id}`}>
+                                    <CardActionArea
+                                        component={Link}
+                                        to={`/plugin/${plugin.id}`}
+                                        state={{ chartData: plugin.chartData }}
+                                    >
                                         <CardContent>
                                             <Typography
                                                 gutterBottom
@@ -112,12 +123,21 @@ const PluginTrends: React.FC = () => {
                                                     overflow: 'hidden',
                                                     whiteSpace: 'nowrap',
                                                     color: '#212529',
+                                                    marginBottom: '1rem',
                                                 }}
                                             >
                                                 {plugin.id}
                                             </Typography>
                                             <CardMedia>
-                                                <PluginCardChart data={plugin.chartData} />
+                                                {plugin.chartData ? (
+                                                    <PluginCardChart
+                                                        data={{ installations: plugin.chartData.installations }}
+                                                    />
+                                                ) : (
+                                                    <Typography variant="body2" color="textSecondary" align="center">
+                                                        No Data Available
+                                                    </Typography>
+                                                )}
                                             </CardMedia>
                                         </CardContent>
                                     </CardActionArea>

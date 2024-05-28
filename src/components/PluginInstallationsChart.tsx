@@ -10,11 +10,11 @@ type DataType = {
     installations: InstallationData
 }
 
-interface PluginCardChartProps {
+interface PluginInstallationsChartProps {
     data?: DataType
 }
 
-const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
+const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
     useEffect(() => {
@@ -45,55 +45,55 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
                         color: '#777',
                     },
                 },
-
-                // show: false,
             },
             xAxis: {
                 type: 'category',
                 data: formattedData.map((item) => item.date),
-                show: false,
                 axisLabel: {
-                    formatter: (value: unknown, index: number) => {
-                        // Show only the first and last labels
-                        if (index === 0 || index === formattedData.length - 1) {
-                            return value
-                        }
-                        return ''
-                    },
-
-                    fontSize: 10,
+                    fontSize: 12,
+                    rotate: 45,
                 },
                 axisLine: {
-                    show: false,
+                    show: true,
+                    lineStyle: {
+                        color: '#777',
+                    },
                 },
                 axisTick: {
-                    show: false,
+                    show: true,
                 },
             },
             yAxis: {
                 type: 'value',
                 name: 'Installations',
-
-                show: false,
-
+                nameTextStyle: {
+                    fontSize: 12,
+                    padding: [0, 0, 0, 50],
+                },
+                axisLabel: {
+                    fontSize: 12,
+                },
                 axisLine: {
-                    show: false,
+                    show: true,
+                    lineStyle: {
+                        color: '#777',
+                    },
                 },
                 axisTick: {
-                    show: false,
+                    show: true,
                 },
                 splitLine: {
-                    show: false,
-                },
-                nameTextStyle: {
-                    fontSize: 10,
+                    show: true,
+                    lineStyle: {
+                        type: 'dashed',
+                    },
                 },
             },
             grid: {
-                left: '3%',
-                right: '3%',
-                bottom: '3%',
-                top: '3%',
+                left: '5%',
+                right: '5%',
+                bottom: '15%',
+                top: '10%',
             },
             series: [
                 {
@@ -102,9 +102,10 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
                     smooth: true,
                     lineStyle: {
                         width: 2,
+                        color: '#3f51b5',
                     },
                     itemStyle: {
-                        opacity: 0,
+                        color: '#3f51b5',
                     },
                 },
             ],
@@ -124,7 +125,7 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
         }
     }, [data])
 
-    return <div ref={chartRef} style={{ height: '200px', width: '100%' }} />
+    return <div ref={chartRef} style={{ height: '400px', width: '100%' }} />
 }
 
-export default PluginCardChart
+export default PluginInstallationsChart
