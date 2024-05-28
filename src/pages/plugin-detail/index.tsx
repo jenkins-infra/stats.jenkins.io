@@ -1,9 +1,11 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import { Grid, Stack, Typography, Card, styled } from '@mui/material'
-import PluginCardChart from '../../components/PluginCardChart'
 import NavBar from '../../components/NavBar'
 import PluginInstallationsChart from '../../components/PluginInstallationsChart'
+import PluginInstallationsPerVersion from '../../components/PluginInstallationsPerVersion'
+import PluginInstallationsPercentageChart from '../../components/PluginInstallationsPercentageChart'
+import PluginInstallationsPercentagePerVersionChart from '../../components/PluginInstallationsPercentagePerVersionChart'
 
 const GraphCard = styled(Card)({
     backgroundColor: '#f0f0f0',
@@ -25,16 +27,28 @@ const PluginDetail: React.FC = () => {
             }}
         >
             <NavBar />
-            <Typography variant="h4" sx={{ color: 'black' }}>
-                Plugin Details
+            <Typography
+                variant="h4"
+                sx={{
+                    color: 'black',
+                    marginTop: '4rem',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    '@media (max-width: 1024px)': {
+                        fontSize: '1.5rem',
+                    },
+                }}
+            >
+                {chartData ? chartData.name : 'No Plugin ID'}
             </Typography>
             {chartData ? (
                 <Grid
                     container
                     spacing={4}
                     sx={{
-                        padding: '4rem',
-                        marginTop: '0',
+                        padding: '6em',
+                        // marginTop: '0',
                     }}
                 >
                     <Grid item xs={12} sm={6}>
@@ -44,17 +58,25 @@ const PluginDetail: React.FC = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <GraphCard elevation={16}>
-                            <PluginCardChart data={{ installations: chartData.installationsPerVersion }} />
+                            <PluginInstallationsPerVersion
+                                data={{ installationsPerVersion: chartData.installationsPerVersion }}
+                            />
                         </GraphCard>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <GraphCard elevation={16}>
-                            <PluginCardChart data={{ installations: chartData.installationsPercentage }} />
+                            <PluginInstallationsPercentageChart
+                                data={{ installationsPercentage: chartData.installationsPercentage }}
+                            />
                         </GraphCard>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <GraphCard elevation={16}>
-                            <PluginCardChart data={{ installations: chartData.installationsPercentagePerVersion }} />
+                            <PluginInstallationsPercentagePerVersionChart
+                                data={{
+                                    installationsPercentagePerVersion: chartData.installationsPercentagePerVersion,
+                                }}
+                            />
                         </GraphCard>
                     </Grid>
                 </Grid>

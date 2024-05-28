@@ -1,40 +1,40 @@
 import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
-import dayjs from 'dayjs'
 
-type InstallationData = {
-    [timestamp: string]: number
+type InstallationPerVersionData = {
+    [version: string]: number
 }
 
 type DataType = {
-    installations: InstallationData
+    installationsPerVersion: InstallationPerVersionData
 }
 
-interface PluginInstallationsChartProps {
+interface PluginInstallationsPerVersionProps {
     data?: DataType
 }
 
-const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ data }) => {
+const PluginInstallationsPerVersion: React.FC<PluginInstallationsPerVersionProps> = ({ data }) => {
     const chartRef = useRef(null)
 
     useEffect(() => {
-        if (!data || !data.installations) {
+        if (!data || !data.installationsPerVersion) {
             return
         }
 
         const chart = echarts.init(chartRef.current)
 
-        const formattedData = Object.entries(data.installations).map(([timestamp, installations]) => ({
-            date: dayjs(parseInt(timestamp)).format('MMM YYYY'),
+        const formattedData = Object.entries(data.installationsPerVersion).map(([version, installations]) => ({
+            version,
             installations,
         }))
 
         const option = {
             title: {
-                text: 'Installations Over Time',
+                text: 'Installations Per Version',
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
+
             tooltip: {
                 trigger: 'axis',
                 formatter: '{b}: {c} installations',
@@ -45,18 +45,17 @@ const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ dat
                     color: '#fff',
                 },
                 axisPointer: {
-                    type: 'line',
-                    lineStyle: {
-                        color: '#777',
+                    type: 'shadow',
+                    shadowStyle: {
+                        color: 'rgba(150, 150, 150, 0.3)',
                     },
                 },
             },
             xAxis: {
                 type: 'category',
-                data: formattedData.map((item) => item.date),
+                data: formattedData.map((item) => item.version),
                 axisLabel: {
                     fontSize: 12,
-                    // rotate: 45,
                 },
                 axisLine: {
                     show: true,
@@ -103,15 +102,11 @@ const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ dat
             series: [
                 {
                     data: formattedData.map((item) => item.installations),
-                    type: 'line',
-                    smooth: true,
-                    lineStyle: {
-                        width: 2,
-                        color: '#3f51b5',
-                    },
+                    type: 'bar',
                     itemStyle: {
                         color: '#3f51b5',
                     },
+                    barWidth: '60%',
                 },
             ],
         }
@@ -133,4 +128,4 @@ const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ dat
     return <div ref={chartRef} style={{ height: '400px', width: '100%' }} />
 }
 
-export default PluginInstallationsChart
+export default PluginInstallationsPerVersion

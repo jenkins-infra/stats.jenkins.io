@@ -7,7 +7,7 @@ import './index.css'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './theme/theme.ts'
 import PluginTrends from './pages/plugin-trends/index.tsx'
-import PluginSummary from './pages/plugin-summary/index.tsx'
+import PluginDetail from './pages/plugin-detail/index.tsx'
 
 const router = createBrowserRouter([
     {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/plugin/:id', // Add this route
-        element: <PluginSummary />, // Reference the PluginSummary component
+        element: <PluginDetail />, // Reference the PluginSummary component
     },
 ])
 

@@ -2,42 +2,42 @@ import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 
-type InstallationData = {
+type InstallationPercentageData = {
     [timestamp: string]: number
 }
 
 type DataType = {
-    installations: InstallationData
+    installationsPercentage: InstallationPercentageData
 }
 
-interface PluginInstallationsChartProps {
+interface PluginInstallationsPercentageChartProps {
     data?: DataType
 }
 
-const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ data }) => {
+const PluginInstallationsPercentageChart: React.FC<PluginInstallationsPercentageChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
     useEffect(() => {
-        if (!data || !data.installations) {
+        if (!data || !data.installationsPercentage) {
             return
         }
 
         const chart = echarts.init(chartRef.current)
 
-        const formattedData = Object.entries(data.installations).map(([timestamp, installations]) => ({
+        const formattedData = Object.entries(data.installationsPercentage).map(([timestamp, percentage]) => ({
             date: dayjs(parseInt(timestamp)).format('MMM YYYY'),
-            installations,
+            percentage,
         }))
 
         const option = {
             title: {
-                text: 'Installations Over Time',
+                text: 'Installations Percentage Over Time',
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'axis',
-                formatter: '{b}: {c} installations',
+                formatter: '{b}: {c}%',
                 backgroundColor: '#333',
                 borderColor: '#777',
                 borderWidth: 1,
@@ -56,7 +56,6 @@ const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ dat
                 data: formattedData.map((item) => item.date),
                 axisLabel: {
                     fontSize: 12,
-                    // rotate: 45,
                 },
                 axisLine: {
                     show: true,
@@ -70,13 +69,14 @@ const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ dat
             },
             yAxis: {
                 type: 'value',
-                name: 'Installations',
+                name: 'Percentage (%)',
                 nameTextStyle: {
                     fontSize: 12,
                     padding: [0, 0, 0, 50],
                 },
                 axisLabel: {
                     fontSize: 12,
+                    formatter: '{value}%',
                 },
                 axisLine: {
                     show: true,
@@ -102,7 +102,7 @@ const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ dat
             },
             series: [
                 {
-                    data: formattedData.map((item) => item.installations),
+                    data: formattedData.map((item) => item.percentage * 100),
                     type: 'line',
                     smooth: true,
                     lineStyle: {
@@ -133,4 +133,4 @@ const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ dat
     return <div ref={chartRef} style={{ height: '400px', width: '100%' }} />
 }
 
-export default PluginInstallationsChart
+export default PluginInstallationsPercentageChart
