@@ -1,7 +1,9 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import { Stack, Typography, Card, styled } from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
+import { Stack, Typography, Card, Grid, Paper } from '@mui/material'
+import { styled } from '@mui/system'
+
+// import Grid from '@mui/material/Unstable_Grid2'
 import NavBar from '../../components/NavBar'
 import PluginInstallationsChart from '../../components/PluginInstallationsChart'
 import PluginInstallationsPerVersion from '../../components/PluginInstallationsPerVersion'
@@ -9,7 +11,7 @@ import PluginInstallationsPercentageChart from '../../components/PluginInstallat
 import PluginInstallationsPercentagePerVersionChart from '../../components/PluginInstallationsPercentagePerVersionChart'
 
 const GraphCard = styled(Card)({
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'white',
     borderRadius: '1rem',
     padding: '1rem',
 })
@@ -22,70 +24,102 @@ const PluginDetail: React.FC = () => {
         <Stack
             sx={{
                 backgroundColor: '#f0f0f0',
+
                 alignItems: 'center',
                 minHeight: '100vh',
                 minWidth: '100vw',
             }}
         >
             <NavBar />
-            <Typography
-                variant="h4"
+            <Paper
+                elevation={16}
                 sx={{
-                    color: 'black',
-                    marginTop: '4rem',
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    '@media (max-width: 1024px)': {
-                        fontSize: '1.5rem',
-                    },
+                    height: '100%',
+                    width: '90%',
+                    margin: '2rem',
+                    padding: '1rem',
+                    borderRadius: '1rem',
+                    backgroundColor: 'white',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
             >
-                {chartData ? chartData.name : 'No Plugin ID'}
-            </Typography>
-            {chartData ? (
-                <Grid
-                    container
-                    spacing={4}
+                <Card
+                    elevation={8}
                     sx={{
-                        padding: '6em',
-                        // marginTop: '0',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignContent: 'center',
+                        justifyContent: 'center',
+                        padding: '1rem',
+                        borderRadius: '1rem',
+                        backgroundColor: 'white',
+                        marginTop: '2rem',
                     }}
                 >
-                    <Grid xs={12} sm={6}>
-                        <GraphCard elevation={16}>
-                            <PluginInstallationsChart data={{ installations: chartData.installations }} />
-                        </GraphCard>
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            fontFamily: 'Georgia, serif',
+                            color: 'black',
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            '@media (max-width: 1024px)': {
+                                fontSize: '1.5rem',
+                            },
+                        }}
+                    >
+                        {chartData ? chartData.name : 'No Plugin ID'}
+                    </Typography>
+                </Card>
+                {chartData ? (
+                    <Grid
+                        container
+                        spacing={4}
+                        sx={{
+                            padding: '6em',
+                            paddingTop: '4em',
+                            // marginTop: '0',
+                        }}
+                    >
+                        <Grid item xs={12} sm={6}>
+                            <GraphCard elevation={16}>
+                                <PluginInstallationsChart data={{ installations: chartData.installations }} />
+                            </GraphCard>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <GraphCard elevation={16}>
+                                <PluginInstallationsPerVersion
+                                    data={{ installationsPerVersion: chartData.installationsPerVersion }}
+                                />
+                            </GraphCard>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <GraphCard elevation={16}>
+                                <PluginInstallationsPercentageChart
+                                    data={{ installationsPercentage: chartData.installationsPercentage }}
+                                />
+                            </GraphCard>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <GraphCard elevation={16}>
+                                <PluginInstallationsPercentagePerVersionChart
+                                    data={{
+                                        installationsPercentagePerVersion: chartData.installationsPercentagePerVersion,
+                                    }}
+                                />
+                            </GraphCard>
+                        </Grid>
                     </Grid>
-                    <Grid xs={12} sm={6}>
-                        <GraphCard elevation={16}>
-                            <PluginInstallationsPerVersion
-                                data={{ installationsPerVersion: chartData.installationsPerVersion }}
-                            />
-                        </GraphCard>
-                    </Grid>
-                    <Grid xs={12} sm={6}>
-                        <GraphCard elevation={16}>
-                            <PluginInstallationsPercentageChart
-                                data={{ installationsPercentage: chartData.installationsPercentage }}
-                            />
-                        </GraphCard>
-                    </Grid>
-                    <Grid xs={12} sm={6}>
-                        <GraphCard elevation={16}>
-                            <PluginInstallationsPercentagePerVersionChart
-                                data={{
-                                    installationsPercentagePerVersion: chartData.installationsPercentagePerVersion,
-                                }}
-                            />
-                        </GraphCard>
-                    </Grid>
-                </Grid>
-            ) : (
-                <Typography variant="body2" color="textSecondary" align="center">
-                    No Data Available
-                </Typography>
-            )}
+                ) : (
+                    <Typography variant="body2" color="textSecondary" align="center">
+                        No Data Available
+                    </Typography>
+                )}
+            </Paper>
         </Stack>
     )
 }

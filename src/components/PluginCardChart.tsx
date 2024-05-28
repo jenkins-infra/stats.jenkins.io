@@ -124,7 +124,16 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
         }
     }, [data])
 
-    return <div ref={chartRef} style={{ height: '200px', width: '100%' }} />
+    return (
+        <div
+            ref={chartRef}
+            style={{
+                height: '200px',
+                minWidth: '240px',
+                width: '100%',
+            }}
+        />
+    )
 }
 
 export default PluginCardChart

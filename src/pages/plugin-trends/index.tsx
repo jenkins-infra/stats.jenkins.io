@@ -13,8 +13,9 @@ import {
     CircularProgress,
     TextField,
     Box,
+    Grid,
 } from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
+// import Grid from '@mui/material/Unstable_Grid2'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import ImageIcon from '@mui/icons-material/Image'
 import NavBar from '../../components/NavBar'
@@ -105,8 +106,19 @@ const PluginTrends: React.FC = () => {
                         }}
                     >
                         {paginatedPlugins.map((plugin) => (
-                            <Grid xs={12} sm={6} md={4} xl={3} key={plugin.id}>
-                                <Card elevation={12} sx={{ borderRadius: '1rem', backgroundColor: 'white' }}>
+                            <Grid item xs={12} sm={6} md={4} xl={3} key={plugin.id}>
+                                <Card
+                                    elevation={12}
+                                    sx={{
+                                        borderRadius: '1rem',
+                                        backgroundColor: 'white',
+                                        // display: 'flex',
+                                        // flexDirection: 'column',
+                                        // justifyContent: 'space-between',
+                                        // height: '100%',
+                                        // width: '100%',
+                                    }}
+                                >
                                     <CardActionArea
                                         component={Link}
                                         to={`/plugin/${plugin.id}`}
@@ -114,8 +126,8 @@ const PluginTrends: React.FC = () => {
                                     >
                                         <CardContent>
                                             <Typography
-                                                gutterBottom
-                                                component="div"
+                                                // gutterBottom
+                                                // component="div"
                                                 sx={{
                                                     fontSize: '1.2rem',
                                                     textAlign: 'center',
