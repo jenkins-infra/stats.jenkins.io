@@ -16,10 +16,3 @@
         height: 12rem;
     }
 }
-
-@media (max-height: 1150px) {
-    .logo {
-        height: 22rem;
-        margin-top: 3rem;
-    }
-}

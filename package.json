@@ -16,6 +16,7 @@
         "@fontsource/roboto": "^5.0.13",
         "@mui/icons-material": "^5.15.18",
         "@mui/material": "^5.15.18",
+        "axios": "^1.7.2",
         "echarts": "^5.5.0",
         "localforage": "^1.10.0",
         "match-sorter": "^6.3.4",

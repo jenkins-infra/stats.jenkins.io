@@ -3,18 +3,18 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { data, DataRow } from '../data/statisticsData'
 
 // Utility function to get the month abbreviation
-const getMonthAbbreviation = (month: number) => {
+const getMonth = (month: string) => {
     const date = new Date()
-    date.setMonth(month - 1)
+    date.setMonth(Number(month) - 1)
     return date.toLocaleString('default', { month: 'short' })
 }
 
 interface StatisticsTableProps {
-    year?: number
+    year: string | null
 }
 
 const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
-    const downloadFile = (type: string, month: number, year: number, format: string) => {
+    const downloadFile = (type: string, month: string, year: string, format: string) => {
         const row = data.find((d) => d.month === month && d.year === year)
         if (!row) {
             console.error(`Data for ${month}-${year} not found`)
@@ -36,11 +36,15 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
         }
     }
 
-    const filteredData = year ? data.filter((row) => row.year === year) : data
+    const filteredData = year === 'all' ? data : data.filter((row) => row.year === year)
 
     return (
-        <TableContainer component={Paper} sx={{ maxHeight: '100%', width: '95%' }}>
-            <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} aria-label="statistics table" stickyHeader>
+        <TableContainer
+            component={Paper}
+            elevation={16}
+            sx={{ maxHeight: '100%', width: '100%', borderRadius: '1rem' }}
+        >
+            <Table sx={{ minWidth: 900, tableLayout: 'fixed' }} aria-label="statistics table" stickyHeader>
                 <TableHead
                     sx={{
                         position: 'sticky',
@@ -50,15 +54,15 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                         '& th': {
                             fontSize: '0.875rem',
                             padding: '8px',
-                            backgroundColor: '#939FA1',
-                            color: 'black',
+                            backgroundColor: '#212529',
+                            color: 'white',
                             fontWeight: 'bold',
                         },
                     }}
                 >
                     <TableRow>
-                        <TableCell align="center">Month</TableCell>
                         <TableCell align="center">Year</TableCell>
+                        <TableCell align="center">Month</TableCell>
                         <TableCell align="center">Jenkins</TableCell>
                         <TableCell align="center">Jobs</TableCell>
                         <TableCell align="center">Nodes</TableCell>
@@ -86,10 +90,11 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                 >
                     {filteredData.map((row, index) => (
                         <TableRow key={index}>
-                            <TableCell align="center">
-                                {row.month} - ({getMonthAbbreviation(row.month)})
-                            </TableCell>
                             <TableCell align="center">{row.year}</TableCell>
+                            <TableCell align="center">
+                                {row.month} - ({getMonth(row.month)})
+                            </TableCell>
+
                             {[
                                 'jenkins',
                                 'jobs',
@@ -107,7 +112,6 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                         size="small"
                                         onClick={() => downloadFile(type, row.month, row.year, 'SVG')}
                                         sx={{
-                                            marginRight: '5px',
                                             padding: '2px 5px',
                                             fontSize: '0.75rem',
                                             '&:hover': {
