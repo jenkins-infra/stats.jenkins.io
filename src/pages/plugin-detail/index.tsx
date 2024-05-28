@@ -37,7 +37,6 @@ const PluginDetail: React.FC = () => {
                     height: '100%',
                     width: '90%',
                     margin: '2rem',
-                    padding: '1rem',
                     borderRadius: '1rem',
                     backgroundColor: 'white',
                     display: 'flex',
