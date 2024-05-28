@@ -21,7 +21,7 @@ const Statistics: React.FC = () => {
 
     useEffect(() => {
         handleChartSelect('plugins')
-    }, [])
+    }, [handleChartSelect])
 
     return (
         <Box

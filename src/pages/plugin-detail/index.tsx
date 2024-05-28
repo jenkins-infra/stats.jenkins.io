@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import { Grid, Stack, Typography, Card, styled } from '@mui/material'
+import { Stack, Typography, Card, styled } from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 import NavBar from '../../components/NavBar'
 import PluginInstallationsChart from '../../components/PluginInstallationsChart'
 import PluginInstallationsPerVersion from '../../components/PluginInstallationsPerVersion'
@@ -51,26 +52,26 @@ const PluginDetail: React.FC = () => {
                         // marginTop: '0',
                     }}
                 >
-                    <Grid item xs={12} sm={6}>
+                    <Grid xs={12} sm={6}>
                         <GraphCard elevation={16}>
                             <PluginInstallationsChart data={{ installations: chartData.installations }} />
                         </GraphCard>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid xs={12} sm={6}>
                         <GraphCard elevation={16}>
                             <PluginInstallationsPerVersion
                                 data={{ installationsPerVersion: chartData.installationsPerVersion }}
                             />
                         </GraphCard>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid xs={12} sm={6}>
                         <GraphCard elevation={16}>
                             <PluginInstallationsPercentageChart
                                 data={{ installationsPercentage: chartData.installationsPercentage }}
                             />
                         </GraphCard>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid xs={12} sm={6}>
                         <GraphCard elevation={16}>
                             <PluginInstallationsPercentagePerVersionChart
                                 data={{

@@ -5,7 +5,7 @@ import Footer from '../../components/Footer'
 import './landing-page.css'
 import { Link, NavLink } from 'react-router-dom'
 import { styled } from '@mui/system'
-import { Box, Paper, Stack, Typography, colors } from '@mui/material'
+import { Box, Paper, Stack, Typography } from '@mui/material'
 
 const StatsLink = styled(NavLink)({
     display: 'block',
