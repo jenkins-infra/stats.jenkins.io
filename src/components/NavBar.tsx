@@ -82,7 +82,7 @@ const NavBar: React.FC<NavBarProps> = () => {
                     <MenuItem onClick={handleClose} component={Link} to="/statistics">
                         Statistics
                     </MenuItem>
-                    <MenuItem onClick={handleClose} component={Link} to="/plugin-detail">
+                    <MenuItem onClick={handleClose} component={Link} to="/plugin-trends">
                         Plugin Installation Trend
                     </MenuItem>
                     <MenuItem onClick={handleClose} component={Link} to="/">
