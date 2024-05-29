@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import { Stack, Typography, Card, Grid } from '@mui/material'
+import { Stack, Typography, Card, Grid, Link } from '@mui/material'
 import { styled } from '@mui/system'
 
 // import Grid from '@mui/material/Unstable_Grid2'
@@ -20,6 +20,7 @@ const GraphCard = styled(Card)({
 const PluginDetail: React.FC = () => {
     const location = useLocation()
     const { chartData } = location.state || {} // Destructure chartData from location.state
+    const pluginUrl = chartData ? `https://plugins.jenkins.io/${chartData.name}/` : '#'
 
     return (
         <Stack
@@ -60,21 +61,27 @@ const PluginDetail: React.FC = () => {
                     width: '60%',
                 }}
             >
-                <Typography
-                    variant="h4"
-                    sx={{
-                        fontFamily: 'Georgia, serif',
-                        color: 'black',
-                        textOverflow: 'ellipsis',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        '@media (max-width: 1024px)': {
-                            fontSize: '1.5rem',
-                        },
-                    }}
-                >
-                    {chartData ? chartData.name : 'No Plugin ID'}
-                </Typography>
+                <Link href={pluginUrl} target="_blank" underline="none" sx={{ zIndex: '999' }}>
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            fontFamily: 'Georgia, serif',
+                            color: 'black',
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            '&:hover': {
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                            },
+                            '@media (max-width: 1024px)': {
+                                fontSize: '1.5rem',
+                            },
+                        }}
+                    >
+                        {chartData ? chartData.name : 'No Plugin ID'}
+                    </Typography>
+                </Link>
             </Card>
             {chartData ? (
                 <Grid
