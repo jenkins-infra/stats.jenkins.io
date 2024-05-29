@@ -46,7 +46,7 @@ const PluginDetail: React.FC = () => {
                 }}
             >
                 <Card
-                    elevation={8}
+                    elevation={4}
                     sx={{
                         display: 'flex',
                         flexDirection: 'row',

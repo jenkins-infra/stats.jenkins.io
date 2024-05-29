@@ -77,6 +77,9 @@ const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ dat
                 },
                 axisLabel: {
                     fontSize: 12,
+                    formatter: function (value: number) {
+                        return value === 0 ? '' : value // Hide the 0 label
+                    },
                 },
                 axisLine: {
                     show: true,

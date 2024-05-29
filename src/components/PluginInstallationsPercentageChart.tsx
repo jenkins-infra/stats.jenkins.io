@@ -76,7 +76,10 @@ const PluginInstallationsPercentageChart: React.FC<PluginInstallationsPercentage
                 },
                 axisLabel: {
                     fontSize: 12,
-                    formatter: '{value}%',
+                    // formatter: '{value}%',
+                    formatter: function (value: number) {
+                        return value === 0 ? '' : `${value}%`
+                    },
                 },
                 axisLine: {
                     show: true,

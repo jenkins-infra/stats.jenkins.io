@@ -41,7 +41,7 @@ const PluginTrends: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [searchTerm, setSearchTerm] = useState<string>('')
 
-    const itemsPerPage = 12
+    const itemsPerPage = 24
 
     useEffect(() => {
         const fetchPluginList = async () => {
@@ -112,11 +112,6 @@ const PluginTrends: React.FC = () => {
                                     sx={{
                                         borderRadius: '1rem',
                                         backgroundColor: 'white',
-                                        // display: 'flex',
-                                        // flexDirection: 'column',
-                                        // justifyContent: 'space-between',
-                                        // height: '100%',
-                                        // width: '100%',
                                     }}
                                 >
                                     <CardActionArea
@@ -126,8 +121,6 @@ const PluginTrends: React.FC = () => {
                                     >
                                         <CardContent>
                                             <Typography
-                                                // gutterBottom
-                                                // component="div"
                                                 sx={{
                                                     fontSize: '1.2rem',
                                                     textAlign: 'center',
