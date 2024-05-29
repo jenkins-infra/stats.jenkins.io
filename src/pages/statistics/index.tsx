@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Box, Paper } from '@mui/material'
 import NavBar from '../../components/NavBar'
 import Chart from '../../components/Chart'
@@ -18,10 +18,6 @@ const chartTitles: Record<string, string> = {
 const Statistics: React.FC = () => {
     const { sidebarOpen, toggleSidebar } = useSidebarState()
     const { selectedChart, selectedTab, selectedYear, handleChartSelect, handleYearSelect } = useSelectionState()
-
-    useEffect(() => {
-        handleChartSelect('plugins')
-    }, [handleChartSelect])
 
     return (
         <Box

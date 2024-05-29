@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import { Stack, Typography, Card, Grid, Paper } from '@mui/material'
+import { Stack, Typography, Card, Grid } from '@mui/material'
 import { styled } from '@mui/system'
 
 // import Grid from '@mui/material/Unstable_Grid2'
