@@ -24,7 +24,6 @@ const PluginTrends: React.FC = () => {
     const [filteredPlugins, setFilteredPlugins] = useState<IPluginData[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [searchTerm, setSearchTerm] = useState<string>('')
-
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
     const itemsPerPage = 12
 
