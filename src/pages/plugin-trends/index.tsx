@@ -1,47 +1,34 @@
+// PluginTrends.tsx
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
-    Button,
-    Card,
-    CardActionArea,
-    CardActions,
-    CardContent,
-    CardMedia,
     Stack,
-    Typography,
     Pagination,
     CircularProgress,
     TextField,
     Box,
     Grid,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from '@mui/material'
-// import Grid from '@mui/material/Unstable_Grid2'
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import ImageIcon from '@mui/icons-material/Image'
 import NavBar from '../../components/NavBar'
-import PluginCardChart from '../../components/PluginCardChart'
-import { pluginList } from '../../data/plugins'
-import { Link } from 'react-router-dom'
-
-interface Plugin {
-    id: string
-    chartData?: {
-        name: string
-        installations: { [timestamp: string]: number }
-        installationsPercentage: { [timestamp: string]: number }
-        installationsPerVersion: { [version: string]: number }
-        installationsPercentagePerVersion: { [version: string]: number }
-    }
-}
+import { pluginList, IPluginData } from '../../data/plugins'
+import useSortPlugins from '../../hooks/useSortPlugins'
+import usePagination from '../../hooks/usePagination'
+import PluginCard from '../../components/PluginCard'
 
 const PluginTrends: React.FC = () => {
-    const [plugins, setPlugins] = useState<Plugin[]>([])
-    const [filteredPlugins, setFilteredPlugins] = useState<Plugin[]>([])
-    const [page, setPage] = useState<number>(1)
+    const [plugins, setPlugins] = useState<IPluginData[]>([])
+    const [filteredPlugins, setFilteredPlugins] = useState<IPluginData[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [searchTerm, setSearchTerm] = useState<string>('')
 
-    const itemsPerPage = 24
+    const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
+    const itemsPerPage = 12
+
+    const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage)
 
     useEffect(() => {
         const fetchPluginList = async () => {
@@ -70,12 +57,6 @@ const PluginTrends: React.FC = () => {
         setFilteredPlugins(filtered)
     }, [searchTerm, plugins])
 
-    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value)
-    }
-
-    const paginatedPlugins = filteredPlugins.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-
     return (
         <Stack
             sx={{
@@ -85,13 +66,37 @@ const PluginTrends: React.FC = () => {
             }}
         >
             <NavBar />
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-                <TextField
-                    label="Search Plugins"
-                    variant="standard"
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    sx={{ width: '50%' }}
-                />
+            <Box
+                sx={{
+                    marginTop: '2.5rem',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '2rem',
+                    width: '100%',
+                }}
+            >
+                <Box>
+                    <TextField
+                        label="Search Plugins"
+                        variant="standard"
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </Box>
+                <Box>
+                    <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                        <InputLabel>Sort By</InputLabel>
+                        <Select
+                            value={sortOption}
+                            onChange={(e) => setSortOption(e.target.value as 'alphabetical' | 'downloads')}
+                            label="Sort By"
+                        >
+                            <MenuItem value="alphabetical">A - Z</MenuItem>
+                            <MenuItem value="downloads">Installs High to Low</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
             </Box>
             {loading ? (
                 <CircularProgress />
@@ -102,69 +107,18 @@ const PluginTrends: React.FC = () => {
                         spacing={4}
                         sx={{
                             padding: '4rem',
+                            paddingTop: '2rem',
                             marginTop: '0',
                         }}
                     >
-                        {paginatedPlugins.map((plugin) => (
+                        {paginatedData.map((plugin) => (
                             <Grid item xs={12} sm={6} md={4} xl={3} key={plugin.id}>
-                                <Card
-                                    elevation={12}
-                                    sx={{
-                                        borderRadius: '1rem',
-                                        backgroundColor: 'white',
-                                    }}
-                                >
-                                    <CardActionArea
-                                        component={Link}
-                                        to={`/plugin/${plugin.id}`}
-                                        state={{ chartData: plugin.chartData }}
-                                    >
-                                        <CardContent>
-                                            <Typography
-                                                sx={{
-                                                    fontSize: '1.2rem',
-                                                    textAlign: 'center',
-                                                    textOverflow: 'ellipsis',
-                                                    overflow: 'hidden',
-                                                    whiteSpace: 'nowrap',
-                                                    color: '#212529',
-                                                    marginBottom: '1rem',
-                                                }}
-                                            >
-                                                {plugin.id}
-                                            </Typography>
-                                            <CardMedia>
-                                                {plugin.chartData ? (
-                                                    <PluginCardChart
-                                                        data={{ installations: plugin.chartData.installations }}
-                                                    />
-                                                ) : (
-                                                    <Typography variant="body2" color="textSecondary" align="center">
-                                                        No Data Available
-                                                    </Typography>
-                                                )}
-                                            </CardMedia>
-                                        </CardContent>
-                                    </CardActionArea>
-                                    <CardActions
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                        }}
-                                    >
-                                        <Button size="small" color="primary">
-                                            <InsertDriveFileIcon style={{ marginRight: '0.5rem' }} />
-                                        </Button>
-                                        <Button size="small" color="primary">
-                                            <ImageIcon style={{ marginRight: '0.5rem' }} />
-                                        </Button>
-                                    </CardActions>
-                                </Card>
+                                <PluginCard plugin={plugin} />
                             </Grid>
                         ))}
                     </Grid>
                     <Pagination
-                        count={Math.ceil(filteredPlugins.length / itemsPerPage)}
+                        count={totalPages}
                         page={page}
                         shape="rounded"
                         onChange={handlePageChange}

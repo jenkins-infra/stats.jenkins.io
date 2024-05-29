@@ -1,3 +1,14 @@
+export interface IPluginData {
+    id: string
+    chartData?: {
+        name: string
+        installations: { [timestamp: string]: number }
+        installationsPercentage: { [timestamp: string]: number }
+        installationsPerVersion: { [version: string]: number }
+        installationsPercentagePerVersion: { [version: string]: number }
+    }
+}
+
 export type Plugin = {
     id: string
 }
