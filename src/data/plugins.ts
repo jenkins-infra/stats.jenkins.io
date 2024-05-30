@@ -9,6 +9,10 @@ export interface IPluginData {
     }
 }
 
+export interface PluginChartProps {
+    data?: IPluginData['chartData']
+}
+
 export type Plugin = {
     id: string
 }

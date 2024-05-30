@@ -1,20 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
+import { PluginChartProps } from '../data/plugins'
 
-type InstallationData = {
-    [timestamp: string]: number
-}
-
-type DataType = {
-    installations: InstallationData
-}
-
-interface PluginInstallationsChartProps {
-    data?: DataType
-}
-
-const PluginInstallationsChart: React.FC<PluginInstallationsChartProps> = ({ data }) => {
+const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
     useEffect(() => {

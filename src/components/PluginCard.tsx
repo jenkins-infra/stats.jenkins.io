@@ -12,6 +12,22 @@ interface PluginCardProps {
 }
 
 const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
+    const handleCSVDownload = () => {
+        if (plugin.chartData && plugin.chartData.installations) {
+            const data = plugin.chartData.installations
+            const csvData = Object.entries(data).map(([timestamp, value]) => ({ timestamp, value }))
+            const csv = 'timestamp,value\n' + csvData.map((row) => `${row.timestamp},${row.value}`).join('\n')
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+            const url = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.setAttribute('href', url)
+            link.setAttribute('download', `${plugin.id}_data.csv`)
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+        }
+    }
+
     return (
         <Card
             elevation={12}
@@ -52,7 +68,7 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
                     justifyContent: 'center',
                 }}
             >
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" onClick={handleCSVDownload}>
                     <InsertDriveFileIcon style={{ marginRight: '0.5rem' }} />
                 </Button>
                 <Button size="small" color="primary">

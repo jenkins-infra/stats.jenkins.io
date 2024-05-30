@@ -117,7 +117,7 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
                 },
                 {
                     type: 'text',
-                    left: '25',
+                    left: '23',
                     top: '4',
                     style: {
                         text: totalInstallationsK,

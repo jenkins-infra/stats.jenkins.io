@@ -1,19 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
+import { PluginChartProps } from '../data/plugins'
 
-type InstallationPerVersionData = {
-    [version: string]: number
-}
-
-type DataType = {
-    installationsPerVersion: InstallationPerVersionData
-}
-
-interface PluginInstallationsPerVersionProps {
-    data?: DataType
-}
-
-const PluginInstallationsPerVersion: React.FC<PluginInstallationsPerVersionProps> = ({ data }) => {
+const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
     useEffect(() => {

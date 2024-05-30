@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import { Stack, Typography, Card, Grid, Link } from '@mui/material'
+import { Stack, Typography, Card, Grid, Link, Button, Box } from '@mui/material'
 import { styled } from '@mui/system'
 
 // import Grid from '@mui/material/Unstable_Grid2'
@@ -9,6 +9,9 @@ import PluginInstallationsChart from '../../components/PluginInstallationsChart'
 import PluginInstallationsPerVersion from '../../components/PluginInstallationsPerVersion'
 import PluginInstallationsPercentageChart from '../../components/PluginInstallationsPercentageChart'
 import PluginInstallationsPercentagePerVersionChart from '../../components/PluginInstallationsPercentagePerVersionChart'
+
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import ImageIcon from '@mui/icons-material/Image'
 
 const GraphCard = styled(Card)({
     backgroundColor: 'white',
@@ -59,6 +62,7 @@ const PluginDetail: React.FC = () => {
                     backgroundColor: 'white',
                     marginTop: '4rem',
                     width: '60%',
+                    gap: '2rem',
                 }}
             >
                 <Link href={pluginUrl} target="_blank" underline="none" sx={{ zIndex: '999' }}>
@@ -82,6 +86,21 @@ const PluginDetail: React.FC = () => {
                         {chartData ? chartData.name : 'No Plugin ID'}
                     </Typography>
                 </Link>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignContent: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Button size="small" color="primary">
+                        <InsertDriveFileIcon style={{}} />
+                    </Button>
+                    <Button size="small" color="primary">
+                        <ImageIcon style={{}} />
+                    </Button>
+                </Box>
             </Card>
             {chartData ? (
                 <Grid
@@ -95,30 +114,22 @@ const PluginDetail: React.FC = () => {
                 >
                     <Grid item xs={12} sm={6}>
                         <GraphCard elevation={16}>
-                            <PluginInstallationsChart data={{ installations: chartData.installations }} />
+                            <PluginInstallationsChart data={chartData} />
                         </GraphCard>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <GraphCard elevation={16}>
-                            <PluginInstallationsPerVersion
-                                data={{ installationsPerVersion: chartData.installationsPerVersion }}
-                            />
+                            <PluginInstallationsPerVersion data={chartData} />
                         </GraphCard>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <GraphCard elevation={16}>
-                            <PluginInstallationsPercentageChart
-                                data={{ installationsPercentage: chartData.installationsPercentage }}
-                            />
+                            <PluginInstallationsPercentageChart data={chartData} />
                         </GraphCard>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <GraphCard elevation={16}>
-                            <PluginInstallationsPercentagePerVersionChart
-                                data={{
-                                    installationsPercentagePerVersion: chartData.installationsPercentagePerVersion,
-                                }}
-                            />
+                            <PluginInstallationsPercentagePerVersionChart data={chartData} />
                         </GraphCard>
                     </Grid>
                 </Grid>

@@ -1,21 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
+import { PluginChartProps } from '../data/plugins'
 
-type InstallationPercentagePerVersionData = {
-    [version: string]: number
-}
-
-type DataType = {
-    installationsPercentagePerVersion: InstallationPercentagePerVersionData
-}
-
-interface PluginInstallationsPercentagePerVersionChartProps {
-    data?: DataType
-}
-
-const PluginInstallationsPercentagePerVersionChart: React.FC<PluginInstallationsPercentagePerVersionChartProps> = ({
-    data,
-}) => {
+const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
     useEffect(() => {
@@ -27,7 +14,8 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginInstallations
 
         const formattedData = Object.entries(data.installationsPercentagePerVersion).map(([version, percentage]) => ({
             name: version,
-            value: percentage * 100,
+            // value: percentage * 100,
+            value: Math.round(percentage * 100 * 100) / 100,
         }))
 
         const option = {
@@ -38,7 +26,9 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginInstallations
             },
             tooltip: {
                 trigger: 'item',
+                //add percentage sign and color
                 formatter: '{b}: {c}%',
+                // formatter: (params: { name: string; value: number }) => `${params.name}: ${params.value.toFixed(2)}%`,
                 backgroundColor: '#333',
                 borderColor: '#777',
                 borderWidth: 1,
