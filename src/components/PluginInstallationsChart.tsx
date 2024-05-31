@@ -20,7 +20,7 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
 
         const option = {
             title: {
-                text: 'Installations Over Time',
+                text: 'Monthly Installations Over Time',
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },

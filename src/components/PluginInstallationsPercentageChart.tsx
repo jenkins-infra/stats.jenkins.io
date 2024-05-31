@@ -13,8 +13,6 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
 
         const chart = echarts.init(chartRef.current)
 
-        console.log(data.installationsPercentage)
-
         const formattedPercentageData = Object.entries(data.installationsPercentage).map(([timestamp, percentage]) => ({
             date: dayjs(parseInt(timestamp)).format('MMM YYYY'),
             percentage: percentage / 100,
@@ -22,7 +20,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
 
         const formattedInstallationsData = Object.entries(data.installations).map(([timestamp, installations]) => ({
             date: dayjs(parseInt(timestamp)).format('MMM YYYY'),
-            installations,
+            installations: installations / 100,
         }))
 
         const installationsPerPercentage = formattedInstallationsData.map((item, index) => {
@@ -179,134 +177,3 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
 }
 
 export default PluginInstallationsPercentageChart
-
-// import React, { useEffect, useRef } from 'react'
-// import * as echarts from 'echarts'
-// import dayjs from 'dayjs'
-// import { PluginChartProps } from '../data/plugins'
-
-// const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }) => {
-//     const chartRef = useRef(null)
-
-//     useEffect(() => {
-//         if (!data || !data.installationsPercentage) {
-//             return
-//         }
-
-//         const chart = echarts.init(chartRef.current)
-
-//         console.log(data.installationsPercentage)
-
-//         const formattedData = Object.entries(data.installationsPercentage).map(([timestamp, percentage]) => ({
-//             date: dayjs(parseInt(timestamp)).format('MMM YYYY'),
-//             percentage,
-//         }))
-
-//         const option = {
-//             title: {
-//                 text: 'Installations Percentage Over Time',
-//                 left: 'center',
-//                 textStyle: { fontSize: 16, fontWeight: 'bold' },
-//             },
-//             tooltip: {
-//                 trigger: 'axis',
-//                 formatter: '{b}: {c}%',
-//                 backgroundColor: '#333',
-//                 borderColor: '#777',
-//                 borderWidth: 1,
-//                 textStyle: {
-//                     color: '#fff',
-//                 },
-//                 axisPointer: {
-//                     type: 'line',
-//                     lineStyle: {
-//                         color: '#777',
-//                     },
-//                 },
-//             },
-//             xAxis: {
-//                 type: 'category',
-//                 data: formattedData.map((item) => item.date),
-//                 axisLabel: {
-//                     fontSize: 12,
-//                 },
-//                 axisLine: {
-//                     show: true,
-//                     lineStyle: {
-//                         color: '#777',
-//                     },
-//                 },
-//                 axisTick: {
-//                     show: true,
-//                 },
-//             },
-//             yAxis: {
-//                 type: 'value',
-//                 name: 'Percentage (%)',
-//                 nameTextStyle: {
-//                     fontSize: 12,
-//                     padding: [0, 0, 0, 50],
-//                 },
-//                 axisLabel: {
-//                     fontSize: 12,
-//                     // formatter: '{value}%',
-//                     formatter: function (value: number) {
-//                         return value === 0 ? '' : `${value}%`
-//                     },
-//                 },
-//                 axisLine: {
-//                     show: true,
-//                     lineStyle: {
-//                         color: '#777',
-//                     },
-//                 },
-//                 axisTick: {
-//                     show: true,
-//                 },
-//                 splitLine: {
-//                     show: true,
-//                     lineStyle: {
-//                         type: 'dashed',
-//                     },
-//                 },
-//             },
-//             grid: {
-//                 left: '5%',
-//                 right: '5%',
-//                 bottom: '15%',
-//                 top: '10%',
-//             },
-//             series: [
-//                 {
-//                     data: formattedData.map((item) => item.percentage * 100),
-//                     type: 'bar',
-//                     smooth: true,
-//                     lineStyle: {
-//                         width: 2,
-//                         color: '#3f51b5',
-//                     },
-//                     itemStyle: {
-//                         color: '#3f51b5',
-//                     },
-//                 },
-//             ],
-//         }
-
-//         chart.setOption(option)
-
-//         const handleResize = () => {
-//             chart.resize()
-//         }
-
-//         window.addEventListener('resize', handleResize)
-
-//         return () => {
-//             window.removeEventListener('resize', handleResize)
-//             chart.dispose()
-//         }
-//     }, [data])
-
-//     return <div ref={chartRef} style={{ height: '400px', width: '100%' }} />
-// }
-
-// export default PluginInstallationsPercentageChart

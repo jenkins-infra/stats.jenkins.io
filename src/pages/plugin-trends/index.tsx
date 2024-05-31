@@ -32,13 +32,11 @@ const PluginTrends: React.FC = () => {
     useEffect(() => {
         const fetchPluginList = async () => {
             try {
-                const pluginDataPromises = pluginList.map((plugin) =>
-                    axios
-                        .get(
-                            `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/plugin-installation-trend/${plugin.id}.stats.json`
-                        )
-                        .then((response) => ({ ...plugin, chartData: response.data }))
-                )
+                const pluginDataPromises = pluginList.map((plugin) => {
+                    const url = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/plugin-installation-trend/${plugin.id}.stats.json`
+                    // console.log('Fetching URL:', url)
+                    return axios.get(url).then((response) => ({ ...plugin, chartData: response.data }))
+                })
                 const pluginData = await Promise.all(pluginDataPromises)
                 setPlugins(pluginData)
                 setFilteredPlugins(pluginData)

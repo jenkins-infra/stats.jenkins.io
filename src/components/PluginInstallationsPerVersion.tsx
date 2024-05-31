@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
 import { PluginChartProps } from '../data/plugins'
+import dayjs from 'dayjs'
 
 const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
@@ -17,9 +18,16 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
             installations,
         }))
 
+        const latestDate = Object.entries(data.installations).reduce((acc, [timestamp]) => {
+            return parseInt(timestamp) > acc ? parseInt(timestamp) : acc
+        }, 0)
+
+        const formattedDate = dayjs(latestDate).format('MMM YYYY')
+
         const option = {
             title: {
-                text: 'Installations Per Version',
+                //most recent date
+                text: `Installations Per Version (${formattedDate})`,
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },

@@ -29,7 +29,7 @@ export const pluginList: Plugin[] = [
     { id: 'ChatRoom' },
     { id: 'ColumnPack-plugin' },
     { id: 'ColumnsPlugin' },
-    { id: 'configurationslicing' },
+    { id: 'ConfigurationSlicing' },
     { id: 'CustomHistory' },
     { id: 'DotCi-DockerPublish' },
     { id: 'DotCi-Fig-template' },
