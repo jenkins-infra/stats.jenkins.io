@@ -30,7 +30,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
 
         const option = {
             title: {
-                text: 'Installations Percentage and Total Over Time',
+                text: 'Monthly Installation % of Total Jenkins Installations',
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
