@@ -27,7 +27,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
 
         const option = {
             title: {
-                text: 'Installations Percentage Per Version (' + formattedDate + ')',
+                text: 'Installations % Per Version (' + formattedDate + ')',
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
