@@ -1,6 +1,5 @@
 // PluginTrends.tsx
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
 import {
     Stack,
     Pagination,
@@ -14,45 +13,18 @@ import {
     MenuItem,
 } from '@mui/material'
 import NavBar from '../../components/NavBar'
-import { pluginList, IPluginData } from '../../data/plugins'
+import useFetchAndFilterPlugins from '../../hooks/useFetchAndFilterPlugins'
 import useSortPlugins from '../../hooks/useSortPlugins'
 import usePagination from '../../hooks/usePagination'
 import PluginCard from '../../components/PluginCard'
 
 const PluginTrends: React.FC = () => {
-    const [plugins, setPlugins] = useState<IPluginData[]>([])
-    const [filteredPlugins, setFilteredPlugins] = useState<IPluginData[]>([])
-    const [loading, setLoading] = useState<boolean>(true)
     const [searchTerm, setSearchTerm] = useState<string>('')
+    const { filteredPlugins, loading } = useFetchAndFilterPlugins(searchTerm)
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
     const itemsPerPage = 12
 
     const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage)
-
-    useEffect(() => {
-        const fetchPluginList = async () => {
-            try {
-                const pluginDataPromises = pluginList.map((plugin) => {
-                    const url = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/plugin-installation-trend/${plugin.id}.stats.json`
-                    // console.log('Fetching URL:', url)
-                    return axios.get(url).then((response) => ({ ...plugin, chartData: response.data }))
-                })
-                const pluginData = await Promise.all(pluginDataPromises)
-                setPlugins(pluginData)
-                setFilteredPlugins(pluginData)
-            } catch (error) {
-                console.error('Error fetching plugin data', error)
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchPluginList()
-    }, [])
-
-    useEffect(() => {
-        const filtered = plugins.filter((plugin) => plugin.id.toLowerCase().includes(searchTerm.toLowerCase()))
-        setFilteredPlugins(filtered)
-    }, [searchTerm, plugins])
 
     return (
         <Stack
