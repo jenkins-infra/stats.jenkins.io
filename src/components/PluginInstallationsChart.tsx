@@ -1,24 +1,23 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo, useState } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../data/plugins'
+import ResetZoomButton from './ResetZoomButton'
 
 const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
-    const chartRef = useRef(null)
+    const chartRef = useRef<HTMLDivElement | null>(null)
+    const [chartInstance, setChartInstance] = useState<echarts.ECharts | null>(null) // State to hold the chart instance
 
-    useEffect(() => {
-        if (!data || !data.installations) {
-            return
-        }
-
-        const chart = echarts.init(chartRef.current)
-
-        const formattedData = Object.entries(data.installations).map(([timestamp, installations]) => ({
+    const formattedData = useMemo(() => {
+        if (!data || !data.installations) return []
+        return Object.entries(data.installations).map(([timestamp, installations]) => ({
             date: dayjs(parseInt(timestamp)).format('MMM YYYY'),
             installations,
         }))
+    }, [data])
 
-        const option = {
+    const option = useMemo(() => {
+        return {
             title: {
                 text: 'Monthly Installations Over Time',
                 left: 'center',
@@ -45,7 +44,6 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 data: formattedData.map((item) => item.date),
                 axisLabel: {
                     fontSize: 12,
-                    // rotate: 45,
                 },
                 axisLine: {
                     show: true,
@@ -62,12 +60,12 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 name: 'Installations',
                 nameTextStyle: {
                     fontSize: 12,
-                    padding: [0, 0, 0, 50],
+                    padding: [0, 0, 0, 10],
                 },
                 axisLabel: {
                     fontSize: 12,
                     formatter: function (value: number) {
-                        return value === 0 ? '' : value // Hide the 0 label
+                        return value === 0 ? '' : `${value / 1000}k` // Hide the 0 label
                     },
                 },
                 axisLine: {
@@ -87,11 +85,19 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 },
             },
             grid: {
-                left: '5%',
+                left: '8%',
                 right: '5%',
                 bottom: '15%',
-                top: '10%',
+                top: '15%',
             },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    start: 0,
+                    end: 100,
+                },
+            ],
             series: [
                 {
                     data: formattedData.map((item) => item.installations),
@@ -107,22 +113,33 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 },
             ],
         }
+    }, [formattedData])
 
-        chart.setOption(option)
+    useEffect(() => {
+        if (!chartRef.current) return
+
+        const instance = echarts.init(chartRef.current)
+        instance.setOption(option)
+        setChartInstance(instance)
 
         const handleResize = () => {
-            chart.resize()
+            instance.resize()
         }
 
         window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
-            chart.dispose()
+            instance.dispose()
         }
-    }, [data])
+    }, [option])
 
-    return <div ref={chartRef} style={{ height: '400px', width: '100%' }} />
+    return (
+        <div>
+            <div ref={chartRef} style={{ height: '450px', width: '100%' }} />
+            <ResetZoomButton chartInstance={chartInstance} />
+        </div>
+    )
 }
 
 export default PluginInstallationsChart

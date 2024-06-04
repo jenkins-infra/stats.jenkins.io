@@ -17,7 +17,8 @@ const GraphCard = styled(Card)({
     backgroundColor: 'white',
     borderRadius: '1rem',
     padding: '1rem',
-    // minWidth: '300px',
+    width: '100%',
+    boxSizing: 'border-box',
 })
 
 const PluginDetail: React.FC = () => {
@@ -29,29 +30,14 @@ const PluginDetail: React.FC = () => {
         <Stack
             sx={{
                 backgroundColor: '#f0f0f0',
-
                 alignItems: 'center',
                 minHeight: '100vh',
-                minWidth: '100vw',
+                width: '100vw',
             }}
         >
             <NavBar />
-            {/* <Paper */}
-            {/* elevation={16}
-                sx={{
-                    height: '100%',
-                    width: '95%',
-                    margin: '2rem',
-                    borderRadius: '1rem',
-                    backgroundColor: 'white',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            > */}
             <Card
-                elevation={4}
+                elevation={8}
                 sx={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -60,7 +46,7 @@ const PluginDetail: React.FC = () => {
                     padding: '1rem',
                     borderRadius: '1rem',
                     backgroundColor: 'white',
-                    marginTop: '4rem',
+                    marginTop: '3rem',
                     width: '60%',
                     gap: '2rem',
                 }}
@@ -108,26 +94,26 @@ const PluginDetail: React.FC = () => {
                     spacing={4}
                     sx={{
                         padding: '6em',
-                        paddingTop: '4em',
-                        // marginTop: '0',
+                        paddingTop: '2em',
                     }}
                 >
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} lg={6}>
                         <GraphCard elevation={16}>
                             <PluginInstallationsChart data={chartData} />
                         </GraphCard>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <GraphCard elevation={16}>
-                            <PluginInstallationsPerVersion data={chartData} />
-                        </GraphCard>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} lg={6}>
                         <GraphCard elevation={16}>
                             <PluginInstallationsPercentageChart data={chartData} />
                         </GraphCard>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} lg={6}>
+                        <GraphCard elevation={16}>
+                            <PluginInstallationsPerVersion data={chartData} />
+                        </GraphCard>
+                    </Grid>
+
+                    <Grid item xs={12} lg={6}>
                         <GraphCard elevation={16}>
                             <PluginInstallationsPercentagePerVersionChart data={chartData} />
                         </GraphCard>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import { PluginChartProps } from '../data/plugins'
 import dayjs from 'dayjs'
@@ -6,36 +6,35 @@ import dayjs from 'dayjs'
 const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
-    useEffect(() => {
-        if (!data || !data.installationsPercentagePerVersion) {
-            return
-        }
+    const formattedData = useMemo(() => {
+        if (!data || !data.installationsPercentagePerVersion) return []
+        return Object.entries(data.installationsPercentagePerVersion)
+            .map(([version, percentage]) => ({
+                name: version,
+                value: Math.round(percentage * 100 * 100) / 100,
+            }))
+            .sort((a, b) => b.value - a.value) // Sort by percentage in descending order
+            .slice(0, 10) // Show only the top 10 versions
+    }, [data])
 
-        const chart = echarts.init(chartRef.current)
-
-        const formattedData = Object.entries(data.installationsPercentagePerVersion).map(([version, percentage]) => ({
-            name: version,
-            // value: percentage * 100,
-            value: Math.round(percentage * 100 * 100) / 100,
-        }))
-
+    const formattedDate = useMemo(() => {
+        if (!data || !data.installations) return ''
         const latestDate = Object.entries(data.installations).reduce((acc, [timestamp]) => {
             return parseInt(timestamp) > acc ? parseInt(timestamp) : acc
         }, 0)
+        return dayjs(latestDate).format('MMM YYYY')
+    }, [data])
 
-        const formattedDate = dayjs(latestDate).format('MMM YYYY')
-
-        const option = {
+    const option = useMemo(() => {
+        return {
             title: {
-                text: 'Installations % Per Version (' + formattedDate + ')',
+                text: `Installations % Per Version (${formattedDate})`,
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'item',
-                //add percentage sign and color
                 formatter: '{b}: {c}%',
-                // formatter: (params: { name: string; value: number }) => `${params.name}: ${params.value.toFixed(2)}%`,
                 backgroundColor: '#333',
                 borderColor: '#777',
                 borderWidth: 1,
@@ -44,8 +43,10 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                 },
             },
             legend: {
+                type: 'scroll', // Make the legend scrollable
                 orient: 'vertical',
                 left: 'left',
+                top: '30',
                 data: formattedData.map((item) => item.name),
                 textStyle: {
                     color: '#777',
@@ -75,7 +76,12 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                 },
             ],
         }
+    }, [formattedData, formattedDate])
 
+    useEffect(() => {
+        if (!chartRef.current) return
+
+        const chart = echarts.init(chartRef.current)
         chart.setOption(option)
 
         const handleResize = () => {
@@ -88,9 +94,9 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
             window.removeEventListener('resize', handleResize)
             chart.dispose()
         }
-    }, [data])
+    }, [option])
 
-    return <div ref={chartRef} style={{ height: '400px', width: '100%' }} />
+    return <div ref={chartRef} style={{ height: '450px', width: '100%' }} /> // Increase the height for better visibility
 }
 
 export default PluginInstallationsPercentagePerVersionChart

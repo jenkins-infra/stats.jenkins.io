@@ -9,9 +9,9 @@ import useSelectionState from '../../hooks/useSelectionState'
 import './statistics.css'
 
 const chartTitles: Record<string, string> = {
-    plugins: 'Plugins Usage Over Time',
+    plugins: 'Monthly Plugins Usage',
     jobs: 'Total Jobs Over Time',
-    jenkins: 'Total Jenkins Installations Over Time',
+    jenkins: 'Monthly Jenkins Installations',
     nodes: 'Total Nodes Over Time',
 }
 

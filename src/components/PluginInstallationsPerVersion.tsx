@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import { PluginChartProps } from '../data/plugins'
 import dayjs from 'dayjs'
@@ -6,32 +6,29 @@ import dayjs from 'dayjs'
 const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
-    useEffect(() => {
-        if (!data || !data.installationsPerVersion) {
-            return
-        }
-
-        const chart = echarts.init(chartRef.current)
-
-        const formattedData = Object.entries(data.installationsPerVersion).map(([version, installations]) => ({
+    const formattedData = useMemo(() => {
+        if (!data || !data.installationsPerVersion) return []
+        return Object.entries(data.installationsPerVersion).map(([version, installations]) => ({
             version,
             installations,
         }))
+    }, [data])
 
+    const formattedDate = useMemo(() => {
+        if (!data || !data.installations) return ''
         const latestDate = Object.entries(data.installations).reduce((acc, [timestamp]) => {
             return parseInt(timestamp) > acc ? parseInt(timestamp) : acc
         }, 0)
+        return dayjs(latestDate).format('MMM YYYY')
+    }, [data])
 
-        const formattedDate = dayjs(latestDate).format('MMM YYYY')
-
-        const option = {
+    const option = useMemo(() => {
+        return {
             title: {
-                //most recent date
                 text: `Installations Per Version (${formattedDate})`,
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
-
             tooltip: {
                 trigger: 'axis',
                 formatter: '{b}: {c} installations',
@@ -69,7 +66,7 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
                 name: 'Installations',
                 nameTextStyle: {
                     fontSize: 12,
-                    padding: [0, 0, 0, 50],
+                    padding: [0, 0, 0, 10],
                 },
                 axisLabel: {
                     fontSize: 12,
@@ -94,10 +91,10 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
                 },
             },
             grid: {
-                left: '5%',
+                left: '8%',
                 right: '5%',
                 bottom: '15%',
-                top: '10%',
+                top: '15%',
             },
             series: [
                 {
@@ -110,7 +107,12 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
                 },
             ],
         }
+    }, [formattedData, formattedDate])
 
+    useEffect(() => {
+        if (!chartRef.current) return
+
+        const chart = echarts.init(chartRef.current)
         chart.setOption(option)
 
         const handleResize = () => {
@@ -123,9 +125,9 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
             window.removeEventListener('resize', handleResize)
             chart.dispose()
         }
-    }, [data])
+    }, [option])
 
-    return <div ref={chartRef} style={{ height: '400px', width: '100%' }} />
+    return <div ref={chartRef} style={{ height: '450px', width: '100%' }} />
 }
 
 export default PluginInstallationsPerVersion
