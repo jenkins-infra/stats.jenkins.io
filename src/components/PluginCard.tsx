@@ -53,7 +53,7 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
                     </Typography>
                     <CardMedia>
                         {plugin.chartData ? (
-                            <PluginCardChart data={{ installations: plugin.chartData.installations }} />
+                            <PluginCardChart data={plugin.chartData} />
                         ) : (
                             <Typography variant="body2" color="textSecondary" align="center">
                                 No Data Available

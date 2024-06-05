@@ -1,29 +1,19 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import downloadIcon from '../assets/downloadIcon.svg'
+import { PluginChartProps } from '../data/plugins'
 
-type InstallationData = {
-    [timestamp: string]: number
-}
-
-type DataType = {
-    installations: InstallationData
-}
-
-interface PluginCardChartProps {
-    data?: DataType
-}
-
-const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
+const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
-    useEffect(() => {
+    const chartData = useMemo(() => {
         if (!data || !data.installations) {
-            return
+            return {
+                formattedData: [],
+                totalInstallationsK: '0K',
+            }
         }
-
-        const chart = echarts.init(chartRef.current)
 
         const formattedData = Object.entries(data.installations).map(([timestamp, installations]) => ({
             date: dayjs(parseInt(timestamp)).format('MMM YYYY'),
@@ -33,7 +23,14 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
         const totalInstallations = formattedData.reduce((sum, item) => sum + item.installations, 0)
         const totalInstallationsK = (totalInstallations / 1000).toFixed(1) + 'K'
 
-        const option = {
+        return {
+            formattedData,
+            totalInstallationsK,
+        }
+    }, [data])
+
+    const option = useMemo(() => {
+        return {
             tooltip: {
                 trigger: 'axis',
                 formatter: '{b}: {c} installations',
@@ -52,11 +49,11 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
             },
             xAxis: {
                 type: 'category',
-                data: formattedData.map((item) => item.date),
+                data: chartData.formattedData.map((item) => item.date),
                 show: false,
                 axisLabel: {
                     formatter: (value: unknown, index: number) => {
-                        if (index === 0 || index === formattedData.length - 1) {
+                        if (index === 0 || index === chartData.formattedData.length - 1) {
                             return value
                         }
                         return ''
@@ -95,7 +92,7 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
             },
             series: [
                 {
-                    data: formattedData.map((item) => item.installations),
+                    data: chartData.formattedData.map((item) => item.installations),
                     type: 'line',
                     smooth: true,
                     lineStyle: {
@@ -120,7 +117,7 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
                     left: '23',
                     top: '4',
                     style: {
-                        text: totalInstallationsK,
+                        text: chartData.totalInstallationsK,
                         fontSize: 14,
                         fontWeight: 'bold',
                         fill: '#000',
@@ -128,7 +125,14 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
                 },
             ],
         }
+    }, [chartData])
 
+    useEffect(() => {
+        if (!data || !data.installations) {
+            return
+        }
+
+        const chart = echarts.init(chartRef.current)
         chart.setOption(option)
 
         const handleResize = () => {
@@ -141,7 +145,7 @@ const PluginCardChart: React.FC<PluginCardChartProps> = ({ data }) => {
             window.removeEventListener('resize', handleResize)
             chart.dispose()
         }
-    }, [data])
+    }, [data, option])
 
     return (
         <div

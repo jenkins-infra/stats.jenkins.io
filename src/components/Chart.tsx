@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Box, Button, styled } from '@mui/material'
 import * as echarts from 'echarts'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
@@ -53,9 +53,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         }
     }
 
-    useEffect(() => {
-        if (data.length === 0) return
-
+    const chartData = useMemo(() => {
         const dates = data
             .filter((row) => row[0] && row[0].length === 6)
             .map((row) => {
@@ -66,7 +64,11 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         const values = data.map((row) => parseInt(row[1], 10)).filter((value) => !isNaN(value))
         const totalSum = values.reduce((acc, cur) => acc + cur, 0)
 
-        const option: echarts.EChartsOption = {
+        return { dates, values, totalSum }
+    }, [data])
+
+    const option = useMemo(() => {
+        return {
             title: {
                 text: title,
                 left: 'center',
@@ -78,11 +80,11 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             },
             xAxis: {
                 type: 'category',
-                data: dates.map((date) => date.monthYear),
+                data: chartData.dates.map((date) => date.monthYear),
                 axisLabel: {
-                    formatter: (_value, index) =>
-                        index === 0 || dates[index].year !== dates[index - 1].year
-                            ? dates[index].year.slice(2, 4) + "'"
+                    formatter: (_value: unknown, index: number) =>
+                        index === 0 || chartData.dates[index].year !== chartData.dates[index - 1].year
+                            ? chartData.dates[index].year.slice(2, 4) + "'"
                             : '',
                     interval: 0,
                 },
@@ -94,7 +96,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             },
             series: [
                 {
-                    data: values,
+                    data: chartData.values,
                     type: 'line',
                     itemStyle: { color: '#007FFF' },
                 },
@@ -105,13 +107,17 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 left: 'center',
                 top: '10%',
                 style: {
-                    text: `Total: ${formatNumber(totalSum)}`,
+                    text: `Total: ${formatNumber(chartData.totalSum)}`,
                     fontSize: 16,
                     fontWeight: 'bold',
                     fill: '#333',
                 },
             },
         }
+    }, [chartData, title])
+
+    useEffect(() => {
+        if (data.length === 0) return
 
         const chartDom = document.getElementById(title) as HTMLElement
         const myChart = echarts.init(chartDom)
@@ -124,7 +130,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             myChart.dispose()
             window.removeEventListener('resize', handleResize)
         }
-    }, [data, title])
+    }, [data, option, title])
 
     if (error) {
         return <div>Error loading data: {error.message}</div>
