@@ -6,7 +6,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './theme/theme.ts'
-// import PluginTrends from './pages/plugin-trends/index.tsx'
+import PluginTrends from './pages/plugin-trends/index.tsx'
+import PluginDetail from './pages/plugin-detail/index.tsx'
 
 const router = createBrowserRouter([
     {
@@ -17,10 +18,14 @@ const router = createBrowserRouter([
         path: '/statistics',
         element: <Statistics />,
     },
-    // {
-    //     path: '/plugin-trends',
-    //     element: <PluginTrends />,
-    // },
+    {
+        path: '/plugin-trends',
+        element: <PluginTrends />,
+    },
+    {
+        path: '/plugin/:id', // Add this route
+        element: <PluginDetail />, // Reference the PluginSummary component
+    },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Box, Button, styled } from '@mui/material'
 import * as echarts from 'echarts'
-import Papa from 'papaparse'
-import axios from 'axios'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import ImageIcon from '@mui/icons-material/Image'
+import useCSVData from '../hooks/useCSVData'
 
 interface ChartProps {
     csvPath: string
@@ -40,70 +39,89 @@ const DownloadButton = styled(Button)({
 })
 
 const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = '100%' }) => {
-    useEffect(() => {
-        const loadCSVData = async () => {
-            try {
-                const response = await axios.get(csvPath, { responseType: 'text' })
-                const csvText = response.data
-                return Papa.parse<string[]>(csvText, { header: false }).data
-            } catch (error) {
-                console.error('Error loading CSV data:', error)
-            }
-        }
+    const { data, error } = useCSVData(csvPath)
 
-        const setupChart = (data: string[][]) => {
-            const dates = data.map((row) => {
+    const formatNumber = (num: number) => {
+        if (num >= 1e9) {
+            return (num / 1e9).toFixed(1) + 'B'
+        } else if (num >= 1e6) {
+            return (num / 1e6).toFixed(1) + 'M'
+        } else if (num >= 1e3) {
+            return (num / 1e3).toFixed(1) + 'K'
+        } else {
+            return num.toString()
+        }
+    }
+
+    const chartData = useMemo(() => {
+        const dates = data
+            .filter((row) => row[0] && row[0].length === 6)
+            .map((row) => {
                 const [year, month] = [row[0].slice(0, 4), row[0].slice(4, 6)]
                 return { monthYear: `${month}-${year}`, year }
             })
 
-            const values = data.map((row) => parseInt(row[1], 10))
+        const values = data.map((row) => parseInt(row[1], 10)).filter((value) => !isNaN(value))
+        const totalSum = values.reduce((acc, cur) => acc + cur, 0)
 
-            const option: echarts.EChartsOption = {
-                title: {
-                    text: title,
-                    left: 'center',
-                    textStyle: { fontSize: 18, fontWeight: 'bold' },
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: { type: 'shadow' },
-                },
-                xAxis: {
-                    type: 'category',
-                    data: dates.map((date) => date.monthYear),
-                    axisLabel: {
-                        formatter: (_value, index) =>
-                            index === 0 || dates[index].year !== dates[index - 1].year
-                                ? dates[index].year.slice(2, 4) + "'"
-                                : '',
-                        interval: 0,
-                    },
-                    axisTick: { show: false },
-                },
-                yAxis: {
-                    type: 'value',
-                    splitLine: { lineStyle: { type: 'dashed' } },
-                },
-                series: [
-                    {
-                        data: values,
-                        type: 'line',
-                        itemStyle: { color: '#007FFF' },
-                    },
-                ],
-                grid: { left: '3%', right: '3%', bottom: '3%', containLabel: true },
-            }
+        return { dates, values, totalSum }
+    }, [data])
 
-            myChart.setOption(option)
+    const option = useMemo(() => {
+        return {
+            title: {
+                text: title,
+                left: 'center',
+                textStyle: { fontSize: 18, fontWeight: 'bold' },
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' },
+            },
+            xAxis: {
+                type: 'category',
+                data: chartData.dates.map((date) => date.monthYear),
+                axisLabel: {
+                    formatter: (_value: unknown, index: number) =>
+                        index === 0 || chartData.dates[index].year !== chartData.dates[index - 1].year
+                            ? chartData.dates[index].year.slice(2, 4) + "'"
+                            : '',
+                    interval: 0,
+                },
+                axisTick: { show: false },
+            },
+            yAxis: {
+                type: 'value',
+                splitLine: { lineStyle: { type: 'dashed' } },
+            },
+            series: [
+                {
+                    data: chartData.values,
+                    type: 'line',
+                    itemStyle: { color: '#007FFF' },
+                },
+            ],
+            grid: { left: '3%', right: '3%', bottom: '3%', containLabel: true },
+            graphic: {
+                type: 'text',
+                left: 'center',
+                top: '10%',
+                style: {
+                    text: `Total: ${formatNumber(chartData.totalSum)}`,
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    fill: '#333',
+                },
+            },
         }
+    }, [chartData, title])
+
+    useEffect(() => {
+        if (data.length === 0) return
 
         const chartDom = document.getElementById(title) as HTMLElement
         const myChart = echarts.init(chartDom)
-
-        loadCSVData().then((data) => {
-            if (data) setupChart(data)
-        })
+        myChart.setOption(option)
 
         const handleResize = () => myChart.resize()
         window.addEventListener('resize', handleResize)
@@ -112,7 +130,11 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             myChart.dispose()
             window.removeEventListener('resize', handleResize)
         }
-    }, [csvPath, title])
+    }, [data, option, title])
+
+    if (error) {
+        return <div>Error loading data: {error.message}</div>
+    }
 
     const handleCSVDownload = () => {
         const link = document.createElement('a')

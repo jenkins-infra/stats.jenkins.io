@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Box, Paper } from '@mui/material'
 import NavBar from '../../components/NavBar'
 import Chart from '../../components/Chart'
@@ -9,19 +9,15 @@ import useSelectionState from '../../hooks/useSelectionState'
 import './statistics.css'
 
 const chartTitles: Record<string, string> = {
-    plugins: 'Plugins Usage Over Time',
+    plugins: 'Monthly Plugins Usage',
     jobs: 'Total Jobs Over Time',
-    jenkins: 'Total Jenkins Installations Over Time',
+    jenkins: 'Monthly Jenkins Installations',
     nodes: 'Total Nodes Over Time',
 }
 
 const Statistics: React.FC = () => {
     const { sidebarOpen, toggleSidebar } = useSidebarState()
     const { selectedChart, selectedTab, selectedYear, handleChartSelect, handleYearSelect } = useSelectionState()
-
-    useEffect(() => {
-        handleChartSelect('plugins')
-    }, [])
 
     return (
         <Box
@@ -83,6 +79,7 @@ const Statistics: React.FC = () => {
                                     }}
                                 >
                                     <Chart
+                                        key={`${selectedChart}-${sidebarOpen}`} // Force re-render on sidebar open/close
                                         csvPath={`https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/total-${selectedChart}.csv`}
                                         title={chartTitles[selectedChart]}
                                     />
