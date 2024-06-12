@@ -118,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </AccordionSummaryBox>
                     <AccordionDetails>
                         <List>
-                            {['plugins', 'jobs', 'jenkins', 'nodes'].map((chart) => (
+                            {['plugins', 'jobs', 'jenkins', 'nodes', 'jvms'].map((chart) => (
                                 <ListButton
                                     key={chart}
                                     selected={selectedChart === chart}

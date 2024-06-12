@@ -4,6 +4,7 @@ import * as echarts from 'echarts'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import ImageIcon from '@mui/icons-material/Image'
 import useCSVData from '../hooks/useCSVData'
+import usePluginCount from '../hooks/usePluginCount'
 
 interface ChartProps {
     csvPath: string
@@ -40,18 +41,19 @@ const DownloadButton = styled(Button)({
 
 const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = '100%' }) => {
     const { data, error } = useCSVData(csvPath)
+    const { pluginCount } = usePluginCount()
 
-    const formatNumber = (num: number) => {
-        if (num >= 1e9) {
-            return (num / 1e9).toFixed(1) + 'B'
-        } else if (num >= 1e6) {
-            return (num / 1e6).toFixed(1) + 'M'
-        } else if (num >= 1e3) {
-            return (num / 1e3).toFixed(1) + 'K'
-        } else {
-            return num.toString()
-        }
-    }
+    // const formatNumber = (num: number) => {
+    //     if (num >= 1e9) {
+    //         return (num / 1e9).toFixed(1) + 'B'
+    //     } else if (num >= 1e6) {
+    //         return (num / 1e6).toFixed(1) + 'M'
+    //     } else if (num >= 1e3) {
+    //         return (num / 1e3).toFixed(1) + 'K'
+    //     } else {
+    //         return num.toString()
+    //     }
+    // }
 
     const chartData = useMemo(() => {
         const dates = data
@@ -68,11 +70,11 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
     }, [data])
 
     const option = useMemo(() => {
-        return {
+        const baseOption = {
             title: {
                 text: title,
                 left: 'center',
-                textStyle: { fontSize: 18, fontWeight: 'bold' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'axis',
@@ -82,10 +84,12 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 type: 'category',
                 data: chartData.dates.map((date) => date.monthYear),
                 axisLabel: {
-                    formatter: (_value: unknown, index: number) =>
-                        index === 0 || chartData.dates[index].year !== chartData.dates[index - 1].year
-                            ? chartData.dates[index].year.slice(2, 4) + "'"
-                            : '',
+                    formatter: (_value: unknown, index: number) => {
+                        const year = chartData.dates[index].year
+                        return (index === 0 || year !== chartData.dates[index - 1].year) && parseInt(year) % 2 === 0
+                            ? year
+                            : ''
+                    },
                     interval: 0,
                 },
                 axisTick: { show: false },
@@ -102,19 +106,23 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 },
             ],
             grid: { left: '3%', right: '3%', bottom: '3%', containLabel: true },
-            graphic: {
+        }
+
+        if (title.toLowerCase().includes('plugins')) {
+            ;(baseOption as echarts.EChartsOption).graphic = {
                 type: 'text',
                 left: 'center',
                 top: '10%',
                 style: {
-                    text: `Total: ${formatNumber(chartData.totalSum)}`,
+                    text: `Available Plugins: ${pluginCount.toLocaleString()}`,
                     fontSize: 16,
                     fontWeight: 'bold',
-                    fill: '#333',
+                    fill: 'blue',
                 },
-            },
+            }
         }
-    }, [chartData, title])
+        return baseOption
+    }, [chartData, title, pluginCount])
 
     useEffect(() => {
         if (data.length === 0) return
