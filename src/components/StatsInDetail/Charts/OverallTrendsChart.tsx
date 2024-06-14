@@ -3,8 +3,8 @@ import { Box, Button, styled } from '@mui/material'
 import * as echarts from 'echarts'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import ImageIcon from '@mui/icons-material/Image'
-import useCSVData from '../../hooks/useCSVData'
-import usePluginCount from '../../hooks/usePluginCount'
+import useCSVData from '../../../hooks/useCSVData'
+import usePluginCount from '../../../hooks/usePluginCount'
 
 interface ChartProps {
     csvPath: string

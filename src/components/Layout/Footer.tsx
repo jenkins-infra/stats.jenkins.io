@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, useMediaQuery } from '@mui/material'
-import ForkMeButton from '../Buttons/ForkMeButton'
+import ForkMeButton from './Buttons/ForkMeButton'
 
 export default function Footer() {
     const isMobile = useMediaQuery('(max-width:600px)')

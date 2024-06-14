@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { Box, Typography } from '@mui/material'
 import * as echarts from 'echarts'
-import useJVMData from '../../hooks/useJVMData'
+import useJVMData from '../../../hooks/useJVMData'
 
 interface JVMChartProps {
     title: string

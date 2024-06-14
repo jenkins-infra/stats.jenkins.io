@@ -15,7 +15,7 @@ import NavBar from '../../components/Layout/NavBar'
 import useFetchAndFilterPlugins from '../../hooks/useFetchAndFilterPlugins'
 import useSortPlugins from '../../hooks/useSortPlugins'
 import usePagination from '../../hooks/usePagination'
-import PluginCard from '../../components/Plugins/PluginCard'
+import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
 
 const PluginTrends: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')

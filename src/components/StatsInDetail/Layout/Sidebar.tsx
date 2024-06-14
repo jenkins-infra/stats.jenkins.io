@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { data } from '../../data/statisticsData'
+import { data } from '../../../data/statisticsData'
 
 const ListButton = styled(ListItemButton)({
     '&.Mui-selected': {
