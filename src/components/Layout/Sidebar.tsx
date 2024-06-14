@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { data } from '../data/statisticsData'
+import { data } from '../../data/statisticsData'
 
 const ListButton = styled(ListItemButton)({
     '&.Mui-selected': {
@@ -118,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </AccordionSummaryBox>
                     <AccordionDetails>
                         <List>
-                            {['plugins', 'jobs', 'jenkins', 'nodes', 'jvms'].map((chart) => (
+                            {['plugins', 'jobs', 'jenkins', 'nodes', 'JVMs'].map((chart) => (
                                 <ListButton
                                     key={chart}
                                     selected={selectedChart === chart}

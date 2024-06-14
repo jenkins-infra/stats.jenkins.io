@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
-import { PluginChartProps } from '../data/plugins'
-import ResetZoomButton from './ResetZoomButton'
+import { PluginChartProps } from '../../data/plugins'
+import ResetZoomButton from '../Buttons/ResetZoomButton'
 
 const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)

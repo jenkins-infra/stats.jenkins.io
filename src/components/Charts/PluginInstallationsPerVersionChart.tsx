@@ -1,25 +1,31 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
+import { PluginChartProps } from '../../data/plugins'
 import dayjs from 'dayjs'
-import { PluginChartProps } from '../data/plugins'
-import ResetZoomButton from './ResetZoomButton'
 
-const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
-    const chartRef = useRef<HTMLDivElement | null>(null)
-    const [chartInstance, setChartInstance] = useState<echarts.ECharts | null>(null) // State to hold the chart instance
+const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => {
+    const chartRef = useRef(null)
 
     const formattedData = useMemo(() => {
-        if (!data || !data.installations) return []
-        return Object.entries(data.installations).map(([timestamp, installations]) => ({
-            date: dayjs(parseInt(timestamp)).format('MMM YYYY'),
+        if (!data || !data.installationsPerVersion) return []
+        return Object.entries(data.installationsPerVersion).map(([version, installations]) => ({
+            version,
             installations,
         }))
+    }, [data])
+
+    const formattedDate = useMemo(() => {
+        if (!data || !data.installations) return ''
+        const latestDate = Object.entries(data.installations).reduce((acc, [timestamp]) => {
+            return parseInt(timestamp) > acc ? parseInt(timestamp) : acc
+        }, 0)
+        return dayjs(latestDate).format('MMM YYYY')
     }, [data])
 
     const option = useMemo(() => {
         return {
             title: {
-                text: 'Monthly Installations Over Time',
+                text: `Installations Per Version (${formattedDate})`,
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
@@ -33,15 +39,15 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                     color: '#fff',
                 },
                 axisPointer: {
-                    type: 'line',
-                    lineStyle: {
-                        color: '#777',
+                    type: 'shadow',
+                    shadowStyle: {
+                        color: 'rgba(150, 150, 150, 0.3)',
                     },
                 },
             },
             xAxis: {
                 type: 'category',
-                data: formattedData.map((item) => item.date),
+                data: formattedData.map((item) => item.version),
                 axisLabel: {
                     fontSize: 12,
                 },
@@ -65,7 +71,7 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 axisLabel: {
                     fontSize: 12,
                     formatter: function (value: number) {
-                        return value === 0 ? '' : `${value / 1000}k` // Hide the 0 label
+                        return value === 0 ? '' : value // Hide the 0 label
                     },
                 },
                 axisLine: {
@@ -90,56 +96,38 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 bottom: '15%',
                 top: '15%',
             },
-            dataZoom: [
-                {
-                    type: 'inside',
-                    xAxisIndex: 0,
-                    start: 0,
-                    end: 100,
-                },
-            ],
             series: [
                 {
                     data: formattedData.map((item) => item.installations),
-                    type: 'line',
-                    smooth: true,
-                    lineStyle: {
-                        width: 2,
-                        color: '#3f51b5',
-                    },
+                    type: 'bar',
                     itemStyle: {
                         color: '#3f51b5',
                     },
+                    barWidth: '60%',
                 },
             ],
         }
-    }, [formattedData])
+    }, [formattedData, formattedDate])
 
     useEffect(() => {
         if (!chartRef.current) return
 
-        const instance = echarts.init(chartRef.current)
-        instance.setOption(option)
-        setChartInstance(instance)
+        const chart = echarts.init(chartRef.current)
+        chart.setOption(option)
 
         const handleResize = () => {
-            instance.resize()
+            chart.resize()
         }
 
         window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
-            instance.dispose()
+            chart.dispose()
         }
     }, [option])
 
-    return (
-        <div>
-            <div ref={chartRef} style={{ height: '450px', width: '100%' }} />
-            <ResetZoomButton chartInstance={chartInstance} />
-        </div>
-    )
+    return <div ref={chartRef} style={{ height: '450px', width: '100%' }} />
 }
 
-export default PluginInstallationsChart
+export default PluginInstallationsPerVersion
