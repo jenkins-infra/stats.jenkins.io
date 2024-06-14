@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../data/plugins'
-import ResetZoomButton from './ResetZoomButton'
+// import ResetZoomButton from './ResetZoomButton'
 
 const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const [chartInstance, setChartInstance] = useState<echarts.ECharts | null>(null) // State to hold the chart instance
+    // const [chartInstance, setChartInstance] = useState<echarts.ECharts | null>(null) // State to hold the chart instance
 
     const formattedData = useMemo(() => {
         if (!data || !data.installations) return []
@@ -87,22 +87,23 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
             grid: {
                 left: '8%',
                 right: '5%',
-                bottom: '15%',
+                bottom: '12%',
                 top: '15%',
             },
-            dataZoom: [
-                {
-                    type: 'inside',
-                    xAxisIndex: 0,
-                    start: 0,
-                    end: 100,
-                },
-            ],
+            // dataZoom: [
+            //     {
+            //         type: 'inside',
+            //         xAxisIndex: 0,
+            //         start: 0,
+            //         end: 100,
+            //     },
+            // ],
             series: [
                 {
                     data: formattedData.map((item) => item.installations),
                     type: 'line',
                     smooth: true,
+                    showSymbol: false,
                     lineStyle: {
                         width: 2,
                         color: '#3f51b5',
@@ -120,7 +121,7 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
 
         const instance = echarts.init(chartRef.current)
         instance.setOption(option)
-        setChartInstance(instance)
+        // setChartInstance(instance)
 
         const handleResize = () => {
             instance.resize()
@@ -135,10 +136,10 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     }, [option])
 
     return (
-        <div>
-            <div ref={chartRef} style={{ height: '450px', width: '100%' }} />
-            <ResetZoomButton chartInstance={chartInstance} />
-        </div>
+        // <div style={{ height: '100%', width: '100%' }}>
+        <div ref={chartRef} style={{ height: '100%', width: '100%' }} />
+        /* <ResetZoomButton chartInstance={chartInstance} /> */
+        /* </div> */
     )
 }
 

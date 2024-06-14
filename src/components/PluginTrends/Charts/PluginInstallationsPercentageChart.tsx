@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../data/plugins'
-import ResetZoomButton from './ResetZoomButton'
+// import ResetZoomButton from './ResetZoomButton'
 
 const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const [chartInstance, setChartInstance] = useState<echarts.ECharts | null>(null)
+    // const [chartInstance, setChartInstance] = useState<echarts.ECharts | null>(null)
 
     const chartData = useMemo(() => {
         if (!data || !data.installationsPercentage || !data.installations) {
@@ -62,12 +62,13 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                 },
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 formatter: function (params: any) {
-                    const percentage = params[0].value.toFixed(2)
+                    const percentage = params[0].value.toFixed(3)
                     const installations = Math.round(params[1].value).toLocaleString()
                     return `
                         ${params[0].axisValue}<br/>
-                        ${params[0].marker} ${params[0].seriesName}: ${percentage}%<br/>
-                        ${params[1].marker} ${params[1].seriesName}: ${installations}
+                    
+                        ${params[1].marker} ${params[1].seriesName}: ${installations}<br/>
+                        ${params[0].marker} ${params[0].seriesName}: ${percentage}%
                     `
                 },
             },
@@ -150,20 +151,20 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
             grid: {
                 left: '7%',
                 right: '7%',
-                bottom: '15%',
+                bottom: '12%',
                 top: '15%',
             },
-            dataZoom: [
-                {
-                    type: 'inside',
-                    xAxisIndex: 0,
-                    start: 0,
-                    end: 100,
-                },
-            ],
+            // dataZoom: [
+            //     {
+            //         type: 'inside',
+            //         xAxisIndex: 0,
+            //         start: 0,
+            //         end: 100,
+            //     },
+            // ],
             series: [
                 {
-                    name: 'Installations Percentage',
+                    name: 'Plugin Installations Percentage',
                     data: chartData.formattedPercentageData.map((item) => item.percentage * 100),
                     type: 'bar',
                     smooth: true,
@@ -176,11 +177,12 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                     },
                 },
                 {
-                    name: 'Installations',
+                    name: 'Jenkins Installations',
                     data: chartData.installationsPerPercentage,
                     type: 'line',
                     yAxisIndex: 1,
                     smooth: true,
+                    showSymbol: false,
                     lineStyle: {
                         width: 2,
                         color: '#ff5722',
@@ -198,7 +200,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
 
         const instance = echarts.init(chartRef.current)
         instance.setOption(option)
-        setChartInstance(instance)
+        // setChartInstance(instance)
 
         const handleResize = () => {
             instance.resize()
@@ -213,10 +215,8 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
     }, [option])
 
     return (
-        <div>
-            <div ref={chartRef} style={{ height: '450px', width: '100%' }} />
-            <ResetZoomButton chartInstance={chartInstance} />
-        </div>
+        <div ref={chartRef} style={{ height: '100%', width: '100%' }} />
+        // <ResetZoomButton chartInstance={chartInstance} />
     )
 }
 

@@ -23,8 +23,8 @@ const router = createBrowserRouter([
         element: <PluginTrends />,
     },
     {
-        path: '/plugin/:id', // Add this route
-        element: <PluginDetail />, // Reference the PluginSummary component
+        path: '/plugin/:id',
+        element: <PluginDetail />,
     },
 ])
 

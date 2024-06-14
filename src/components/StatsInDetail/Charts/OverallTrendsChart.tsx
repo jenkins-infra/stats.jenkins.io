@@ -103,6 +103,8 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                     data: chartData.values,
                     type: 'line',
                     itemStyle: { color: '#007FFF' },
+                    smooth: true,
+                    showSymbol: false,
                 },
             ],
             grid: { left: '3%', right: '3%', bottom: '3%', containLabel: true },

@@ -28,13 +28,14 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
     const option = useMemo(() => {
         return {
             title: {
-                text: `Installations % Per Version (${formattedDate})`,
+                text: `Installations by Version (%)  (${formattedDate})`,
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '{b}: {c}%',
+                // formatter: '{b}: {c}%',
+                formatter: ({ name, percent }: { name: string; percent: number }) => `${name}: ${percent.toFixed(1)}%`,
                 backgroundColor: '#333',
                 borderColor: '#777',
                 borderWidth: 1,
@@ -43,10 +44,10 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                 },
             },
             legend: {
-                type: 'scroll', // Make the legend scrollable
+                type: 'plain', // Make the legend scrollable
                 orient: 'vertical',
-                left: 'left',
-                top: '30',
+                left: '10%',
+                top: 'center',
                 data: formattedData.map((item) => item.name),
                 textStyle: {
                     color: '#777',
@@ -57,6 +58,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                     name: 'Installations Percentage',
                     type: 'pie',
                     radius: '50%',
+                    center: ['70%', '50%'],
                     data: formattedData,
                     emphasis: {
                         itemStyle: {
@@ -66,7 +68,8 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                         },
                     },
                     label: {
-                        formatter: '{b}: {d}%',
+                        formatter: ({ name, percent }: { name: string; percent: number }) =>
+                            `${name}: ${percent.toFixed(1)}%`,
                     },
                     itemStyle: {
                         borderRadius: 5,
@@ -96,7 +99,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
         }
     }, [option])
 
-    return <div ref={chartRef} style={{ height: '450px', width: '100%' }} /> // Increase the height for better visibility
+    return <div ref={chartRef} style={{ height: '100%', width: '100%' }} /> // Increase the height for better visibility
 }
 
 export default PluginInstallationsPercentagePerVersionChart
