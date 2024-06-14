@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
-import { PluginChartProps } from '../data/plugins'
+import { PluginChartProps } from '../../data/plugins'
 import dayjs from 'dayjs'
 
 const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> = ({ data }) => {

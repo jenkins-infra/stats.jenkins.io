@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
-import downloadIcon from '../assets/downloadIcon.svg'
-import { PluginChartProps } from '../data/plugins'
+import downloadIcon from '../../assets/downloadIcon.svg'
+import { PluginChartProps } from '../../data/plugins'
 
 const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)

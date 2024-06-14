@@ -4,8 +4,8 @@ import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typo
 import { Link } from 'react-router-dom'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import ImageIcon from '@mui/icons-material/Image'
-import PluginCardChart from './PluginCardChart'
-import { IPluginData } from '../data/plugins'
+import PluginCardChart from '../Charts/PluginCardChart'
+import { IPluginData } from '../../data/plugins'
 
 interface PluginCardProps {
     plugin: IPluginData
