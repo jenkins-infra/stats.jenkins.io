@@ -1,13 +1,13 @@
 import React from 'react'
 import { Box, Paper } from '@mui/material'
 import NavBar from '../../components/Layout/NavBar'
-import Chart from '../../components/Charts/OverallTrendsChart'
-import StatisticsTable from '../../components/Charts/StatisticsTable'
-import Sidebar from '../../components/Layout/Sidebar'
+import Chart from '../../components/StatsInDetail/Charts/OverallTrendsChart'
+import StatisticsTable from '../../components/StatsInDetail/Charts/StatisticsTable'
+import Sidebar from '../../components/StatsInDetail/Layout/Sidebar'
 import useSidebarState from '../../hooks/useSidebarState'
 import useSelectionState from '../../hooks/useSelectionState'
 import './statistics.css'
-import JVMChart from '../../components/Charts/JVMChart'
+import JVMChart from '../../components/StatsInDetail/Charts/JVMChart'
 
 const chartTitles: Record<string, string> = {
     plugins: 'Monthly Plugins Usage',

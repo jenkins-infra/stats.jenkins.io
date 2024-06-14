@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Stack, Typography, styled, Menu, MenuItem, useMediaQuery } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { KeyboardArrowDown } from '@mui/icons-material'
-import ForkMeButton from '../Buttons/ForkMeButton'
+import ForkMeButton from './Buttons/ForkMeButton'
 import MenuIcon from '@mui/icons-material/Menu'
 
 const StyledBar = styled(Stack)({

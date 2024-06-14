@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material'
-import { data, DataRow } from '../../data/statisticsData'
+import { data, DataRow } from '../../../data/statisticsData'
 
 // Utility function to get the month abbreviation
 const getMonth = (month: string) => {
