@@ -75,7 +75,8 @@ const Statistics: React.FC = () => {
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        backgroundColor: '#f5f5f5',
+                                        // backgroundColor: '#f5f5f5',
+                                        backgroundColor: 'white',
                                         borderRadius: '1.5rem',
                                     }}
                                 >

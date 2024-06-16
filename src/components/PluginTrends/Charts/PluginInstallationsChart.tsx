@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../data/plugins'
-// import ResetZoomButton from './ResetZoomButton'
 
 const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    // const [chartInstance, setChartInstance] = useState<echarts.ECharts | null>(null) // State to hold the chart instance
 
     const formattedData = useMemo(() => {
         if (!data || !data.installations) return []
@@ -19,7 +17,7 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     const option = useMemo(() => {
         return {
             title: {
-                text: 'Monthly Installations Over Time',
+                text: 'Monthly Installations',
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
@@ -84,20 +82,27 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                     },
                 },
             },
-            grid: {
-                left: '8%',
-                right: '5%',
-                bottom: '12%',
-                top: '15%',
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {},
+                },
             },
-            // dataZoom: [
-            //     {
-            //         type: 'inside',
-            //         xAxisIndex: 0,
-            //         start: 0,
-            //         end: 100,
-            //     },
-            // ],
+            grid: {
+                left: '50',
+                right: '40',
+                bottom: '35',
+                top: '60',
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    start: 0,
+                    end: 100,
+                },
+            ],
+
             series: [
                 {
                     data: formattedData.map((item) => item.installations),
@@ -119,28 +124,19 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const instance = echarts.init(chartRef.current)
-        instance.setOption(option)
-        // setChartInstance(instance)
+        const myChart = echarts.init(chartRef.current)
+        myChart.setOption(option)
 
-        const handleResize = () => {
-            instance.resize()
-        }
-
+        const handleResize = () => myChart.resize()
         window.addEventListener('resize', handleResize)
 
         return () => {
+            myChart.dispose()
             window.removeEventListener('resize', handleResize)
-            instance.dispose()
         }
     }, [option])
 
-    return (
-        // <div style={{ height: '100%', width: '100%' }}>
-        <div ref={chartRef} style={{ height: '100%', width: '100%' }} />
-        /* <ResetZoomButton chartInstance={chartInstance} /> */
-        /* </div> */
-    )
+    return <div ref={chartRef} style={{ height: '100%', width: '100%' }} />
 }
 
 export default PluginInstallationsChart

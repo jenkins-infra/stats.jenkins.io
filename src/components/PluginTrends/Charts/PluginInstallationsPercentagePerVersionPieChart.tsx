@@ -78,6 +78,12 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                     },
                 },
             ],
+            toolbox: {
+                feature: {
+                    // restore: {},
+                    saveAsImage: {},
+                },
+            },
         }
     }, [formattedData, formattedDate])
 

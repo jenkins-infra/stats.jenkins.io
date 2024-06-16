@@ -90,11 +90,25 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
                     },
                 },
             },
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {},
+                },
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    start: 0,
+                    end: 100,
+                },
+            ],
             grid: {
-                left: '8%',
-                right: '5%',
-                bottom: '12%',
-                top: '15%',
+                left: '50',
+                right: '40',
+                bottom: '35',
+                top: '60',
             },
             series: [
                 {

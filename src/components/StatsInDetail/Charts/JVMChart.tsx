@@ -48,15 +48,20 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
             },
             yAxis: {
                 type: 'value',
-                axisLabel: { fontWeight: 'bold' },
                 splitLine: { lineStyle: { type: 'dashed' } },
+                // Add a label to the y-axis
+                name: 'Installations',
+                nameTextStyle: {
+                    fontSize: 12,
+                    padding: [30, 30, 10, 0],
+                },
             },
-            grid: { left: '3%', right: '3%', bottom: '3%', containLabel: true },
+            grid: { left: '0', right: '10', bottom: '20', top: '100', containLabel: true },
             series: chartData.series,
             legend: {
                 show: true,
-                right: '3%',
-                top: '10%',
+                right: '10',
+                top: '70',
                 orient: 'vertical',
                 itemGap: 20,
                 textStyle: {
@@ -67,9 +72,10 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                     name: series.name,
                     icon: 'circle',
                 })),
-                borderWidth: 1, // Add border width
-                borderColor: '#ccc', // Add border color
-                backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: Add back
+                borderWidth: 1,
+                borderRadius: 5,
+                borderColor: '#ccc',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
                 padding: 10,
             },
         }),
