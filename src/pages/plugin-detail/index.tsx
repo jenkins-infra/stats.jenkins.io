@@ -1,18 +1,15 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Stack, Typography, Card, Grid, Link, Box, Breadcrumbs } from '@mui/material'
+import { Stack, Typography, Card, Grid, Link, Box, Breadcrumbs, IconButton, Tooltip } from '@mui/material'
 import { styled } from '@mui/system'
-import LinkIcon from '@mui/icons-material/Link'
+import DownloadIcon from '@mui/icons-material/Download'
 
-// import Grid from '@mui/material/Unstable_Grid2'
 import NavBar from '../../components/Layout/NavBar'
 import PluginInstallationsChart from '../../components/PluginTrends/Charts/PluginInstallationsChart'
 import PluginInstallationsPerVersion from '../../components/PluginTrends/Charts/PluginInstallationsPerVersionChart'
 import PluginInstallationsPercentageChart from '../../components/PluginTrends/Charts/PluginInstallationsPercentageChart'
 import PluginInstallationsPercentagePerVersionChart from '../../components/PluginTrends/Charts/PluginInstallationsPercentagePerVersionPieChart'
-
-// import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-// import ImageIcon from '@mui/icons-material/Image'
+import { handleJSONDownload } from '../../utils/jsonUtils' // Import the JSON utility
 
 const GraphCard = styled(Card)({
     backgroundColor: 'white',
@@ -28,6 +25,12 @@ const PluginDetail: React.FC = () => {
     const location = useLocation()
     const { chartData } = location.state || {} // Destructure chartData from location.state
     const pluginUrl = chartData ? `https://plugins.jenkins.io/${chartData.name}/` : '#'
+
+    const downloadJSON = useCallback(() => {
+        if (chartData) {
+            handleJSONDownload(chartData || {}, chartData.name)
+        }
+    }, [chartData])
 
     return (
         <Stack
@@ -55,28 +58,16 @@ const PluginDetail: React.FC = () => {
                     <Link underline="hover" color="inherit" href="/plugin-trends">
                         Plugins
                     </Link>
-                    {/* <Typography color="textPrimary">{chartData ? chartData.name : 'Plugin Detail'}</Typography> */}
                     <Link underline="hover" color="text.primary" href={pluginUrl} target="_blank" aria-current="page">
                         {chartData ? chartData.name : 'No Plugin ID'}{' '}
-                        <LinkIcon sx={{ fontSize: 'small', verticalAlign: 'middle' }} />
                     </Link>
                 </Breadcrumbs>
+                <Tooltip title="Download JSON">
+                    <IconButton onClick={downloadJSON} sx={{ p: 0, ml: 1 }}>
+                        <DownloadIcon sx={{ fontSize: 'large', verticalAlign: 'middle' }} />
+                    </IconButton>
+                </Tooltip>
             </Box>
-            {/* <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignContent: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Button size="small" color="primary">
-                        <InsertDriveFileIcon style={{}} />
-                    </Button>
-                    <Button size="small" color="primary">
-                        <ImageIcon style={{}} />
-                    </Button>
-                </Box>{' '} */}
             {chartData ? (
                 <Grid
                     container
