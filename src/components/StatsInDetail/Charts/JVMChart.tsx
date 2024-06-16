@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import * as echarts from 'echarts'
 import useJVMData from '../../../hooks/useJVMData'
 
@@ -56,7 +56,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                     padding: [30, 30, 10, 0],
                 },
             },
-            grid: { left: '0', right: '10', bottom: '20', top: '100', containLabel: true },
+            grid: { left: '30', right: '40', bottom: '20', top: '100', containLabel: true },
             series: chartData.series,
             legend: {
                 show: true,
@@ -102,20 +102,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
         return <Typography color="error">Error loading data: {error.message}</Typography>
     }
 
-    return (
-        <Box
-            sx={{
-                width: '90%',
-                height: '90%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
-            <div id="jvm-chart" style={{ width, height }}></div>
-        </Box>
-    )
+    return <div id="jvm-chart" style={{ width, height }}></div>
 }
 
 export default JVMChart

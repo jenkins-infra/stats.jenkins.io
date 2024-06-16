@@ -36,7 +36,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
             <TableContainer
                 component={Paper}
                 elevation={16}
-                sx={{ maxHeight: '100%', width: '100%', borderRadius: '1rem' }}
+                sx={{ borderRadius: '1rem', margin: '2rem', marginBottom: 'auto' }}
             >
                 <Table sx={{ minWidth: 900, tableLayout: 'fixed' }} aria-label="statistics table" stickyHeader>
                     <TableHead
