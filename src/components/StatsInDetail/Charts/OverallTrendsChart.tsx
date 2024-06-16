@@ -42,7 +42,18 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             },
             tooltip: {
                 trigger: 'axis',
-                axisPointer: { type: 'shadow' },
+                backgroundColor: '#333',
+                borderColor: '#777',
+                borderWidth: 1,
+                textStyle: {
+                    color: '#fff',
+                },
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#777',
+                    },
+                },
             },
             xAxis: {
                 type: 'category',
@@ -84,8 +95,14 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             ],
             toolbox: {
                 feature: {
-                    restore: {},
-                    saveAsImage: {},
+                    restore: {
+                        title: 'Restore',
+                        iconStyle: {},
+                    },
+                    saveAsImage: {
+                        title: 'Save as Image',
+                        icon: 'path://M896 64H128c-35.35 0-64 28.65-64 64v768c0 35.35 28.65 64 64 64h768c35.35 0 64-28.65 64-64V128c0-35.35-28.65-64-64-64zM512 832c-158.75 0-288-129.25-288-288s129.25-288 288-288 288 129.25 288 288-129.25 288-288 288z',
+                    },
                     myCSVDownload: {
                         show: true,
                         title: 'Download CSV',
@@ -93,6 +110,9 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                         onclick: downloadCSV,
                     },
                 },
+
+                itemSize: 20,
+                itemGap: 15,
             },
             grid: { left: '30', right: '40', bottom: '70', top: '100', containLabel: true },
         }

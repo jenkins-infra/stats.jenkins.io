@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { data } from '../../../data/statisticsData'
 import GraphModal from './GraphModal' // Import the GraphModal component
 import { GraphType } from '../../../data/types'
+import { InsertChartOutlined } from '@mui/icons-material'
 
 // Utility function to get the month abbreviation
 const getMonth = (month: string) => {
@@ -36,7 +37,13 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
             <TableContainer
                 component={Paper}
                 elevation={16}
-                sx={{ borderRadius: '1rem', margin: '2rem', marginBottom: 'auto' }}
+                sx={{
+                    borderRadius: '1rem',
+                    margin: '2rem',
+                    marginBottom: 'auto',
+                    maxHeight: 'calc(100vh - 124px)',
+                    overflow: 'auto',
+                }}
             >
                 <Table sx={{ minWidth: 900, tableLayout: 'fixed' }} aria-label="statistics table" stickyHeader>
                     <TableHead
@@ -62,16 +69,16 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                             <TableCell align="center">Nodes</TableCell>
                             <TableCell align="center">Nodes Pie</TableCell>
                             <TableCell align="center">Plugins</TableCell>
+                            <TableCell align="center">Top Plugins 500</TableCell>
                             <TableCell align="center">Top Plugins 1000</TableCell>
                             <TableCell align="center">Top Plugins 2500</TableCell>
-                            <TableCell align="center">Top Plugins 500</TableCell>
                             <TableCell align="center">Total Executors</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody
                         sx={{
                             '& td': {
-                                padding: '8px',
+                                padding: '12px',
                                 fontSize: '0.875rem',
                             },
                             '& tr:nth-of-type(odd)': {
@@ -95,9 +102,9 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                     'nodes',
                                     'nodesPie',
                                     'plugins',
+                                    'top-plugins500',
                                     'top-plugins1000',
                                     'top-plugins2500',
-                                    'top-plugins500',
                                     'total-executors',
                                 ].map((type) => (
                                     <TableCell key={type} align="center">
@@ -113,21 +120,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                                 },
                                             }}
                                         >
-                                            SVG
-                                        </Button>
-                                        <Button
-                                            variant="text"
-                                            size="small"
-                                            // onClick={() => downloadFile(type, row.month, row.year, 'CSV')}
-                                            sx={{
-                                                padding: '2px 5px',
-                                                fontSize: '0.75rem',
-                                                '&:hover': {
-                                                    backgroundColor: '#C7E4E8',
-                                                },
-                                            }}
-                                        >
-                                            CSV
+                                            <InsertChartOutlined fontSize="small" />
                                         </Button>
                                     </TableCell>
                                 ))}

@@ -1,9 +1,15 @@
 import React from 'react'
 import { Modal, Paper } from '@mui/material'
-import JenkinsGraph from './ModalGraphs/JenkinsGraph' // Import the JenkinsGraph component
 import { GraphType } from '../../../data/types'
-import JobsGraph from './ModalGraphs/JobsGraph'
-import NodesGraph from './ModalGraphs/NodesGraph'
+import JenkinsGraph from './ModalGraphs/Jenkins' // Import the JenkinsGraph component
+import JobsGraph from './ModalGraphs/Jobs'
+import NodesGraph from './ModalGraphs/Nodes'
+import NodesPieGraph from './ModalGraphs/NodesPie'
+import PluginsGraph from './ModalGraphs/Plugins'
+import PluginsGraph1000 from './ModalGraphs/Plugins1000'
+import PluginsGraph2500 from './ModalGraphs/Plugins2500'
+import PluginsGraph500 from './ModalGraphs/Plugins500'
+import TotalExecutorsGraph from './ModalGraphs/TotalExecutors'
 
 interface GraphModalProps {
     open: boolean
@@ -22,6 +28,18 @@ const GraphModal: React.FC<GraphModalProps> = ({ open, onClose, type, year, mont
                 return <JobsGraph year={year} month={month} />
             case 'nodes':
                 return <NodesGraph year={year} month={month} />
+            case 'nodesPie':
+                return <NodesPieGraph year={year} month={month} />
+            case 'plugins':
+                return <PluginsGraph year={year} month={month} />
+            case 'top-plugins1000':
+                return <PluginsGraph1000 year={year} month={month} />
+            case 'top-plugins2500':
+                return <PluginsGraph2500 year={year} month={month} />
+            case 'top-plugins500':
+                return <PluginsGraph500 year={year} month={month} />
+            case 'total-executors':
+                return <TotalExecutorsGraph year={year} month={month} />
             default:
                 return null
         }

@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
+import { handleCSVDownload } from '../../../../utils/csvUtils'
 
 interface JobsGraphProps {
     year: string
@@ -15,19 +16,31 @@ const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
     const xData = useMemo(() => data.map((row) => row[0]), [data])
     const yData = useMemo(() => data.map((row) => Number(row[1])).filter((value) => !isNaN(value)), [data])
 
+    const title = `Job Executions - ${month}/${year}`
+    const downloadCSV = useCallback(() => handleCSVDownload(data, title), [data, title])
+
     const totalSum = useMemo(() => yData.reduce((sum, value) => sum + value, 0), [yData])
 
     const option = useMemo(() => {
         return {
             title: {
-                text: `Job Executions - ${month}/${year} (Total: ${totalSum})`,
+                text: `${title} (Total: ${totalSum.toLocaleString()})`,
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'axis',
+                backgroundColor: '#333',
+                borderColor: '#777',
+                borderWidth: 1,
+                textStyle: {
+                    color: '#fff',
+                },
                 axisPointer: {
-                    type: 'shadow',
+                    type: 'line',
+                    lineStyle: {
+                        color: '#777',
+                    },
                 },
             },
             xAxis: {
@@ -48,7 +61,10 @@ const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
                 },
                 axisLine: { lineStyle: { color: '#777' } },
                 axisTick: { show: true },
-                name: 'Job Type',
+                name: `Job Type (${xData.length.toLocaleString()} Jobs)`,
+                nameLocation: 'middle',
+                nameGap: 80,
+                nameTextStyle: { fontWeight: 'bold' },
             },
             yAxis: {
                 type: 'value',
@@ -57,6 +73,7 @@ const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
                 axisTick: { show: true },
                 splitLine: { lineStyle: { type: 'dashed' } },
                 name: 'Executions',
+                nameTextStyle: { fontWeight: 'bold' },
             },
             series: [
                 {
@@ -78,13 +95,25 @@ const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
             ],
             toolbox: {
                 feature: {
-                    restore: {},
-                    saveAsImage: {},
+                    restore: {
+                        title: 'Restore',
+                        iconStyle: {},
+                    },
+                    saveAsImage: {
+                        title: 'Save as Image',
+                        icon: 'path://M896 64H128c-35.35 0-64 28.65-64 64v768c0 35.35 28.65 64 64 64h768c35.35 0 64-28.65 64-64V128c0-35.35-28.65-64-64-64zM512 832c-158.75 0-288-129.25-288-288s129.25-288 288-288 288 129.25 288 288-129.25 288-288 288z',
+                    },
+                    myCSVDownload: {
+                        show: true,
+                        title: 'Download CSV',
+                        icon: 'path://M8 0H0v12h4v4l4-4h4V0H8zm0 2h2v2H8V2zm0 3h2v2H8V5zm0 3h2v2H8V8z',
+                        onclick: downloadCSV,
+                    },
                 },
             },
-            grid: { left: '30', right: '70', bottom: '70', top: '70', containLabel: true },
+            grid: { left: '20', right: '30', bottom: '75', top: '60', containLabel: true },
         }
-    }, [xData, yData, year, month, totalSum])
+    }, [title, totalSum, xData, yData, downloadCSV])
 
     useEffect(() => {
         if (!chartRef.current) return
