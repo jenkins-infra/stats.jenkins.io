@@ -85,10 +85,10 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
                 },
             },
             grid: {
-                left: '3%',
-                right: '3%',
-                bottom: '3%',
-                top: '3%',
+                left: '8',
+                right: '8',
+                bottom: '5',
+                top: '5',
             },
             series: [
                 {

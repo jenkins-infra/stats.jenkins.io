@@ -1,5 +1,3 @@
-// src/components/Chart/Chart.tsx
-
 import React, { useEffect, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../hooks/useCSVData'
@@ -95,13 +93,13 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             ],
             toolbox: {
                 feature: {
+                    // dataView: { show: true, readOnly: false },
                     restore: {
-                        title: 'Restore',
+                        title: 'Reset Zoom',
                         iconStyle: {},
                     },
                     saveAsImage: {
                         title: 'Save as Image',
-                        icon: 'path://M896 64H128c-35.35 0-64 28.65-64 64v768c0 35.35 28.65 64 64 64h768c35.35 0 64-28.65 64-64V128c0-35.35-28.65-64-64-64zM512 832c-158.75 0-288-129.25-288-288s129.25-288 288-288 288 129.25 288 288-129.25 288-288 288z',
                     },
                     myCSVDownload: {
                         show: true,
@@ -109,6 +107,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                         icon: 'path://M8 0H0v12h4v4l4-4h4V0H8zm0 2h2v2H8V2zm0 3h2v2H8V5zm0 3h2v2H8V8z',
                         onclick: downloadCSV,
                     },
+                    magicType: { show: false, type: ['bar', 'line'] },
                 },
 
                 itemSize: 20,

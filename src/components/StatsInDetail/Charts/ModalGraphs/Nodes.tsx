@@ -95,12 +95,11 @@ const NodesGraph: React.FC<NodesGraphProps> = ({ year, month }) => {
             toolbox: {
                 feature: {
                     restore: {
-                        title: 'Restore',
+                        title: 'Reset Zoom',
                         iconStyle: {},
                     },
                     saveAsImage: {
                         title: 'Save as Image',
-                        icon: 'path://M896 64H128c-35.35 0-64 28.65-64 64v768c0 35.35 28.65 64 64 64h768c35.35 0 64-28.65 64-64V128c0-35.35-28.65-64-64-64zM512 832c-158.75 0-288-129.25-288-288s129.25-288 288-288 288 129.25 288 288-129.25 288-288 288z',
                     },
                     myCSVDownload: {
                         show: true,
