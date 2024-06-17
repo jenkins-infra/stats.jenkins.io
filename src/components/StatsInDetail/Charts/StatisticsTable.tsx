@@ -4,6 +4,7 @@ import { data } from '../../../data/statisticsData'
 import GraphModal from './GraphModal' // Import the GraphModal component
 import { GraphType } from '../../../data/types'
 import { InsertChartOutlined } from '@mui/icons-material'
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
 
 // Utility function to get the month abbreviation
 const getMonth = (month: string) => {
@@ -58,6 +59,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                 backgroundColor: '#212529',
                                 color: 'white',
                                 fontWeight: 'bold',
+                                // whiteSpace: 'nowrap',
                             },
                         }}
                     >
@@ -69,9 +71,39 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                             <TableCell align="center">Nodes</TableCell>
                             <TableCell align="center">Nodes Pie</TableCell>
                             <TableCell align="center">Plugins</TableCell>
-                            <TableCell align="center">Top Plugins 500</TableCell>
-                            <TableCell align="center">Top Plugins 1000</TableCell>
-                            <TableCell align="center">Top Plugins 2500</TableCell>
+                            <TableCell align="center">
+                                Top Plugins <br /> {'>'} 500
+                                <FileDownloadOutlinedIcon
+                                    fontSize="small"
+                                    sx={{
+                                        verticalAlign: 'middle',
+                                        marginLeft: '5px',
+                                        marginBottom: '4px',
+                                    }}
+                                />
+                            </TableCell>
+                            <TableCell align="center">
+                                Top Plugins <br /> {'>'} 1000
+                                <FileDownloadOutlinedIcon
+                                    fontSize="small"
+                                    sx={{
+                                        verticalAlign: 'middle',
+                                        marginLeft: '5px',
+                                        marginBottom: '4px',
+                                    }}
+                                />
+                            </TableCell>
+                            <TableCell align="center">
+                                Top Plugins <br /> {'>'} 2500
+                                <FileDownloadOutlinedIcon
+                                    fontSize="small"
+                                    sx={{
+                                        verticalAlign: 'middle',
+                                        marginLeft: '5px',
+                                        marginBottom: '4px',
+                                    }}
+                                />
+                            </TableCell>
                             <TableCell align="center">Total Executors</TableCell>
                         </TableRow>
                     </TableHead>
