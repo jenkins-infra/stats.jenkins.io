@@ -1,0 +1,47 @@
+---
+name: Bump `nodejs` version according to packer-images
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  lastPackerImageVersion:
+    kind: shell
+    name: Get the latest `nodejs_linux_version` from https://github.com/jenkins-infra/packer-images/blob/main/provisioning/tools-versions.yml
+    spec:
+      command: |
+        bash -c 'curl --silent --fail --show-error "https://raw.githubusercontent.com/jenkins-infra/packer-images/main/provisioning/tools-versions.yml" | grep nodejs_linux_version | sed "s/.*: //"'
+    transformers:
+      - trimprefix: 'nodejs_linux_version: '
+
+targets:
+  updateToolVersions:
+    name: Update the `nodejs` version in .tool-versions
+    sourceid: lastPackerImageVersion
+    kind: file
+    spec:
+      file: .tool-versions
+      matchpattern: >
+        nodejs (.*)
+      replacepattern: >
+        nodejs '{{ source "lastPackerImageVersion" }}'
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    title: Bump `nodejs` version to {{ source "lastPackerImageVersion" }}
+    scmid: default
+    spec:
+      labels:
+        - dependencies
+        - nodejs
