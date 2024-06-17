@@ -13,18 +13,62 @@ If you are developing a production application, we recommend updating the config
 
 -   Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-    // other rules...
-    parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        project: ['./tsconfig.json', './tsconfig.node.json'],
-        tsconfigRootDir: __dirname,
-    },
-}
-```
+    ```js
+    export default {
+        // other rules...
+        parserOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            project: ['./tsconfig.json', './tsconfig.node.json'],
+            tsconfigRootDir: __dirname,
+        },
+    }
+    ```
 
 -   Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 -   Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 -   Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Local Development
+
+### Building the Website Locally
+
+To build the website locally, follow these steps:
+
+1. **Clone the repository:**
+
+    ```sh
+    git clone https://github.com/jenkins-infra/stats.jenkins.io.git
+    cd stats.jenkins.io
+    ```
+
+2. **Install dependencies:**
+
+    ```sh
+    npm install
+    ```
+
+3. **Run the development server:**
+
+    ```sh
+    npm run dev
+    ```
+
+    This will start the development server and open the website in your default browser. Any changes you make to the code will be automatically reflected in the browser thanks to Vite's HMR.
+
+4. **Build for production:**
+
+    ```sh
+    npm run build
+    ```
+
+    This will create an optimized production build of your application in the `dist` directory.
+
+### Inspiration and References
+
+For additional inspiration and detailed instructions, refer to the following documentation and resources:
+
+-   [Vite Documentation](https://vitejs.dev/guide/)
+-   [React Documentation](https://reactjs.org/docs/getting-started.html)
+-   [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+-   [Previous Issues and Pull Requests](https://github.com/jenkins-infra/stats.jenkins.io/issues)
