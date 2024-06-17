@@ -64,10 +64,10 @@ pipeline {
       }
       post {
         success {
-          recordDeployment('jenkins-infra', 'stats.jenkins.io', pullRequest.head, 'success', "https://deploy-preview-${CHANGE_ID}--stats.jenkins.io.netlify.app")
+          recordDeployment('jenkins-infra', 'stats.jenkins.io', pullRequest.head, 'success', "https://deploy-preview-${CHANGE_ID}--stats-jenkins-io.netlify.app")
         }
         failure {
-          recordDeployment('jenkins-infra', 'stats.jenkins.io', pullRequest.head, 'failure', "https://deploy-preview-${CHANGE_ID}--stats.jenkins.io.netlify.app")
+          recordDeployment('jenkins-infra', 'stats.jenkins.io', pullRequest.head, 'failure', "https://deploy-preview-${CHANGE_ID}--stats-jenkins-io.netlify.app")
         }
       }
     }
