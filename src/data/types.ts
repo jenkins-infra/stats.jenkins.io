@@ -8,3 +8,5 @@ export type GraphType =
     | 'top-plugins2500'
     | 'top-plugins500'
     | 'total-executors'
+
+export type SortOption = 'alphabetical' | 'downloadsHighToLow' | 'downloadsLowToHigh'

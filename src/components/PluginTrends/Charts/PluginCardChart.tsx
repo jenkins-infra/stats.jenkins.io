@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
-import downloadIcon from '../../../assets/downloadIcon.svg'
 import { PluginChartProps } from '../../../data/plugins'
 
 const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
@@ -103,27 +102,6 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
                     },
                 },
             ],
-            graphic: [
-                {
-                    type: 'image',
-                    style: {
-                        image: downloadIcon,
-                        width: 20,
-                        height: 20,
-                    },
-                },
-                {
-                    type: 'text',
-                    left: '23',
-                    top: '4',
-                    style: {
-                        text: chartData.totalInstallationsK,
-                        fontSize: 14,
-                        fontWeight: 'bold',
-                        fill: '#000',
-                    },
-                },
-            ],
         }
     }, [chartData])
 
@@ -151,8 +129,7 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
         <div
             ref={chartRef}
             style={{
-                height: '200px',
-                minWidth: '240px',
+                height: '100%',
                 width: '100%',
             }}
         />
