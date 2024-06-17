@@ -21,8 +21,7 @@ const GraphCard = styled(Card)({
     borderRadius: '1rem',
     padding: '1rem',
     width: '100%',
-    height: '38vh',
-    minHeight: '350px',
+    height: '35vh',
     boxSizing: 'border-box',
 })
 
@@ -51,19 +50,23 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                alignContent: 'center',
+                overflow: 'auto',
             }}
         >
             <Paper
                 elevation={16}
                 sx={{
-                    width: '90vw',
+                    width: '90%',
+                    maxWidth: '1400px',
                     overflowY: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
-                    padding: 4,
+                    padding: 6,
                     borderRadius: 5,
                     backgroundColor: '#f0f0f0',
+                    maxHeight: '90vh',
+                    margin: 'auto',
+                    boxSizing: 'border-box',
                 }}
             >
                 {plugin.chartData ? (
@@ -116,31 +119,23 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                                 </IconButton>
                             </Box>
                         </HeaderBox>
-                        <Grid
-                            container
-                            spacing={3}
-                            sx={
-                                {
-                                    // padding: '1em',
-                                }
-                            }
-                        >
-                            <Grid item xs={12} lg={6}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} md={6}>
                                 <GraphCard elevation={8}>
                                     <PluginInstallationsChart data={plugin.chartData} />
                                 </GraphCard>
                             </Grid>
-                            <Grid item xs={12} lg={6}>
+                            <Grid item xs={12} md={6}>
                                 <GraphCard elevation={8}>
                                     <PluginInstallationsPercentageChart data={plugin.chartData} />
                                 </GraphCard>
                             </Grid>
-                            <Grid item xs={12} lg={6}>
+                            <Grid item xs={12} md={6}>
                                 <GraphCard elevation={8}>
                                     <PluginInstallationsPerVersion data={plugin.chartData} />
                                 </GraphCard>
                             </Grid>
-                            <Grid item xs={12} lg={6}>
+                            <Grid item xs={12} md={6}>
                                 <GraphCard elevation={8}>
                                     <PluginInstallationsPercentagePerVersionChart data={plugin.chartData} />
                                 </GraphCard>
