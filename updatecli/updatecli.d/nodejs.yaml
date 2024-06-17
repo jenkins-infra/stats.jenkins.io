@@ -33,7 +33,7 @@ targets:
       matchpattern: >
         nodejs (.*)
       replacepattern: >
-        nodejs '{{ source "lastPackerImageVersion" }}'
+        nodejs {{ source "lastPackerImageVersion" }}
     scmid: default
 
 actions:
