@@ -30,22 +30,22 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
 
     const option = useMemo(() => {
         return {
-            tooltip: {
-                trigger: 'axis',
-                formatter: '{b}: {c} installations',
-                backgroundColor: '#333',
-                borderColor: '#777',
-                borderWidth: 1,
-                textStyle: {
-                    color: '#fff',
-                },
-                axisPointer: {
-                    type: 'line',
-                    lineStyle: {
-                        color: '#777',
-                    },
-                },
-            },
+            // tooltip: {
+            //     trigger: 'axis',
+            //     formatter: '{b}: {c} installations',
+            //     backgroundColor: '#333',
+            //     borderColor: '#777',
+            //     borderWidth: 1,
+            //     textStyle: {
+            //         color: '#fff',
+            //     },
+            //     axisPointer: {
+            //         type: 'line',
+            //         lineStyle: {
+            //             color: '#777',
+            //         },
+            //     },
+            // },
             xAxis: {
                 type: 'category',
                 data: chartData.formattedData.map((item) => item.date),

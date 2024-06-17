@@ -31,6 +31,9 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
                 sx={{
                     borderRadius: '1rem',
                     backgroundColor: 'white',
+                    '&:hover': {
+                        backgroundColor: 'rgba(0, 123, 255, 0.02)',
+                    },
                 }}
             >
                 <CardActionArea onClick={handleOpen}>
@@ -44,6 +47,7 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
                                 whiteSpace: 'nowrap',
                                 color: '#212529',
                                 marginBottom: '0.5rem',
+                                '&:hover': { color: '#007bff' },
                             }}
                         >
                             {plugin.id}

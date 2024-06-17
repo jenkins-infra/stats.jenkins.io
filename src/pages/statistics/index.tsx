@@ -6,7 +6,6 @@ import StatisticsTable from '../../components/StatsInDetail/Charts/StatisticsTab
 import Sidebar from '../../components/StatsInDetail/Layout/Sidebar'
 import useSidebarState from '../../hooks/useSidebarState'
 import useSelectionState from '../../hooks/useSelectionState'
-import './statistics.css'
 import JVMChart from '../../components/StatsInDetail/Charts/JVMChart'
 
 const chartTitles: Record<string, string> = {
