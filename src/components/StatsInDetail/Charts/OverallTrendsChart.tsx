@@ -1,10 +1,8 @@
-import React, { useEffect, useMemo } from 'react'
-import { Box, Button, styled } from '@mui/material'
+import React, { useEffect, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import ImageIcon from '@mui/icons-material/Image'
 import useCSVData from '../../../hooks/useCSVData'
 import usePluginCount from '../../../hooks/usePluginCount'
+import { handleCSVDownload } from '../../../utils/csvUtils'
 
 interface ChartProps {
     csvPath: string
@@ -13,47 +11,11 @@ interface ChartProps {
     height?: string
 }
 
-const DownloadButton = styled(Button)({
-    margin: '0.5rem',
-    padding: '0.75rem 1.5rem',
-    backgroundColor: '#ffffff',
-    borderRadius: '1rem',
-    color: '#007BFF',
-    fontWeight: '600',
-    fontFamily: 'Arial, sans-serif',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    transition: 'all 0.3s ease',
-    border: '1px solid #e0e0e0',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    '&:hover': {
-        backgroundColor: '#f0f0f0',
-        border: '1px solid #007BFF',
-        color: '#0056b3',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
-    },
-    '@media (max-width: 900px)': {
-        padding: '0.5rem 1rem',
-        fontSize: '0.8rem',
-    },
-})
-
 const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = '100%' }) => {
     const { data, error } = useCSVData(csvPath)
     const { pluginCount } = usePluginCount()
 
-    // const formatNumber = (num: number) => {
-    //     if (num >= 1e9) {
-    //         return (num / 1e9).toFixed(1) + 'B'
-    //     } else if (num >= 1e6) {
-    //         return (num / 1e6).toFixed(1) + 'M'
-    //     } else if (num >= 1e3) {
-    //         return (num / 1e3).toFixed(1) + 'K'
-    //     } else {
-    //         return num.toString()
-    //     }
-    // }
+    const downloadCSV = useCallback(() => handleCSVDownload(data, title), [data, title])
 
     const chartData = useMemo(() => {
         const dates = data
@@ -78,7 +40,18 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             },
             tooltip: {
                 trigger: 'axis',
-                axisPointer: { type: 'shadow' },
+                backgroundColor: '#333',
+                borderColor: '#777',
+                borderWidth: 1,
+                textStyle: {
+                    color: '#fff',
+                },
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#777',
+                    },
+                },
             },
             xAxis: {
                 type: 'category',
@@ -103,26 +76,61 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                     data: chartData.values,
                     type: 'line',
                     itemStyle: { color: '#007FFF' },
+                    smooth: true,
+                    showSymbol: false,
                 },
             ],
-            grid: { left: '3%', right: '3%', bottom: '3%', containLabel: true },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 100,
+                },
+                {
+                    start: 0,
+                    end: 100,
+                },
+            ],
+            toolbox: {
+                feature: {
+                    // dataView: { show: true, readOnly: false },
+                    restore: {
+                        title: 'Reset Zoom',
+                        iconStyle: {},
+                    },
+                    saveAsImage: {
+                        title: 'Save as Image',
+                    },
+                    myCSVDownload: {
+                        show: true,
+                        title: 'Download CSV',
+                        icon: 'path://M8 0H0v12h4v4l4-4h4V0H8zm0 2h2v2H8V2zm0 3h2v2H8V5zm0 3h2v2H8V8z',
+                        onclick: downloadCSV,
+                    },
+                    magicType: { show: false, type: ['bar', 'line'] },
+                },
+
+                itemSize: 20,
+                itemGap: 15,
+            },
+            grid: { left: '30', right: '40', bottom: '70', top: '100', containLabel: true },
         }
 
         if (title.toLowerCase().includes('plugins')) {
             ;(baseOption as echarts.EChartsOption).graphic = {
                 type: 'text',
                 left: 'center',
-                top: '10%',
+                top: '40',
                 style: {
-                    text: `Available Plugins: ${pluginCount.toLocaleString()}`,
-                    fontSize: 16,
+                    text: `Available Plugins:  ${pluginCount.toLocaleString()}`,
+                    fontSize: 14,
                     fontWeight: 'bold',
                     fill: 'blue',
                 },
             }
         }
         return baseOption
-    }, [chartData, title, pluginCount])
+    }, [chartData, title, pluginCount, downloadCSV])
 
     useEffect(() => {
         if (data.length === 0) return
@@ -144,51 +152,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         return <div>Error loading data: {error.message}</div>
     }
 
-    const handleCSVDownload = () => {
-        const link = document.createElement('a')
-        link.href = csvPath
-        link.download = csvPath.split('/').pop() || 'data.csv'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-    }
-
-    const handleSVGDownload = () => {
-        const chartDom = document.getElementById(title) as HTMLElement
-        const myChart = echarts.init(chartDom)
-        const svg = myChart.getDataURL({ type: 'svg', backgroundColor: '#fff' })
-        const link = document.createElement('a')
-        link.href = svg
-        link.download = `${title}.svg`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-    }
-
-    return (
-        <Box
-            sx={{
-                width: '90%',
-                height: '90%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
-            <div id={title} style={{ width, height }}></div>
-            <Box display="flex" alignItems="center" justifyContent="center" mt={3}>
-                <DownloadButton variant="contained" onClick={handleCSVDownload}>
-                    <InsertDriveFileIcon style={{ marginRight: '0.5rem' }} />
-                    CSV
-                </DownloadButton>
-                <DownloadButton variant="contained" onClick={handleSVGDownload}>
-                    <ImageIcon style={{ marginRight: '0.5rem' }} />
-                    SVG
-                </DownloadButton>
-            </Box>
-        </Box>
-    )
+    return <div id={title} style={{ width, height }}></div>
 }
 
 export default Chart

@@ -19,7 +19,15 @@ const ResetZoomButton: React.FC<ResetZoomButtonProps> = ({ chartInstance }) => {
     }
 
     return (
-        <Button onClick={resetZoom} variant="outlined" color="primary" size="small">
+        <Button
+            onClick={resetZoom}
+            variant="outlined"
+            color="primary"
+            size="small"
+            sx={{
+                width: '20%',
+            }}
+        >
             Reset Zoom
         </Button>
     )

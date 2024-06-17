@@ -1,81 +1,77 @@
-// PluginCard.tsx
-import React from 'react'
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, Button, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import ImageIcon from '@mui/icons-material/Image'
+import React, { useState, useMemo } from 'react'
+import { Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@mui/material'
+
 import PluginCardChart from '../Charts/PluginCardChart'
+import PluginDetailModal from './PluginDetailModal'
 import { IPluginData } from '../../../data/plugins'
+import downloadIcon from '../../../assets/downloadIcon.svg'
 
 interface PluginCardProps {
     plugin: IPluginData
 }
 
 const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
-    const handleCSVDownload = () => {
-        if (plugin.chartData && plugin.chartData.installations) {
-            const data = plugin.chartData.installations
-            const csvData = Object.entries(data).map(([timestamp, value]) => ({ timestamp, value }))
-            const csv = 'timestamp,value\n' + csvData.map((row) => `${row.timestamp},${row.value}`).join('\n')
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-            const url = URL.createObjectURL(blob)
-            const link = document.createElement('a')
-            link.setAttribute('href', url)
-            link.setAttribute('download', `${plugin.id}_data.csv`)
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
-        }
-    }
+    const [open, setOpen] = useState(false)
+    const handleOpen = () => setOpen(true)
+    const handleClose = () => setOpen(false)
+
+    const totalInstallationsK = useMemo(() => {
+        if (!plugin.chartData || !plugin.chartData.installations) return '0K'
+        const totalInstallations = Object.values(plugin.chartData.installations).reduce(
+            (sum, installations) => sum + installations,
+            0
+        )
+        return (totalInstallations / 1000).toFixed(1) + 'K'
+    }, [plugin.chartData])
 
     return (
-        <Card
-            elevation={12}
-            sx={{
-                borderRadius: '1rem',
-                backgroundColor: 'white',
-            }}
-        >
-            <CardActionArea component={Link} to={`/plugin/${plugin.id}`} state={{ chartData: plugin.chartData }}>
-                <CardContent>
-                    <Typography
-                        sx={{
-                            fontSize: '1.2rem',
-                            textAlign: 'center',
-                            textOverflow: 'ellipsis',
-                            overflow: 'hidden',
-                            whiteSpace: 'nowrap',
-                            color: '#212529',
-                            marginBottom: '1rem',
-                        }}
-                    >
-                        {plugin.id}
-                    </Typography>
-                    <CardMedia>
-                        {plugin.chartData ? (
-                            <PluginCardChart data={plugin.chartData} />
-                        ) : (
-                            <Typography variant="body2" color="textSecondary" align="center">
-                                No Data Available
-                            </Typography>
-                        )}
-                    </CardMedia>
-                </CardContent>
-            </CardActionArea>
-            <CardActions
+        <>
+            <Card
+                elevation={12}
                 sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
+                    borderRadius: '1rem',
+                    backgroundColor: 'white',
+                    '&:hover': {
+                        backgroundColor: 'rgba(0, 123, 255, 0.02)',
+                    },
                 }}
             >
-                <Button size="small" color="primary" onClick={handleCSVDownload}>
-                    <InsertDriveFileIcon style={{ marginRight: '0.5rem' }} />
-                </Button>
-                <Button size="small" color="primary">
-                    <ImageIcon style={{ marginRight: '0.5rem' }} />
-                </Button>
-            </CardActions>
-        </Card>
+                <CardActionArea onClick={handleOpen}>
+                    <CardContent>
+                        <Typography
+                            sx={{
+                                fontSize: '1.2rem',
+                                textAlign: 'center',
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                color: '#212529',
+                                marginBottom: '0.5rem',
+                                '&:hover': { color: '#007bff' },
+                            }}
+                        >
+                            {plugin.id}
+                        </Typography>
+                        <Box display="flex" alignItems="center" justifyContent="center" marginBottom="1rem">
+                            <img src={downloadIcon} alt="Downloads" width={20} height={20} />
+                            <Typography variant="subtitle1" component="div" marginLeft={1}>
+                                {totalInstallationsK}
+                            </Typography>
+                        </Box>
+                        <CardMedia>
+                            {plugin.chartData ? (
+                                <PluginCardChart data={plugin.chartData} />
+                            ) : (
+                                <Typography variant="body2" color="textSecondary" align="center">
+                                    No Data Available
+                                </Typography>
+                            )}
+                        </CardMedia>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+            <PluginDetailModal open={open} handleClose={handleClose} plugin={plugin} />
+        </>
     )
 }
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
-import downloadIcon from '../../../assets/downloadIcon.svg'
 import { PluginChartProps } from '../../../data/plugins'
 
 const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
@@ -31,22 +30,22 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
 
     const option = useMemo(() => {
         return {
-            tooltip: {
-                trigger: 'axis',
-                formatter: '{b}: {c} installations',
-                backgroundColor: '#333',
-                borderColor: '#777',
-                borderWidth: 1,
-                textStyle: {
-                    color: '#fff',
-                },
-                axisPointer: {
-                    type: 'line',
-                    lineStyle: {
-                        color: '#777',
-                    },
-                },
-            },
+            // tooltip: {
+            //     trigger: 'axis',
+            //     formatter: '{b}: {c} installations',
+            //     backgroundColor: '#333',
+            //     borderColor: '#777',
+            //     borderWidth: 1,
+            //     textStyle: {
+            //         color: '#fff',
+            //     },
+            //     axisPointer: {
+            //         type: 'line',
+            //         lineStyle: {
+            //             color: '#777',
+            //         },
+            //     },
+            // },
             xAxis: {
                 type: 'category',
                 data: chartData.formattedData.map((item) => item.date),
@@ -85,10 +84,10 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
                 },
             },
             grid: {
-                left: '3%',
-                right: '3%',
-                bottom: '3%',
-                top: '3%',
+                left: '8',
+                right: '8',
+                bottom: '5',
+                top: '5',
             },
             series: [
                 {
@@ -100,27 +99,6 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
                     },
                     itemStyle: {
                         opacity: 0,
-                    },
-                },
-            ],
-            graphic: [
-                {
-                    type: 'image',
-                    style: {
-                        image: downloadIcon,
-                        width: 20,
-                        height: 20,
-                    },
-                },
-                {
-                    type: 'text',
-                    left: '23',
-                    top: '4',
-                    style: {
-                        text: chartData.totalInstallationsK,
-                        fontSize: 14,
-                        fontWeight: 'bold',
-                        fill: '#000',
                     },
                 },
             ],
@@ -151,8 +129,7 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
         <div
             ref={chartRef}
             style={{
-                height: '200px',
-                minWidth: '240px',
+                height: '100%',
                 width: '100%',
             }}
         />

@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../data/plugins'
-import ResetZoomButton from './ResetZoomButton'
 
 const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const [chartInstance, setChartInstance] = useState<echarts.ECharts | null>(null)
 
     const chartData = useMemo(() => {
         if (!data || !data.installationsPercentage || !data.installations) {
@@ -42,7 +40,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
     const option = useMemo(() => {
         return {
             title: {
-                text: 'Monthly Installation % of Total Jenkins Installations',
+                text: 'Monthly Installations (%)',
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
@@ -62,12 +60,13 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                 },
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 formatter: function (params: any) {
-                    const percentage = params[0].value.toFixed(2)
+                    const percentage = params[0].value.toFixed(3)
                     const installations = Math.round(params[1].value).toLocaleString()
                     return `
                         ${params[0].axisValue}<br/>
-                        ${params[0].marker} ${params[0].seriesName}: ${percentage}%<br/>
-                        ${params[1].marker} ${params[1].seriesName}: ${installations}
+                    
+                        ${params[1].marker} ${params[1].seriesName}: ${installations}<br/>
+                        ${params[0].marker} ${params[0].seriesName}: ${percentage}%
                     `
                 },
             },
@@ -148,10 +147,10 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                 },
             ],
             grid: {
-                left: '7%',
-                right: '7%',
-                bottom: '15%',
-                top: '15%',
+                left: '50',
+                right: '40',
+                bottom: '35',
+                top: '60',
             },
             dataZoom: [
                 {
@@ -161,9 +160,15 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                     end: 100,
                 },
             ],
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {},
+                },
+            },
             series: [
                 {
-                    name: 'Installations Percentage',
+                    name: 'Plugin Installations Percentage',
                     data: chartData.formattedPercentageData.map((item) => item.percentage * 100),
                     type: 'bar',
                     smooth: true,
@@ -176,11 +181,12 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                     },
                 },
                 {
-                    name: 'Installations',
+                    name: 'Jenkins Installations',
                     data: chartData.installationsPerPercentage,
                     type: 'line',
                     yAxisIndex: 1,
                     smooth: true,
+                    showSymbol: false,
                     lineStyle: {
                         width: 2,
                         color: '#ff5722',
@@ -196,28 +202,19 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
     useEffect(() => {
         if (!chartRef.current) return
 
-        const instance = echarts.init(chartRef.current)
-        instance.setOption(option)
-        setChartInstance(instance)
+        const myChart = echarts.init(chartRef.current)
+        myChart.setOption(option)
 
-        const handleResize = () => {
-            instance.resize()
-        }
-
+        const handleResize = () => myChart.resize()
         window.addEventListener('resize', handleResize)
 
         return () => {
+            myChart.dispose()
             window.removeEventListener('resize', handleResize)
-            instance.dispose()
         }
     }, [option])
 
-    return (
-        <div>
-            <div ref={chartRef} style={{ height: '450px', width: '100%' }} />
-            <ResetZoomButton chartInstance={chartInstance} />
-        </div>
-    )
+    return <div ref={chartRef} style={{ height: '100%', width: '100%' }} />
 }
 
 export default PluginInstallationsPercentageChart
