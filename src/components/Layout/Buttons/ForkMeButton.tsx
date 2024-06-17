@@ -6,7 +6,7 @@ export default function ForkMeButton() {
         <Button
             variant="contained"
             startIcon={<FaGithub />}
-            href="https://github.com/shlomomdahan/stats2.jenkins.io"
+            href="https://github.com/jenkins-infra/stats.jenkins.io"
             sx={{
                 margin: '0.5rem',
                 backgroundColor: '#ebedf0',
