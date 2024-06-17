@@ -27,10 +27,7 @@ const PluginTrends: React.FC = () => {
 
     const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage)
 
-    // Generate options for Autocomplete
     const pluginOptions = useMemo(() => filteredPlugins.map((plugin) => plugin.id), [filteredPlugins])
-
-    // Custom filter function to show suggestions only after typing at least one character
     const filterOptions = (options: string[], { inputValue }: { inputValue: string }) => {
         return inputValue.length === 0 ? [] : options
     }
@@ -60,7 +57,7 @@ const PluginTrends: React.FC = () => {
                         freeSolo
                         options={pluginOptions}
                         filterOptions={filterOptions}
-                        onInputChange={(event, value) => setSearchTerm(value)}
+                        onInputChange={(_event, value) => setSearchTerm(value)}
                         renderInput={(params) => <TextField {...params} label="Search Plugins" variant="standard" />}
                     />
                 </Box>
