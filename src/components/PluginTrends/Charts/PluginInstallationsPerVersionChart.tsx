@@ -25,7 +25,7 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
     const option = useMemo(() => {
         return {
             title: {
-                text: `Installations Per Version (${formattedDate})`,
+                text: `Installations by Version (${formattedDate})`,
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
@@ -90,11 +90,25 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
                     },
                 },
             },
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {},
+                },
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    start: 0,
+                    end: 100,
+                },
+            ],
             grid: {
-                left: '8%',
-                right: '5%',
-                bottom: '15%',
-                top: '15%',
+                left: '50',
+                right: '40',
+                bottom: '35',
+                top: '60',
             },
             series: [
                 {
@@ -127,7 +141,7 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
         }
     }, [option])
 
-    return <div ref={chartRef} style={{ height: '450px', width: '100%' }} />
+    return <div ref={chartRef} style={{ height: '100%', width: '100%' }} />
 }
 
 export default PluginInstallationsPerVersion

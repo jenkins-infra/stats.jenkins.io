@@ -14,7 +14,6 @@ const useSearchPlugins = (searchTerm: string) => {
                     const url = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/plugin-installation-trend/${plugin.id}.stats.json`
                     return axios.get(url).then((response) => ({ ...plugin, chartData: response.data }))
                 })
-                console.log('Fetching plugin data...')
                 const pluginData = await Promise.all(pluginDataPromises)
                 setPlugins(pluginData)
             } catch (error) {

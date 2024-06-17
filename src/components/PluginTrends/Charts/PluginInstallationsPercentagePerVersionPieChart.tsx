@@ -1,20 +1,25 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
-import { PluginChartProps } from '../../../data/plugins'
 import dayjs from 'dayjs'
+import { PluginChartProps } from '../../../data/plugins'
 
 const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
 
     const formattedData = useMemo(() => {
         if (!data || !data.installationsPercentagePerVersion) return []
-        return Object.entries(data.installationsPercentagePerVersion)
+
+        const entries = Object.entries(data.installationsPercentagePerVersion)
             .map(([version, percentage]) => ({
                 name: version,
                 value: Math.round(percentage * 100 * 100) / 100,
             }))
             .sort((a, b) => b.value - a.value) // Sort by percentage in descending order
-            .slice(0, 10) // Show only the top 10 versions
+
+        const top10 = entries.slice(0, 10)
+        const othersValue = entries.slice(10).reduce((sum, item) => sum + item.value, 0)
+
+        return othersValue > 0 ? [...top10, { name: 'Others', value: othersValue }] : top10
     }, [data])
 
     const formattedDate = useMemo(() => {
@@ -25,16 +30,24 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
         return dayjs(latestDate).format('MMM YYYY')
     }, [data])
 
+    const truncateLabel = (label: string, maxLength: number) => {
+        if (label.length > maxLength) {
+            return label.substring(0, maxLength) + '...'
+        }
+        return label
+    }
+
     const option = useMemo(() => {
         return {
             title: {
-                text: `Installations % Per Version (${formattedDate})`,
+                text: `Installations by Version (%)  (${formattedDate})`,
                 left: 'center',
                 textStyle: { fontSize: 16, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '{b}: {c}%',
+                formatter: ({ name, percent }: { name: string; percent: number }): string =>
+                    `${name}: ${percent.toFixed(1)}%`,
                 backgroundColor: '#333',
                 borderColor: '#777',
                 borderWidth: 1,
@@ -46,11 +59,12 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                 type: 'scroll', // Make the legend scrollable
                 orient: 'vertical',
                 left: 'left',
-                top: '30',
+                padding: [20, 20, 20, 20],
                 data: formattedData.map((item) => item.name),
                 textStyle: {
-                    color: '#777',
+                    fontSize: 10,
                 },
+                scrollBehavior: 'smooth',
             },
             series: [
                 {
@@ -58,6 +72,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                     type: 'pie',
                     radius: '50%',
                     data: formattedData,
+                    startAngle: 300,
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -66,15 +81,23 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                         },
                     },
                     label: {
-                        formatter: '{b}: {d}%',
+                        formatter: ({ name, percent }: { name: string; percent: number }): string =>
+                            `${truncateLabel(name, 10)} (${percent.toFixed(1)}%)`,
+                        fontSize: 11,
                     },
-                    itemStyle: {
-                        borderRadius: 5,
-                        borderColor: '#fff',
-                        borderWidth: 2,
+                    labelLine: {
+                        length: 20,
+                        length2: 20,
                     },
                 },
             ],
+            toolbox: {
+                feature: {
+                    saveAsImage: {
+                        title: 'Save as Image',
+                    },
+                },
+            },
         }
     }, [formattedData, formattedDate])
 
@@ -96,7 +119,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
         }
     }, [option])
 
-    return <div ref={chartRef} style={{ height: '450px', width: '100%' }} /> // Increase the height for better visibility
+    return <div ref={chartRef} style={{ height: '100%', width: '100%' }} />
 }
 
 export default PluginInstallationsPercentagePerVersionChart

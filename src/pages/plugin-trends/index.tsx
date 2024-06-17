@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import {
     Stack,
     Pagination,
@@ -10,20 +10,27 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Autocomplete,
 } from '@mui/material'
 import NavBar from '../../components/Layout/NavBar'
 import useFetchAndFilterPlugins from '../../hooks/useFetchAndFilterPlugins'
 import useSortPlugins from '../../hooks/useSortPlugins'
 import usePagination from '../../hooks/usePagination'
 import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
+import { SortOption } from '../../data/types'
 
 const PluginTrends: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const { filteredPlugins, loading } = useFetchAndFilterPlugins(searchTerm)
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
-    const itemsPerPage = 12
+    const itemsPerPage = 64
 
     const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage)
+
+    const pluginOptions = useMemo(() => filteredPlugins.map((plugin) => plugin.id), [filteredPlugins])
+    const filterOptions = (options: string[], { inputValue }: { inputValue: string }) => {
+        return inputValue.length === 0 ? [] : options
+    }
 
     return (
         <Stack
@@ -45,11 +52,13 @@ const PluginTrends: React.FC = () => {
                     width: '100%',
                 }}
             >
-                <Box>
-                    <TextField
-                        label="Search Plugins"
-                        variant="standard"
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                <Box sx={{ minWidth: 300 }}>
+                    <Autocomplete
+                        freeSolo
+                        options={pluginOptions}
+                        filterOptions={filterOptions}
+                        onInputChange={(_event, value) => setSearchTerm(value)}
+                        renderInput={(params) => <TextField {...params} label="Search Plugins" variant="standard" />}
                     />
                 </Box>
                 <Box>
@@ -57,11 +66,12 @@ const PluginTrends: React.FC = () => {
                         <InputLabel>Sort By</InputLabel>
                         <Select
                             value={sortOption}
-                            onChange={(e) => setSortOption(e.target.value as 'alphabetical' | 'downloads')}
+                            onChange={(e) => setSortOption(e.target.value as SortOption)}
                             label="Sort By"
                         >
                             <MenuItem value="alphabetical">A - Z</MenuItem>
-                            <MenuItem value="downloads">Installs High to Low</MenuItem>
+                            <MenuItem value="downloadsHighToLow">Installations: High to Low</MenuItem>
+                            <MenuItem value="downloadsLowToHigh">Installations: Low to High</MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
@@ -72,15 +82,15 @@ const PluginTrends: React.FC = () => {
                 <>
                     <Grid
                         container
-                        spacing={4}
+                        spacing={3}
                         sx={{
                             padding: '4rem',
-                            paddingTop: '2rem',
+                            paddingTop: '1rem',
                             marginTop: '0',
                         }}
                     >
                         {paginatedData.map((plugin) => (
-                            <Grid item xs={12} sm={6} md={4} xl={3} key={plugin.id}>
+                            <Grid item xs={6} sm={4} md={3} xl={2} key={plugin.id}>
                                 <PluginCard plugin={plugin} />
                             </Grid>
                         ))}
