@@ -97,7 +97,7 @@ const LandingPage: React.FC = () => {
                             }}
                         >
                             <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 'bold' }}>
-                                Jenkins Infra-Statistics
+                                Jenkins Statistics
                             </Typography>
                             <Typography sx={{ fontFamily: 'Georgia' }}>
                                 Graphical representation of numbers and information around Jenkins
