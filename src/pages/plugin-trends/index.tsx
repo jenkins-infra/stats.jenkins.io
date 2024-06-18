@@ -36,9 +36,10 @@ const PluginTrends: React.FC = () => {
             <Stack
                 sx={{
                     backgroundColor: '#f0f0f0',
-                    justifyContent: 'center',
                     alignItems: 'center',
                     width: '100vw',
+                    height: '100vh',
+                    overflow: 'auto',
                 }}
             >
                 <Box
@@ -86,7 +87,6 @@ const PluginTrends: React.FC = () => {
                         <Grid
                             container
                             spacing={3}
-                            justifyContent="space-evenly"
                             sx={{
                                 padding: '4rem',
                                 paddingTop: '1rem',

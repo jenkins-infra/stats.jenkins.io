@@ -1,15 +1,6 @@
 import { createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
-    breakpoints: {
-        values: {
-            xs: 400,
-            sm: 600,
-            md: 960,
-            lg: 1280,
-            xl: 1920,
-        },
-    },
     typography: {
         fontFamily: 'Roboto, sans-serif',
         h3: {
