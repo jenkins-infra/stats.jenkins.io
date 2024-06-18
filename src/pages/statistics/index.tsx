@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Paper } from '@mui/material'
+import { Box, Paper, Stack } from '@mui/material'
 import Chart from '../../components/StatsInDetail/Charts/OverallTrendsChart'
 import StatisticsTable from '../../components/StatsInDetail/Charts/StatisticsTable'
 import Sidebar from '../../components/StatsInDetail/Layout/Sidebar'
@@ -21,14 +21,13 @@ const Statistics: React.FC = () => {
 
     return (
         <>
-            <Box
+            <Stack
                 className="background"
                 sx={{
                     width: '100vw',
                     height: '100vh',
-                    display: 'flex',
-                    flexDirection: 'column',
                     backgroundColor: 'white',
+                    overflow: 'auto',
                 }}
             >
                 <Box
@@ -66,6 +65,11 @@ const Statistics: React.FC = () => {
                                         margin: '2rem',
                                         backgroundColor: 'white',
                                         borderRadius: 5,
+                                        //mobile
+                                        '@media (max-width: 768px)': {
+                                            padding: '1rem',
+                                            margin: '1rem',
+                                        },
                                     }}
                                 >
                                     {selectedChart === 'JVMs' ? (
@@ -82,7 +86,7 @@ const Statistics: React.FC = () => {
                         </>
                     )}
                 </Box>
-            </Box>
+            </Stack>
         </>
     )
 }

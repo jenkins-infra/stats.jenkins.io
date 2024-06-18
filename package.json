@@ -20,6 +20,7 @@
         "axios": "^1.7.2",
         "dayjs": "^1.11.11",
         "echarts": "^5.5.0",
+        "echarts-for-react": "^3.0.2",
         "file-saver": "^2.0.5",
         "localforage": "^1.10.0",
         "match-sorter": "^6.3.4",
