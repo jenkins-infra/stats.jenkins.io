@@ -42,12 +42,11 @@ const LandingPage: React.FC = () => {
                 sx={{
                     backgroundColor: '#f0f0f0',
                     alignItems: 'center',
-                    // minHeight: '70vh',
-                    height: '100%',
-                    minWidth: '100vw',
+                    width: '100vw',
+                    minHeight: '100vh',
+                    overflow: 'auto',
                 }}
             >
-                {/* <NavBar /> */}
                 <Paper
                     elevation={16}
                     sx={{
@@ -117,8 +116,10 @@ const LandingPage: React.FC = () => {
                         </Stack>
                     </Box>
                 </Paper>
+                <Box sx={{ width: '100%' }}>
+                    <Footer />
+                </Box>
             </Stack>
-            <Footer />
         </>
     )
 }
