@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Define a wrapper to use the jio-navbar component in JSX
-const JioFooter = () => <jio-footer property="https://contributors.jenkins.io"></jio-footer>
+const JioFooter = () => <jio-footer property="https://stats.jenkins.io"></jio-footer>
 
 const Footer: React.FC = () => {
     return <JioFooter />
