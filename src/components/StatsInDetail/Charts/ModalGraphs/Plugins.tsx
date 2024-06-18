@@ -60,7 +60,6 @@ const PluginsGraph: React.FC<PluginsGraphProps> = ({ year, month }) => {
                 },
                 axisLine: { lineStyle: { color: '#777' } },
                 axisTick: { show: true },
-                // name: 'Plugin Name',
                 //set name to Plugin Name and the total number of items in the x axis
                 name: `Plugin Name (${xData.length.toLocaleString()} Plugins)`,
                 nameLocation: 'middle',

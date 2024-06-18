@@ -47,7 +47,6 @@ const NavBar: React.FC<NavBarProps> = () => {
             </Link>
             <Stack
                 sx={{
-                    // display: 'flex',
                     alignItems: 'center',
                     paddingRight: isMobile ? '0.5rem' : '0',
                 }}
