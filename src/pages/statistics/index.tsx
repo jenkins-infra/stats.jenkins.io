@@ -76,7 +76,7 @@ const Statistics: React.FC = () => {
                                         <JVMChart title={chartTitles[selectedChart]} />
                                     ) : (
                                         <Chart
-                                            key={`${selectedChart}-${sidebarOpen}`} // Force re-render on sidebar open/close
+                                            key={`${selectedChart}`}
                                             csvPath={`https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/total-${selectedChart}.csv`}
                                             title={chartTitles[selectedChart]}
                                         />
