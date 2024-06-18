@@ -25,7 +25,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                 data: values.dates.map((date, index) => [date, values.installations[index]]),
                 smooth: true,
                 showSymbol: false,
-                lineStyle: { width: 2.5 }, // Thicker line
+                lineStyle: { width: 2.5 },
             }))
             .sort((a, b) => parseInt(a.name.replace('1.', ''), 10) - parseInt(b.name.replace('1.', ''), 10))
 

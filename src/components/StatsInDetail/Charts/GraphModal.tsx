@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, Paper } from '@mui/material'
 import { GraphType } from '../../../data/types'
-import JenkinsGraph from './ModalGraphs/Jenkins' // Import the JenkinsGraph component
+import JenkinsGraph from './ModalGraphs/Jenkins'
 import JobsGraph from './ModalGraphs/Jobs'
 import NodesGraph from './ModalGraphs/Nodes'
 import NodesPieGraph from './ModalGraphs/NodesPie'
