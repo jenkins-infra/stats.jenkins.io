@@ -1,4 +1,3 @@
-// import React from 'react'
 import jenkinsButler from '../../assets/jenkins-butler.svg'
 import NavBar from '../../components/Layout/NavBar'
 import Footer from '../../components/Layout/Footer'
@@ -21,12 +20,10 @@ const StatsLink = styled(NavLink)({
     fontSize: '0.9rem',
     fontFamily: 'Georgia, Times, “Times New Roman”, serif',
     '&:hover': {
-        // backgroundColor: '#476485',
         backgroundImage: 'linear-gradient(315deg, #007FFF 0%, #005BBB 74%)',
         color: 'white',
         fontWeight: 'bold',
         opacity: '0.7',
-        // border: '2px solid #5468ff',
     },
 
     '@media (max-width: 1024px)': {

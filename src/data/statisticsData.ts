@@ -1,25 +1,3 @@
-// // src/data/statisticsData.ts
-
-// export type DataRow = {
-//     year: string
-//     month: string
-// }
-
-// export const data: DataRow[] = [
-//     {
-//         year: '2008',
-//         month: '12',
-//     },
-//     {
-//         year: '2020',
-//         month: '06',
-//     },
-//     {
-//         year: '2016',
-//         month: '03',
-//     },
-// ]
-
 function generateDateArray(startYear: number, startMonth: number, endYear: number, endMonth: number) {
     const dateArray = []
     let currentYear = startYear

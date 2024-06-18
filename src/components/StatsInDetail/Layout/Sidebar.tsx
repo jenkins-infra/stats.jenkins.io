@@ -95,7 +95,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                 display: 'flex',
                 justifyContent: 'flex-end',
                 backgroundColor: 'inherit',
-                // zIndex: 1000,
                 padding: '0.5rem',
             }}
         >

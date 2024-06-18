@@ -49,7 +49,6 @@ const ExecutorsGraph: React.FC<ExecutorsGraphProps> = ({ year, month }) => {
                 axisLabel: { fontSize: 12 },
                 axisLine: { lineStyle: { color: '#777' } },
                 axisTick: { show: true },
-                // name: `Version (${xData.length.toLocaleString()})`,
                 nameLocation: 'middle',
                 nameGap: 30,
                 nameTextStyle: { fontWeight: 'bold' },
