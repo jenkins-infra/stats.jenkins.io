@@ -93,7 +93,6 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             ],
             toolbox: {
                 feature: {
-                    // dataView: { show: true, readOnly: false },
                     restore: {
                         title: 'Reset Zoom',
                         iconStyle: {},

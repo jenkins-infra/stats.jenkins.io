@@ -119,11 +119,6 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                         <Grid
                             container
                             spacing={3}
-                            sx={
-                                {
-                                    // padding: '1em',
-                                }
-                            }
                         >
                             <Grid item xs={12} lg={6}>
                                 <GraphCard elevation={8}>
