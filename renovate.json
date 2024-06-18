@@ -3,5 +3,7 @@
   "extends": [
     "config:recommended"
   ],
-  "ignoreDeps": ["node"]
+  "ignoreDeps": [
+    "node"
+  ]
 }
