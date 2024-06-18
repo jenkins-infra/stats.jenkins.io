@@ -1,5 +1,3 @@
-// src/utils/csvUtils.ts
-
 export const handleCSVDownload = (data: string[][], filename: string) => {
     const sanitizedFilename = filename.replace(/\s+/g, '_').replace(/-/g, '').toLowerCase()
     const csvContent = data.map((row) => row.join(',')).join('\n')

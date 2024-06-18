@@ -1,4 +1,3 @@
-// src/utils/jsonUtils.ts
 export const handleJSONDownload = (data: unknown, filename: string) => {
     const sanitizedFilename = filename.replace(/\s+/g, '_').replace(/-/g, '').toLowerCase()
     const jsonContent = JSON.stringify(data, null, 2)

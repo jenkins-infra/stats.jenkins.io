@@ -1,5 +1,4 @@
 import jenkinsButler from '../../assets/jenkins-butler.svg'
-import NavBar from '../../components/Layout/NavBar'
 import Footer from '../../components/Layout/Footer'
 import './landing-page.css'
 import { Link, NavLink } from 'react-router-dom'
@@ -38,86 +37,90 @@ const StatsLink = styled(NavLink)({
 
 const LandingPage: React.FC = () => {
     return (
-        <Stack
-            sx={{
-                backgroundColor: '#f0f0f0',
-                alignItems: 'center',
-                minHeight: '100vh',
-                minWidth: '100vw',
-            }}
-        >
-            <NavBar />
-            <Paper
-                elevation={16}
+        <>
+            <Stack
                 sx={{
-                    width: '70%',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignContent: 'center',
-                    justifyContent: 'center',
+                    backgroundColor: '#f0f0f0',
                     alignItems: 'center',
-                    flex: '1',
-                    marginTop: '4rem',
-                    marginBottom: '4rem',
-                    gap: '5rem',
-                    backgroundColor: 'white',
-                    borderRadius: '1.5rem',
-                    padding: '6rem',
-                    '@media (max-width: 768px)': {
-                        padding: '2rem',
-                        flexDirection: 'column',
-                        gap: '2rem',
-                    },
+                    width: '100vw',
+                    minHeight: '100vh',
+                    overflow: 'auto',
                 }}
             >
-                <Box
+                <Paper
+                    elevation={16}
                     sx={{
-                        marginTop: '1.5rem',
+                        width: '70%',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignContent: 'center',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flex: '1',
+                        marginTop: '4rem',
+                        marginBottom: '4rem',
+                        gap: '5rem',
+                        backgroundColor: 'white',
+                        borderRadius: '1.5rem',
+                        padding: '6rem',
                         '@media (max-width: 768px)': {
-                            marginTop: '0',
+                            padding: '2rem',
+                            flexDirection: 'column',
+                            gap: '2rem',
                         },
                     }}
                 >
-                    <Link to={'https://www.jenkins.io'} target="_blank" rel="noopener noreferrer">
-                        <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
-                    </Link>
-                </Box>
-                <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem' }}>
                     <Box
                         sx={{
-                            margin: '3rem 0 2.3rem 0',
+                            marginTop: '1.5rem',
                             '@media (max-width: 768px)': {
-                                marginTop: '0.8rem',
-                                marginBottom: '1.5rem',
-                            },
-                            '@media (max-width: 1024px)': {
-                                marginTop: '0.8rem',
-                                marginBottom: '1.5rem',
+                                marginTop: '0',
                             },
                         }}
                     >
-                        <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 'bold' }}>
-                            Jenkins Infra-Statistics
-                        </Typography>
-                        <Typography sx={{ fontFamily: 'Georgia' }}>
-                            Graphical representation of numbers and information around Jenkins
-                        </Typography>
+                        <Link to={'https://www.jenkins.io'} target="_blank" rel="noopener noreferrer">
+                            <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
+                        </Link>
                     </Box>
-                    <Stack
-                        sx={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
-                        <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
-                        <StatsLink to="https://www.jenkins.io">Plugin Versions by Jenkins Version</StatsLink>
-                        <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
-                    </Stack>
+                    <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem' }}>
+                        <Box
+                            sx={{
+                                margin: '3rem 0 2.3rem 0',
+                                '@media (max-width: 768px)': {
+                                    marginTop: '0.8rem',
+                                    marginBottom: '1.5rem',
+                                },
+                                '@media (max-width: 1024px)': {
+                                    marginTop: '0.8rem',
+                                    marginBottom: '1.5rem',
+                                },
+                            }}
+                        >
+                            <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 'bold' }}>
+                                Jenkins Statistics
+                            </Typography>
+                            <Typography sx={{ fontFamily: 'Georgia' }}>
+                                Graphical representation of numbers and information around Jenkins
+                            </Typography>
+                        </Box>
+                        <Stack
+                            sx={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
+                            <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
+                            <StatsLink to="https://www.jenkins.io">Plugin Versions by Jenkins Version</StatsLink>
+                            <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
+                        </Stack>
+                    </Box>
+                </Paper>
+                <Box sx={{ width: '100%' }}>
+                    <Footer />
                 </Box>
-            </Paper>
-            <Footer />
-        </Stack>
+            </Stack>
+        </>
     )
 }
 
