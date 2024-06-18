@@ -1,4 +1,3 @@
-// useSearchPlugins.ts
 import { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
 import { pluginList, IPluginData } from '../data/plugins'
