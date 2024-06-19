@@ -49,7 +49,7 @@ const StyledAccordion = styled(Accordion)({
     border: 'none',
 })
 
-const drawerWidthOpen = '20vw'
+const drawerWidthOpen = '20rem'
 const drawerWidthClosed = '4rem'
 
 interface SidebarProps {
@@ -70,92 +70,120 @@ const Sidebar: React.FC<SidebarProps> = ({
     selectedYear,
     handleChartSelect,
     handleYearSelect,
-}) => (
-    <Drawer
-        variant="permanent"
-        anchor="left"
-        open={sidebarOpen}
-        sx={{
-            width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-                width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
-                boxSizing: 'border-box',
-                backgroundColor: '#212529',
-                transition: 'width 0.3s',
-                position: 'relative',
-                left: 0,
-            },
-        }}
-    >
-        <Box
-            sx={{
-                position: 'sticky',
-                top: 0,
-                display: 'flex',
-                justifyContent: 'flex-end',
-                backgroundColor: 'inherit',
-                padding: '0.5rem',
-            }}
-        >
-            <IconButton
-                color="inherit"
-                aria-label="toggle drawer"
-                edge="start"
-                onClick={toggleSidebar}
-                sx={{ color: 'white' }}
-            >
-                <MenuIcon />
-            </IconButton>
-        </Box>
+}) => {
+    const handleItemClick = (callback: () => void) => {
+        callback()
+        toggleSidebar()
+    }
 
-        {sidebarOpen && (
-            <List>
-                <StyledAccordion defaultExpanded>
-                    <AccordionSummaryBox expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}>
-                        <Typography>Overall Trends</Typography>
-                    </AccordionSummaryBox>
-                    <AccordionDetails>
-                        <List>
-                            {['plugins', 'jobs', 'jenkins', 'nodes', 'JVMs'].map((chart) => (
-                                <ListButton
-                                    key={chart}
-                                    selected={selectedChart === chart}
-                                    onClick={() => handleChartSelect(chart)}
-                                >
-                                    <ListText primary={`${chart.charAt(0).toUpperCase() + chart.slice(1)}`} />
-                                </ListButton>
-                            ))}
-                        </List>
-                    </AccordionDetails>
-                </StyledAccordion>
-                <StyledAccordion>
-                    <AccordionSummaryBox
-                        expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
-                        sx={{ backgroundColor: '#3A3A3A', color: 'white' }}
+    return (
+        <>
+            <Box // Sidebar toggle button
+                sx={{
+                    width: '2.5rem',
+                    height: '100%',
+                    backgroundColor: '#212529',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    padding: '0.5rem',
+                    cursor: 'pointer',
+                }}
+                onClick={toggleSidebar}
+            >
+                <MenuIcon sx={{ color: 'white' }} />
+            </Box>
+
+            <Drawer
+                variant="temporary"
+                anchor="left"
+                open={sidebarOpen}
+                onClose={toggleSidebar}
+                sx={{
+                    width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
+                        boxSizing: 'border-box',
+                        backgroundColor: '#212529',
+                        transition: 'width 0.3s',
+                        position: 'relative',
+                        left: 0,
+                    },
+                }}
+            >
+                <Box
+                    sx={{
+                        position: 'sticky',
+                        top: 0,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        backgroundColor: 'inherit',
+                        padding: '0.5rem',
+                    }}
+                >
+                    <IconButton
+                        color="inherit"
+                        aria-label="toggle drawer"
+                        edge="start"
+                        onClick={toggleSidebar}
+                        sx={{ color: 'white' }}
                     >
-                        <Typography>Monthly Analysis</Typography>
-                    </AccordionSummaryBox>
-                    <AccordionDetails sx={{ overflowY: 'auto' }}>
-                        <List>
-                            <ListButton selected={selectedYear === 'all'} onClick={() => handleYearSelect('all')}>
-                                <ListText primary="All Data" />
-                            </ListButton>
-                            {[...new Set(data.map((row) => row.year))].map((year) => (
-                                <ListButton
-                                    key={year}
-                                    selected={selectedYear === year}
-                                    onClick={() => handleYearSelect(year)}
-                                >
-                                    <ListText primary={year} />
-                                </ListButton>
-                            ))}
-                        </List>
-                    </AccordionDetails>
-                </StyledAccordion>
-            </List>
-        )}
-    </Drawer>
-)
+                        <MenuIcon />
+                    </IconButton>
+                </Box>
+
+                {sidebarOpen && (
+                    <List>
+                        <StyledAccordion defaultExpanded>
+                            <AccordionSummaryBox expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}>
+                                <Typography>Overall Trends</Typography>
+                            </AccordionSummaryBox>
+                            <AccordionDetails>
+                                <List>
+                                    {['plugins', 'jobs', 'jenkins', 'nodes', 'JVMs'].map((chart) => (
+                                        <ListButton
+                                            key={chart}
+                                            selected={selectedChart === chart}
+                                            onClick={() => handleItemClick(() => handleChartSelect(chart))}
+                                        >
+                                            <ListText primary={`${chart.charAt(0).toUpperCase() + chart.slice(1)}`} />
+                                        </ListButton>
+                                    ))}
+                                </List>
+                            </AccordionDetails>
+                        </StyledAccordion>
+                        <StyledAccordion defaultExpanded>
+                            <AccordionSummaryBox
+                                expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
+                                sx={{ backgroundColor: '#3A3A3A', color: 'white' }}
+                            >
+                                <Typography>Monthly Analysis</Typography>
+                            </AccordionSummaryBox>
+                            <AccordionDetails sx={{ overflowY: 'auto' }}>
+                                <List>
+                                    <ListButton
+                                        selected={selectedYear === 'all'}
+                                        onClick={() => handleItemClick(() => handleYearSelect('all'))}
+                                    >
+                                        <ListText primary="All Data" />
+                                    </ListButton>
+                                    {[...new Set(data.map((row) => row.year))].map((year) => (
+                                        <ListButton
+                                            key={year}
+                                            selected={selectedYear === year}
+                                            onClick={() => handleItemClick(() => handleYearSelect(year))}
+                                        >
+                                            <ListText primary={year} />
+                                        </ListButton>
+                                    ))}
+                                </List>
+                            </AccordionDetails>
+                        </StyledAccordion>
+                    </List>
+                )}
+            </Drawer>
+        </>
+    )
+}
 
 export default Sidebar
