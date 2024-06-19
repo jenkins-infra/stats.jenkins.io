@@ -30,8 +30,7 @@
         "react-icons": "^5.2.1",
         "react-responsive": "^10.0.0",
         "react-router-dom": "^6.23.1",
-        "react-virtuoso": "^4.7.11",
-        "sort-by": "^1.2.0"
+        "react-virtuoso": "^4.7.11"
     },
     "devDependencies": {
         "@types/papaparse": "^5.3.14",
