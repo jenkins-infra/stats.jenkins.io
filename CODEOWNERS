@@ -1,0 +1,2 @@
+# Order is important. The last matching pattern has the most precedence.
+* @jenkins-infra/stats-jenkins-io
