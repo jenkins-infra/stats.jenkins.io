@@ -21,8 +21,9 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         const dates = data
             .filter((row) => row[0] && row[0].length === 6)
             .map((row) => {
-                const [year, month] = [row[0].slice(0, 4), row[0].slice(4, 6)]
-                return { monthYear: `${month}-${year}`, year }
+                const year = row[0].slice(0, 4)
+                const month = row[0].slice(4, 6)
+                return `${year}-${month}`
             })
 
         const values = data.map((row) => parseInt(row[1], 10)).filter((value) => !isNaN(value))
@@ -54,18 +55,16 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 },
             },
             xAxis: {
-                type: 'category',
-                data: chartData.dates.map((date) => date.monthYear),
+                type: 'time',
+                data: chartData.dates,
                 axisLabel: {
-                    formatter: (_value: unknown, index: number) => {
-                        const year = chartData.dates[index].year
-                        return (index === 0 || year !== chartData.dates[index - 1].year) && parseInt(year) % 2 === 0
-                            ? year
-                            : ''
+                    formatter: (value: string) => {
+                        const date = new Date(value)
+                        const year = date.getFullYear()
+                        return year.toString()
                     },
-                    interval: 0,
                 },
-                axisTick: { show: false },
+                axisTick: { show: true, alignWithLabel: true },
             },
             yAxis: {
                 type: 'value',
@@ -73,11 +72,17 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             },
             series: [
                 {
-                    data: chartData.values,
+                    data: chartData.dates.map((date, index) => [date, chartData.values[index]]),
                     type: 'line',
                     itemStyle: { color: '#007FFF' },
                     smooth: true,
                     showSymbol: false,
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(0, 127, 255, 0.2)' },
+                            { offset: 1, color: 'rgba(0, 127, 255, 0.0)' },
+                        ]),
+                    },
                 },
             ],
             dataZoom: [
@@ -108,9 +113,6 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                     },
                     magicType: { show: false, type: ['bar', 'line'] },
                 },
-
-                itemSize: 20,
-                itemGap: 15,
             },
             grid: { left: '30', right: '40', bottom: '70', top: '100', containLabel: true },
         }

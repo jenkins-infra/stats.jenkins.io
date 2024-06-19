@@ -36,20 +36,25 @@ const PluginTrends: React.FC = () => {
             <Stack
                 sx={{
                     backgroundColor: '#f0f0f0',
+                    alignItems: 'center',
+                    width: '100vw',
+                    height: '100vh',
+                    overflow: 'auto',
                 }}
             >
                 <Box
                     sx={{
                         marginTop: '2.5rem',
+                        marginBottom: '0.5rem',
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'center',
                         alignItems: 'center',
                         gap: '2rem',
-                        width: '100%',
+                        width: '80%',
                     }}
                 >
-                    <Box sx={{ minWidth: 300 }}>
+                    <Box sx={{ width: '40%' }}>
                         <Autocomplete
                             freeSolo
                             options={pluginOptions}
@@ -61,7 +66,7 @@ const PluginTrends: React.FC = () => {
                         />
                     </Box>
                     <Box>
-                        <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                        <FormControl variant="standard" sx={{ width: '100%', minWidth: '80px' }}>
                             <InputLabel>Sort By</InputLabel>
                             <Select
                                 value={sortOption}
@@ -86,6 +91,9 @@ const PluginTrends: React.FC = () => {
                                 padding: '4rem',
                                 paddingTop: '1rem',
                                 marginTop: '0',
+                                '@media (max-width: 600px)': {
+                                    padding: '2rem',
+                                },
                             }}
                         >
                             {paginatedData.map((plugin) => (

@@ -31,6 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Stack
                 sx={{
                     height: '100vh',
+                    maxHeight: '100vh',
                 }}
             >
                 <NavBar />

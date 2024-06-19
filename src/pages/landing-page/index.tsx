@@ -43,7 +43,7 @@ const LandingPage: React.FC = () => {
                     backgroundColor: '#f0f0f0',
                     alignItems: 'center',
                     width: '100vw',
-                    minHeight: '100vh',
+                    height: '100vh',
                     overflow: 'auto',
                 }}
             >

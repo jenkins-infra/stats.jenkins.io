@@ -64,6 +64,16 @@ To build the website locally, follow these steps:
 
     This will create an optimized production build of your application in the `dist` directory.
 
+5. **Preview the build locally:**
+
+    After building the site, you can preview it locally to ensure everything is working as expected. Run the following command:
+
+    ```sh
+    npm run preview
+    ```
+
+    This will start a local static web server that serves the files from the `dist` directory. Open your browser and navigate to the provided URL to see the preview.
+
 ### Inspiration and References
 
 For additional inspiration and detailed instructions, refer to the following documentation and resources:
