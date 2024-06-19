@@ -111,7 +111,7 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                                         transition: 'transform 0.2s, color 0.2s',
                                         '&:hover': {
                                             transform: 'rotate(90deg)',
-                                            color: 'red', // Change this to any color you prefer
+                                            color: 'red',
                                         },
                                     }}
                                 >
