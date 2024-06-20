@@ -37,7 +37,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             title: {
                 text: title,
                 left: 'center',
-                textStyle: { fontSize: 20, fontWeight: 'bold' },
+                textStyle: { fontSize: 18, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'axis',
@@ -62,6 +62,11 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             },
             yAxis: {
                 type: 'value',
+                axisLabel: {
+                    fontSize: 12,
+                    showMinLabel: false,
+                    align: 'middle',
+                },
                 splitLine: { lineStyle: { type: 'dashed' } },
             },
             series: [
@@ -108,7 +113,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                     magicType: { show: false, type: ['bar', 'line'] },
                 },
             },
-            grid: { left: '30', right: '40', bottom: '70', top: '100', containLabel: true },
+            grid: { left: '0', right: '10', bottom: '70', top: '90', containLabel: true },
         }
 
         if (title.toLowerCase().includes('plugins')) {

@@ -37,7 +37,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
             title: {
                 text: title,
                 left: 'center',
-                textStyle: { fontSize: 20, fontWeight: 'bold' },
+                textStyle: { fontSize: 18, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'axis',
@@ -50,12 +50,13 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                 type: 'value',
                 splitLine: { lineStyle: { type: 'dashed' } },
                 name: 'Installations',
+                axisLabel: { showMinLabel: false, fontSize: 12, align: 'middle' },
                 nameTextStyle: {
                     fontSize: 12,
                     padding: [30, 30, 10, 0],
                 },
             },
-            grid: { left: '30', right: '40', bottom: '20', top: '100', containLabel: true },
+            grid: { left: '0', right: '10', bottom: '20', top: '90', containLabel: true },
             series: chartData.series,
             toolbox: {
                 feature: {
@@ -69,10 +70,10 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                 right: '10',
                 top: '70',
                 orient: 'vertical',
-                itemGap: 20,
+                itemGap: 10,
                 textStyle: {
                     fontWeight: 'bold',
-                    fontSize: 14,
+                    fontSize: 12,
                 },
                 data: chartData.series.map((series) => ({
                     name: series.name,
