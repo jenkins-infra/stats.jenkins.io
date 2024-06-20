@@ -1,0 +1,67 @@
+/* components/PluginVersions/PluginVersionsTable.css */
+
+#versionsContainer {
+    font-family: monospace;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+#versionsContainer table {
+    border-collapse: collapse;
+    width: max-content;
+    table-layout: fixed;
+}
+
+#versionsContainer thead th,
+#versionsContainer tfoot th,
+#versionsContainer tfoot td {
+    position: sticky;
+    background-color: aquamarine;
+    padding: 3px 6px;
+}
+
+#versionsContainer thead th {
+    top: 0;
+}
+
+#versionsContainer tfoot th,
+#versionsContainer tfoot td {
+    bottom: 0;
+}
+
+#versionsContainer table td,
+#versionsContainer table th {
+    text-align: center;
+    padding: 3px 6px;
+    border: 0;
+    max-width: 150px; /* Set maximum width for cells */
+    word-wrap: break-word; /* Enable word wrapping */
+    white-space: normal; /* Allow text to wrap */
+}
+
+#versionsContainer tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+#versionsContainer tr:nth-child(even) {
+    background-color: #eee;
+}
+
+#versionsContainer tr.lts:nth-child(odd) {
+    background-color: #ccc;
+}
+
+#versionsContainer tr.lts:nth-child(even) {
+    background-color: #bbb;
+}
+
+#versionsContainer tr:nth-child(odd) td.subtotal {
+    background-color: #999;
+}
+
+#versionsContainer tr:nth-child(even) td.subtotal {
+    background-color: #888;
+}
+
+/* Make the first column sticky */
