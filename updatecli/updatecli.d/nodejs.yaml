@@ -1,5 +1,5 @@
 ---
-name: Bump `nodejs` version according to packer-images
+name: Bump `nodejs` version according to the packer image version deployed on ci.jenkins.io agents
 
 scms:
   default:
@@ -14,32 +14,38 @@ scms:
       branch: "{{ .github.branch }}"
 
 sources:
-  lastPackerImageVersion:
-    kind: shell
-    name: Get the latest `nodejs_linux_version` from https://github.com/jenkins-infra/packer-images/blob/main/provisioning/tools-versions.yml
+  ciJenkinsIoPackerImageVersion:
+    kind: yaml
+    name: Get the packer-image version deployed on ci.jenkins.io agents
     spec:
-      command: |
-        bash -c 'curl --silent --fail --show-error "https://raw.githubusercontent.com/jenkins-infra/packer-images/main/provisioning/tools-versions.yml" | grep nodejs_linux_version | sed "s/.*: //"'
-    transformers:
-      - trimprefix: 'nodejs_linux_version: '
+      file: https://raw.githubusercontent.com/jenkins-infra/jenkins-infra/production/hieradata/common.yaml
+      key: $.profile::jenkinscontroller::jcasc.agent_images.azure_vms_gallery_image.version
+  packerImageNodeVersion:
+    kind: yaml
+    name: Get  the `nodejs_linux_version` set in the deployed packer-image
+    dependson:
+      - ciJenkinsIoPackerImageVersion
+    spec:
+      file: https://raw.githubusercontent.com/jenkins-infra/packer-images/{{ source "ciJenkinsIoPackerImageVersion" }}/provisioning/tools-versions.yml
+      key: $.nodejs_linux_version
 
 targets:
   updateToolVersions:
-    name: Update the `nodejs` version in .tool-versions
-    sourceid: lastPackerImageVersion
+    name: bump `nodejs` version to {{ source "packerImageNodeVersion" }} in .tool-versions
+    sourceid: packerImageNodeVersion
     kind: file
     spec:
       file: .tool-versions
       matchpattern: >
         nodejs (.*)
       replacepattern: >
-        nodejs {{ source "lastPackerImageVersion" }}
+        nodejs {{ source "packerImageNodeVersion" }}
     scmid: default
 
 actions:
   default:
     kind: github/pullrequest
-    title: Bump `nodejs` version to {{ source "lastPackerImageVersion" }}
+    title: Bump `nodejs` version to {{ source "packerImageNodeVersion" }}
     scmid: default
     spec:
       labels:
