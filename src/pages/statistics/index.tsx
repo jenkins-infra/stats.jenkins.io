@@ -3,8 +3,10 @@ import { Box, Paper, Stack } from '@mui/material'
 import Chart from '../../components/StatsInDetail/Charts/OverallTrendsChart'
 import StatisticsTable from '../../components/StatsInDetail/Charts/StatisticsTable'
 import Sidebar from '../../components/StatsInDetail/Layout/Sidebar'
+import MobileDrawer from '../../components/StatsInDetail/Layout/MobileDrawer'
 import useSidebarState from '../../hooks/useSidebarState'
 import useSelectionState from '../../hooks/useSelectionState'
+import useIsMobile from '../../hooks/useIsMobile'
 import JVMChart from '../../components/StatsInDetail/Charts/JVMChart'
 
 const chartTitles: Record<string, string> = {
@@ -18,28 +20,38 @@ const chartTitles: Record<string, string> = {
 const Statistics: React.FC = () => {
     const { sidebarOpen, toggleSidebar } = useSidebarState()
     const { selectedChart, selectedTab, selectedYear, handleChartSelect, handleYearSelect } = useSelectionState()
+    const isMobile = useIsMobile()
 
     return (
-        <>
-            <Stack
-                className="background"
+        <Stack
+            className="background"
+            sx={{
+                width: '100vw',
+                height: '100vh',
+                backgroundColor: 'white',
+                overflow: 'auto',
+            }}
+        >
+            <Box
                 sx={{
-                    width: '100vw',
-                    height: '100vh',
-                    backgroundColor: 'white',
-                    overflow: 'auto',
+                    display: 'flex',
+                    flexGrow: 1,
+                    overflow: 'hidden',
+                    width: '100%',
+                    flexDirection: 'row',
+                    backgroundColor: '#d5d5d5',
                 }}
             >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexGrow: 1,
-                        overflow: 'hidden',
-                        width: '100%',
-                        flexDirection: 'row',
-                        backgroundColor: '#d5d5d5',
-                    }}
-                >
+                {isMobile ? (
+                    <MobileDrawer
+                        sidebarOpen={sidebarOpen}
+                        toggleSidebar={toggleSidebar}
+                        selectedChart={selectedChart}
+                        selectedYear={selectedYear}
+                        handleChartSelect={handleChartSelect}
+                        handleYearSelect={handleYearSelect}
+                    />
+                ) : (
                     <Sidebar
                         sidebarOpen={sidebarOpen}
                         toggleSidebar={toggleSidebar}
@@ -48,46 +60,46 @@ const Statistics: React.FC = () => {
                         handleChartSelect={handleChartSelect}
                         handleYearSelect={handleYearSelect}
                     />
+                )}
 
-                    {selectedTab === 'monthly' && <StatisticsTable year={selectedYear} />}
-                    {selectedTab === 'overall' && (
-                        <>
-                            {selectedChart && (
-                                <Paper
-                                    elevation={16}
-                                    sx={{
-                                        width: '100%',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        padding: '3rem',
-                                        margin: '2rem',
-                                        backgroundColor: 'white',
-                                        borderRadius: 5,
-                                        //mobile
-                                        '@media (max-width: 768px)': {
-                                            padding: '1rem',
-                                            margin: '1rem',
-                                        },
-                                    }}
-                                >
-                                    {selectedChart === 'JVMs' ? (
-                                        <JVMChart title={chartTitles[selectedChart]} />
-                                    ) : (
-                                        <Chart
-                                            key={`${selectedChart}`}
-                                            csvPath={`https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/total-${selectedChart}.csv`}
-                                            title={chartTitles[selectedChart]}
-                                        />
-                                    )}
-                                </Paper>
-                            )}
-                        </>
-                    )}
-                </Box>
-            </Stack>
-        </>
+                {selectedTab === 'monthly' && <StatisticsTable year={selectedYear} />}
+                {selectedTab === 'overall' && (
+                    <>
+                        {selectedChart && (
+                            <Paper
+                                elevation={16}
+                                sx={{
+                                    width: '100%',
+                                    height: isMobile ? '80vh' : '83vh',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    padding: '3rem',
+                                    margin: '2rem',
+                                    backgroundColor: 'white',
+                                    borderRadius: 5,
+                                    '@media (max-width: 768px)': {
+                                        padding: '1rem',
+                                        margin: '1rem',
+                                    },
+                                }}
+                            >
+                                {selectedChart === 'JVMs' ? (
+                                    <JVMChart title={chartTitles[selectedChart]} />
+                                ) : (
+                                    <Chart
+                                        key={`${selectedChart}`}
+                                        csvPath={`https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/total-${selectedChart}.csv`}
+                                        title={chartTitles[selectedChart]}
+                                    />
+                                )}
+                            </Paper>
+                        )}
+                    </>
+                )}
+            </Box>
+        </Stack>
     )
 }
 
