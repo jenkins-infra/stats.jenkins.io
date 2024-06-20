@@ -39,8 +39,7 @@ pipeline {
       }
     }
 
-    stage('Build PR') {
-      when { changeRequest() }
+    stage('Build') {
       steps {
         sh '''
         npm run build
