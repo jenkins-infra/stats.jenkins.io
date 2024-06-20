@@ -97,7 +97,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                         iconStyle: {},
                     },
                     saveAsImage: {
-                        title: 'Save as Image',
+                        title: 'Save as SVG',
                     },
                     myCSVDownload: {
                         show: true,
@@ -131,7 +131,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         if (data.length === 0) return
 
         const chartDom = document.getElementById(title) as HTMLElement
-        const myChart = echarts.init(chartDom)
+        const myChart = echarts.init(chartDom, null, { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

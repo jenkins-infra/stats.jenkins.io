@@ -49,7 +49,6 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
             yAxis: {
                 type: 'value',
                 splitLine: { lineStyle: { type: 'dashed' } },
-                // Add a label to the y-axis
                 name: 'Installations',
                 nameTextStyle: {
                     fontSize: 12,
@@ -58,6 +57,13 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
             },
             grid: { left: '30', right: '40', bottom: '20', top: '100', containLabel: true },
             series: chartData.series,
+            toolbox: {
+                feature: {
+                    saveAsImage: {
+                        title: 'Save as SVG',
+                    },
+                },
+            },
             legend: {
                 show: true,
                 right: '10',
@@ -86,7 +92,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
         if (!data) return
 
         const chartDom = document.getElementById('jvm-chart') as HTMLElement
-        const myChart = echarts.init(chartDom)
+        const myChart = echarts.init(chartDom, null, { renderer: 'svg' })
         myChart.setOption(chartOptions)
 
         const handleResize = () => myChart.resize()
