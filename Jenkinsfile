@@ -39,8 +39,7 @@ pipeline {
       }
     }
 
-    stage('Build PR') {
-      when { changeRequest() }
+    stage('Build') {
       steps {
         sh '''
         npm run build
@@ -68,6 +67,35 @@ pipeline {
         }
         failure {
           recordDeployment('jenkins-infra', 'stats.jenkins.io', pullRequest.head, 'failure', "https://deploy-preview-${CHANGE_ID}--stats-jenkins-io.netlify.app")
+        }
+      }
+    }
+
+    stage('Deploy to production') {
+      when {
+        allOf{
+          expression { env.BRANCH_IS_PRIMARY }
+          // Only deploy from infra.ci.jenkins.io
+          expression { infra.isInfra() }
+        }
+      }
+      steps {
+        script {
+          infra.withFileShareServicePrincipal([
+            servicePrincipalCredentialsId: 'infraci-stats-jenkins-io-fileshare-service-principal-writer',
+            fileShare: 'stats-jenkins-io',
+            fileShareStorageAccount: 'statsjenkinsio'
+          ]) {
+            sh '''
+            # Synchronize the File Share content
+            set +x
+            azcopy sync \
+              --skip-version-check \
+              --recursive=true \
+              --delete-destination=true \
+              ./dist/ "${FILESHARE_SIGNED_URL}"
+            '''
+          }
         }
       }
     }
