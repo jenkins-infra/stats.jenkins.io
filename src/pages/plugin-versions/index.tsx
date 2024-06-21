@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Stack, Box, Paper } from '@mui/material'
+import { Stack, Box, CircularProgress, Typography } from '@mui/material'
 import { pluginList, Plugin, ParsedData } from '../../data/plugins'
 import PluginSidebar from '../../components/PluginVersions/PluginSidebar'
 import PluginVersionsTable from '../../components/PluginVersions/PluginVersionsTable'
@@ -60,9 +60,41 @@ const PluginTable: React.FC = () => {
                     overflow: 'hidden',
                 }}
             >
-                <Paper elevation={16}>
-                    <PluginVersionsTable parsedData={parsedData!} loading={loading} selectedPlugin={selectedPlugin} />
-                </Paper>
+                {loading ? (
+                    <Box
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <CircularProgress />
+                        <Typography
+                            sx={{
+                                color: 'black',
+                                fontSize: '1.5rem',
+                                fontWeight: 'bold',
+                                fontFamily: 'Monospace',
+                                marginTop: '1rem',
+                            }}
+                        >
+                            Loading plugin data...
+                        </Typography>
+                    </Box>
+                ) : selectedPlugin && parsedData ? (
+                    <PluginVersionsTable parsedData={parsedData} loading={loading} selectedPlugin={selectedPlugin} />
+                ) : (
+                    <Typography
+                        sx={{
+                            color: 'black',
+                            fontSize: '1.5rem',
+                            fontWeight: 'bold',
+                            fontFamily: 'Monospace',
+                            marginTop: '1rem',
+                        }}
+                    >
+                        Select a plugin to view its versions
+                    </Typography>
+                )}
             </Box>
         </Stack>
     )
