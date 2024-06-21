@@ -16,7 +16,8 @@
 #versionsContainer tfoot th,
 #versionsContainer tfoot td {
     position: sticky;
-    background-color: aquamarine;
+    background-color: #212529;
+    color: white;
     z-index: 1;
     padding: 3px 6px;
 }

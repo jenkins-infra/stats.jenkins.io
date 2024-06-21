@@ -103,3 +103,10 @@ export const pluginList: { id: string }[] = [
     { id: 'agent-maintenance' },
     { id: 'agent-server-parameter' },
 ]
+
+export interface Cell {
+    version: string
+    count: number
+    opacity: number
+    title: string
+}
