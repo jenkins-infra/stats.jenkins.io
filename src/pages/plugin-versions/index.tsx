@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Stack, Paper, Box } from '@mui/material'
+import { Stack, Box } from '@mui/material'
 import { pluginList, Plugin, ParsedData } from '../../data/plugins'
 import PluginSidebar from '../../components/PluginVersions/PluginSidebar'
 import PluginVersionsTable from '../../components/PluginVersions/PluginVersionsTable'
@@ -41,8 +41,6 @@ const PluginTable: React.FC = () => {
             sx={{
                 backgroundColor: '#f0f0f0',
                 flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
                 height: '100vh',
                 width: '100vw',
                 overflow: 'hidden',
@@ -59,39 +57,19 @@ const PluginTable: React.FC = () => {
             <Box
                 sx={{
                     flexGrow: 1,
-                    height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
-                    padding: '16px',
+                    padding: '2rem',
+                    overflow: 'hidden',
                 }}
             >
-                <Paper
-                    elevation={16}
+                <Box
                     sx={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        backgroundColor: 'white',
-                        borderRadius: '1.5rem',
+                        overflow: 'auto',
                     }}
                 >
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            padding: '1rem',
-                            overflow: 'auto',
-                        }}
-                    >
-                        <PluginVersionsTable
-                            parsedData={parsedData!}
-                            loading={loading}
-                            selectedPlugin={selectedPlugin}
-                        />
-                    </Box>
-                </Paper>
+                    <PluginVersionsTable parsedData={parsedData!} loading={loading} selectedPlugin={selectedPlugin} />
+                </Box>
             </Box>
         </Stack>
     )

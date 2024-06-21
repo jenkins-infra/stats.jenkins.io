@@ -1,5 +1,3 @@
-// components/PluginVersions/PluginVersionsTable.tsx
-
 import React from 'react'
 import { Plugin, ParsedData } from '../../data/plugins'
 import './PluginVersionsTable.css'
@@ -19,7 +17,6 @@ const PluginVersionsTable: React.FC<PluginVersionsTableProps> = ({ parsedData, l
                 ) : (
                     parsedData && (
                         <div>
-                            {/* <h2>{parsedData.name}</h2> */}
                             <table>
                                 <thead>
                                     <tr>
