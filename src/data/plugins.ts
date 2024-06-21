@@ -23,8 +23,6 @@ export interface Plugin {
     id: string
 }
 
-// data/plugins.ts
-
 export interface ParsedData {
     name: string
     pluginVersions: string[]
@@ -35,10 +33,10 @@ export interface ParsedData {
             version: string
             count: number
             title: string
-            opacity: number // Make sure to include opacity in the type
+            opacity: number
         }[]
         total: number
-        totalTitle: string // Add totalTitle property
+        totalTitle: string
     }[]
     totalInstalls: number
 }
