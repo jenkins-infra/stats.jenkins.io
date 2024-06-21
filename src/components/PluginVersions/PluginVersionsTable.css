@@ -64,7 +64,6 @@
     background-color: #888;
 }
 
-/* Custom scrollbar styles */
 #versionsContainer::-webkit-scrollbar {
     width: 12px;
     height: 12px;
