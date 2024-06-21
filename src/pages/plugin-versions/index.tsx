@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Stack, Paper, Box } from '@mui/material'
 import { pluginList, Plugin, ParsedData } from '../../data/plugins'
-import PluginsTable from '../../components/PluginVersions/PluginsTable'
+import PluginSidebar from '../../components/PluginVersions/PluginSidebar'
 import PluginVersionsTable from '../../components/PluginVersions/PluginVersionsTable'
 import { parseData } from './parseData'
 import useGetPluginVersionData from '../../hooks/useGetPluginVersionData'
@@ -12,7 +12,7 @@ const PluginTable: React.FC = () => {
     const [parsedData, setParsedData] = useState<ParsedData | null>(null)
     const { versionData, loading } = useGetPluginVersionData(selectedPlugin ? selectedPlugin.id : null)
 
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setSearchTerm(event.target.value)
     }
 
@@ -42,55 +42,57 @@ const PluginTable: React.FC = () => {
                 backgroundColor: '#f0f0f0',
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 height: '100vh',
                 width: '100vw',
-                gap: '2rem',
                 overflow: 'hidden',
             }}
         >
-            <Paper
-                elevation={16}
+            <PluginSidebar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                handleSearch={handleSearch}
+                handleAutocompleteChange={handleAutocompleteChange}
+                filteredPlugins={filteredPlugins}
+                onPluginSelect={handlePluginSelect}
+            />
+            <Box
                 sx={{
-                    width: '20%',
-                    height: '90%',
+                    flexGrow: 1,
+                    height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    backgroundColor: 'white',
-                    borderRadius: '1.5rem',
+                    padding: '16px',
                 }}
             >
-                <PluginsTable
-                    searchTerm={searchTerm}
-                    handleSearch={handleSearch}
-                    handleAutocompleteChange={handleAutocompleteChange}
-                    filteredPlugins={filteredPlugins}
-                    onPluginSelect={handlePluginSelect}
-                />
-            </Paper>
-            <Paper
-                elevation={16}
-                sx={{
-                    width: '75%',
-                    height: '90%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    backgroundColor: 'white',
-                    borderRadius: '1.5rem',
-                }}
-            >
-                <Box
+                <Paper
+                    elevation={16}
                     sx={{
-                        flexGrow: 1,
-                        padding: '1rem',
-                        overflow: 'auto',
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        backgroundColor: 'white',
+                        borderRadius: '1.5rem',
                     }}
                 >
-                    <PluginVersionsTable parsedData={parsedData!} loading={loading} selectedPlugin={selectedPlugin} />
-                </Box>
-            </Paper>
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            padding: '1rem',
+                            overflow: 'auto',
+                        }}
+                    >
+                        <PluginVersionsTable
+                            parsedData={parsedData!}
+                            loading={loading}
+                            selectedPlugin={selectedPlugin}
+                        />
+                    </Box>
+                </Paper>
+            </Box>
         </Stack>
     )
 }
