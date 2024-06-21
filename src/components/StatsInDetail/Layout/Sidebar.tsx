@@ -119,6 +119,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         justifyContent: 'flex-end',
                         backgroundColor: 'inherit',
                         padding: '0.5rem',
+                        zIndex: 1,
                     }}
                 >
                     <IconButton
