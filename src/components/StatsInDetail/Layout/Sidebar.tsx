@@ -35,11 +35,18 @@ const ListText = styled(ListItemText)({
 })
 
 const AccordionSummaryBox = styled(AccordionSummary)({
-    backgroundColor: '#3A3A3A',
+    // backgroundColor: '#3A3A3A',
+    backgroundColor: 'red',
     color: 'white',
     width: '90%',
     margin: 'auto',
     borderRadius: '0.5rem',
+    height: '50px',
+    minHeight: '50px',
+    '&.Mui-expanded': {
+        height: '50px',
+        minHeight: '50px',
+    },
 })
 
 const StyledAccordion = styled(Accordion)({

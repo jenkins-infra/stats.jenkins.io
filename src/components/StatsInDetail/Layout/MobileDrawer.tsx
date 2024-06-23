@@ -40,6 +40,12 @@ const AccordionSummaryBox = styled(AccordionSummary)({
     width: '90%',
     margin: 'auto',
     borderRadius: '0.5rem',
+    height: '50px',
+    minHeight: '50px',
+    '&.Mui-expanded': {
+        height: '50px',
+        minHeight: '50px',
+    },
 })
 
 const StyledAccordion = styled(Accordion)({

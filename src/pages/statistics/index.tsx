@@ -70,7 +70,7 @@ const Statistics: React.FC = () => {
                                 elevation={16}
                                 sx={{
                                     width: '100%',
-                                    height: isMobile ? '80vh' : '83vh',
+                                    height: isMobile ? '80vh' : '78vh',
                                     display: 'flex',
                                     flexDirection: 'column',
                                     justifyContent: 'center',
