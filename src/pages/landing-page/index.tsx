@@ -65,8 +65,10 @@ const LandingPage: React.FC = () => {
                         padding: '6rem',
                         '@media (max-width: 768px)': {
                             padding: '2rem',
+                            marginTop: '2rem',
+                            marginBottom: '2rem',
                             flexDirection: 'column',
-                            gap: '2rem',
+                            gap: '1rem',
                         },
                     }}
                 >

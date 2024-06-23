@@ -2,18 +2,18 @@ import React from 'react'
 import {
     Box,
     Typography,
-    Drawer,
+    SwipeableDrawer,
     List,
     ListItemButton,
     ListItemText,
-    IconButton,
     Accordion,
     AccordionSummary,
     AccordionDetails,
     styled,
 } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { data } from '../../../data/statisticsData'
 
 const ListButton = styled(ListItemButton)({
@@ -45,12 +45,12 @@ const AccordionSummaryBox = styled(AccordionSummary)({
     '&.Mui-expanded': {
         height: '50px',
         minHeight: '50px',
-        margin: 'auto',
+        marginTop: '0',
     },
 })
 
 const StyledAccordion = styled(Accordion)({
-    backgroundColor: '#212529', //dark blue
+    backgroundColor: '#212529', // dark blue
     marginBottom: '10px',
     boxShadow: 'none',
     border: 'none',
@@ -59,8 +59,7 @@ const StyledAccordion = styled(Accordion)({
     },
 })
 
-const drawerWidthOpen = '20rem'
-const drawerWidthClosed = '4rem'
+const drawerBleeding = 56
 
 interface SidebarProps {
     sidebarOpen: boolean
@@ -73,7 +72,7 @@ interface SidebarProps {
     handleYearSelect: (year: string | null) => void
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+const MobileDrawer: React.FC<SidebarProps> = ({
     sidebarOpen,
     toggleSidebar,
     selectedChart,
@@ -88,62 +87,59 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     return (
         <>
-            <Box // Sidebar toggle button
-                sx={{
-                    width: '2.5rem',
-                    height: '100%',
-                    backgroundColor: '#212529',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    padding: '0.5rem',
-                    cursor: 'pointer',
-                }}
-                onClick={toggleSidebar}
-            >
-                <MenuIcon sx={{ color: 'white' }} />
-            </Box>
-
-            <Drawer
-                variant="temporary"
-                anchor="left"
+            <SwipeableDrawer
+                anchor="bottom"
                 open={sidebarOpen}
                 onClose={toggleSidebar}
+                onOpen={toggleSidebar}
+                swipeAreaWidth={drawerBleeding}
+                disableSwipeToOpen={false}
+                ModalProps={{
+                    keepMounted: true,
+                }}
                 sx={{
-                    width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
-                    flexShrink: 0,
                     '& .MuiDrawer-paper': {
-                        width: sidebarOpen ? drawerWidthOpen : drawerWidthClosed,
-                        boxSizing: 'border-box',
+                        height: `calc(50% - ${drawerBleeding}px)`,
+                        overflow: 'visible',
                         backgroundColor: '#212529',
-                        transition: 'width 0.3s',
-                        position: 'relative',
-                        left: 0,
                     },
                 }}
             >
                 <Box
                     sx={{
-                        position: 'sticky',
-                        top: 0,
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        backgroundColor: 'inherit',
-                        padding: '0.5rem',
-                        zIndex: 1,
+                        position: 'absolute',
+                        top: -drawerBleeding,
+                        borderTopLeftRadius: 8,
+                        borderTopRightRadius: 8,
+                        visibility: 'visible',
+                        right: 0,
+                        left: 0,
+                        backgroundColor: '#3A3A3A',
+                        height: drawerBleeding,
                     }}
                 >
-                    <IconButton
-                        color="inherit"
-                        aria-label="toggle drawer"
-                        edge="start"
-                        onClick={toggleSidebar}
-                        sx={{ color: 'white' }}
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: 8,
+                            left: 'calc(50% - 15px)',
+                        }}
                     >
-                        <MenuIcon />
-                    </IconButton>
+                        {sidebarOpen ? (
+                            <KeyboardArrowDownIcon sx={{ color: 'white' }} />
+                        ) : (
+                            <KeyboardDoubleArrowUpIcon sx={{ color: 'white' }} />
+                        )}
+                    </Box>
                 </Box>
-
-                {sidebarOpen && (
+                <Box
+                    sx={{
+                        px: 2,
+                        pb: 2,
+                        height: '100%',
+                        overflow: 'auto',
+                    }}
+                >
                     <List>
                         <StyledAccordion defaultExpanded>
                             <AccordionSummaryBox expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}>
@@ -164,10 +160,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                             </AccordionDetails>
                         </StyledAccordion>
                         <StyledAccordion defaultExpanded>
-                            <AccordionSummaryBox
-                                expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
-                                sx={{ backgroundColor: '#3A3A3A', color: 'white' }}
-                            >
+                            <AccordionSummaryBox expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}>
                                 <Typography>Monthly Analysis</Typography>
                             </AccordionSummaryBox>
                             <AccordionDetails sx={{ overflowY: 'auto' }}>
@@ -191,10 +184,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                             </AccordionDetails>
                         </StyledAccordion>
                     </List>
-                )}
-            </Drawer>
+                </Box>
+            </SwipeableDrawer>
         </>
     )
 }
 
-export default Sidebar
+export default MobileDrawer
