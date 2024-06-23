@@ -93,7 +93,7 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
             toolbox: {
                 feature: {
                     restore: {},
-                    saveAsImage: {},
+                    saveAsImage: { title: 'Save as SVG' },
                 },
             },
             dataZoom: [
@@ -126,7 +126,7 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
     useEffect(() => {
         if (!chartRef.current) return
 
-        const chart = echarts.init(chartRef.current)
+        const chart = echarts.init(chartRef.current, null, { renderer: 'svg' })
         chart.setOption(option)
 
         const handleResize = () => {
