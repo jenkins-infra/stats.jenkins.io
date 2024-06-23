@@ -47,30 +47,6 @@ pipeline {
       }
     }
 
-    stage('Deploy PR to preview site') {
-      when {
-        allOf{
-          changeRequest target: 'main'
-          // Only deploy from infra.ci.jenkins.io
-          expression { infra.isInfra() }
-        }
-      }
-      environment {
-        NETLIFY_AUTH_TOKEN = credentials('netlify-auth-token')
-      }
-      steps {
-        sh 'netlify-deploy --draft=true --siteName "stats-jenkins-io" --title "Preview deploy for ${CHANGE_ID}" --alias "deploy-preview-${CHANGE_ID}" -d ./dist'
-      }
-      post {
-        success {
-          recordDeployment('jenkins-infra', 'stats.jenkins.io', pullRequest.head, 'success', "https://deploy-preview-${CHANGE_ID}--stats-jenkins-io.netlify.app")
-        }
-        failure {
-          recordDeployment('jenkins-infra', 'stats.jenkins.io', pullRequest.head, 'failure', "https://deploy-preview-${CHANGE_ID}--stats-jenkins-io.netlify.app")
-        }
-      }
-    }
-
     stage('Deploy to production') {
       when {
         allOf{
