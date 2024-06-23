@@ -45,14 +45,18 @@ const AccordionSummaryBox = styled(AccordionSummary)({
     '&.Mui-expanded': {
         height: '50px',
         minHeight: '50px',
+        marginTop: '0',
     },
 })
 
 const StyledAccordion = styled(Accordion)({
     backgroundColor: '#212529', // dark blue
-    marginBottom: '8px',
+    marginBottom: '10px',
     boxShadow: 'none',
     border: 'none',
+    '&.Mui-expanded': {
+        margin: '0',
+    },
 })
 
 const drawerBleeding = 56

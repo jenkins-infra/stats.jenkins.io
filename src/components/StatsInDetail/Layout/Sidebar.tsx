@@ -45,14 +45,18 @@ const AccordionSummaryBox = styled(AccordionSummary)({
     '&.Mui-expanded': {
         height: '50px',
         minHeight: '50px',
+        margin: 'auto',
     },
 })
 
 const StyledAccordion = styled(Accordion)({
     backgroundColor: '#212529', //dark blue
-    marginBottom: '8px',
+    marginBottom: '10px',
     boxShadow: 'none',
     border: 'none',
+    '&.Mui-expanded': {
+        margin: '0',
+    },
 })
 
 const drawerWidthOpen = '20rem'
