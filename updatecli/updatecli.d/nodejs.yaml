@@ -31,7 +31,7 @@ sources:
 
 targets:
   updateToolVersions:
-    name: bump `nodejs` version to {{ source "packerImageNodeVersion" }} in .tool-versions
+    name: Bump `nodejs` version to {{ source "packerImageNodeVersion" }} in .tool-versions
     sourceid: packerImageNodeVersion
     kind: file
     spec:
