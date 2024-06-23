@@ -11,8 +11,9 @@ import {
     AccordionDetails,
     styled,
 } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { data } from '../../../data/statisticsData'
 
 const ListButton = styled(ListItemButton)({
@@ -76,23 +77,6 @@ const MobileDrawer: React.FC<SidebarProps> = ({
 
     return (
         <>
-            <Box
-                sx={{
-                    position: 'fixed',
-                    bottom: 0,
-                    width: '100%',
-                    backgroundColor: '#212529',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    padding: '0.5rem',
-                    cursor: 'pointer',
-                    zIndex: 1200,
-                }}
-                onClick={toggleSidebar}
-            >
-                <MenuIcon sx={{ color: 'white' }} />
-            </Box>
-
             <SwipeableDrawer
                 anchor="bottom"
                 open={sidebarOpen}
@@ -126,15 +110,17 @@ const MobileDrawer: React.FC<SidebarProps> = ({
                 >
                     <Box
                         sx={{
-                            width: 30,
-                            height: 6,
-                            backgroundColor: '#CCCCCC',
-                            borderRadius: 3,
                             position: 'absolute',
                             top: 8,
                             left: 'calc(50% - 15px)',
                         }}
-                    />
+                    >
+                        {sidebarOpen ? (
+                            <KeyboardArrowDownIcon sx={{ color: 'white' }} />
+                        ) : (
+                            <KeyboardDoubleArrowUpIcon sx={{ color: 'white' }} />
+                        )}
+                    </Box>
                 </Box>
                 <Box
                     sx={{
