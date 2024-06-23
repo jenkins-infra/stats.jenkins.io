@@ -12,6 +12,13 @@ pipeline {
 
   stages {
     stage('Install dependencies') {
+      when {
+        allOf{
+          changeRequest target: 'main'
+          // Only deploy from infra.ci.jenkins.io
+          expression { infra.isInfra() }
+        }
+      }
       steps {
         sh '''
         asdf install
@@ -21,6 +28,13 @@ pipeline {
     }
 
     stage('Build') {
+      when {
+        allOf{
+          changeRequest target: 'main'
+          // Only deploy from infra.ci.jenkins.io
+          expression { infra.isInfra() }
+        }
+      }
       steps {
         sh '''
         npm run build
