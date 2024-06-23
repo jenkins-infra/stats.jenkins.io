@@ -35,8 +35,7 @@ const ListText = styled(ListItemText)({
 })
 
 const AccordionSummaryBox = styled(AccordionSummary)({
-    // backgroundColor: '#3A3A3A',
-    backgroundColor: 'red',
+    backgroundColor: '#3A3A3A',
     color: 'white',
     width: '90%',
     margin: 'auto',
