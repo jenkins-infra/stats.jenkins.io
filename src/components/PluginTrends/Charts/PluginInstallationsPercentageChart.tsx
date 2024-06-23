@@ -163,7 +163,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
             toolbox: {
                 feature: {
                     restore: {},
-                    saveAsImage: {},
+                    saveAsImage: { title: 'Save as SVG' },
                 },
             },
             series: [
@@ -202,7 +202,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current)
+        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

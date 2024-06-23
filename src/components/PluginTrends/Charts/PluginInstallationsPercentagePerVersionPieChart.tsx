@@ -82,7 +82,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
             toolbox: {
                 feature: {
                     saveAsImage: {
-                        title: 'Save as Image',
+                        title: 'Save as SVG',
                     },
                 },
             },
@@ -92,7 +92,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
     useEffect(() => {
         if (!chartRef.current) return
 
-        const chart = echarts.init(chartRef.current)
+        const chart = echarts.init(chartRef.current, null, { renderer: 'svg' })
         chart.setOption(option)
 
         const handleResize = () => {
