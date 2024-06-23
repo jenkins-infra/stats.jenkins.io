@@ -55,24 +55,12 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                     color: '#fff',
                 },
             },
-            legend: {
-                type: 'scroll', // Make the legend scrollable
-                orient: 'vertical',
-                left: 'left',
-                padding: [20, 20, 20, 20],
-                data: formattedData.map((item) => item.name),
-                textStyle: {
-                    fontSize: 10,
-                },
-                scrollBehavior: 'smooth',
-            },
             series: [
                 {
                     name: 'Installations Percentage',
                     type: 'pie',
                     radius: '50%',
                     data: formattedData,
-                    startAngle: 300,
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -94,7 +82,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
             toolbox: {
                 feature: {
                     saveAsImage: {
-                        title: 'Save as Image',
+                        title: 'Save as SVG',
                     },
                 },
             },
@@ -104,7 +92,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
     useEffect(() => {
         if (!chartRef.current) return
 
-        const chart = echarts.init(chartRef.current)
+        const chart = echarts.init(chartRef.current, null, { renderer: 'svg' })
         chart.setOption(option)
 
         const handleResize = () => {

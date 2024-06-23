@@ -23,7 +23,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             .map((row) => {
                 const year = row[0].slice(0, 4)
                 const month = row[0].slice(4, 6)
-                return `${year}-${month}`
+                return `${month}-${year}`
             })
 
         const values = data.map((row) => parseInt(row[1], 10)).filter((value) => !isNaN(value))
@@ -37,7 +37,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             title: {
                 text: title,
                 left: 'center',
-                textStyle: { fontSize: 20, fontWeight: 'bold' },
+                textStyle: { fontSize: 18, fontWeight: 'bold' },
             },
             tooltip: {
                 trigger: 'axis',
@@ -55,24 +55,23 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 },
             },
             xAxis: {
-                type: 'time',
+                type: 'category',
                 data: chartData.dates,
-                axisLabel: {
-                    formatter: (value: string) => {
-                        const date = new Date(value)
-                        const year = date.getFullYear()
-                        return year.toString()
-                    },
-                },
+                axisLabel: {},
                 axisTick: { show: true, alignWithLabel: true },
             },
             yAxis: {
                 type: 'value',
+                axisLabel: {
+                    fontSize: 12,
+                    showMinLabel: false,
+                    align: 'middle',
+                },
                 splitLine: { lineStyle: { type: 'dashed' } },
             },
             series: [
                 {
-                    data: chartData.dates.map((date, index) => [date, chartData.values[index]]),
+                    data: chartData.values,
                     type: 'line',
                     itemStyle: { color: '#007FFF' },
                     smooth: true,
@@ -103,7 +102,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                         iconStyle: {},
                     },
                     saveAsImage: {
-                        title: 'Save as Image',
+                        title: 'Save as SVG',
                     },
                     myCSVDownload: {
                         show: true,
@@ -114,7 +113,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                     magicType: { show: false, type: ['bar', 'line'] },
                 },
             },
-            grid: { left: '30', right: '40', bottom: '70', top: '100', containLabel: true },
+            grid: { left: '0', right: '10', bottom: '70', top: '90', containLabel: true },
         }
 
         if (title.toLowerCase().includes('plugins')) {
@@ -137,7 +136,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         if (data.length === 0) return
 
         const chartDom = document.getElementById(title) as HTMLElement
-        const myChart = echarts.init(chartDom)
+        const myChart = echarts.init(chartDom, null, { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

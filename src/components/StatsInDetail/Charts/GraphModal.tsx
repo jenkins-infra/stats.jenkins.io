@@ -54,7 +54,6 @@ const GraphModal: React.FC<GraphModalProps> = ({ open, onClose, type, year, mont
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: '3rem',
-                marginLeft: '4rem',
             }}
         >
             <Paper

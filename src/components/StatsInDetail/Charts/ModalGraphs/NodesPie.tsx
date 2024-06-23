@@ -50,7 +50,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
             toolbox: {
                 feature: {
                     saveAsImage: {
-                        title: 'Save as Image',
+                        title: 'Save as SVG',
                     },
                     myCSVDownload: {
                         show: true,
@@ -101,7 +101,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current)
+        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()
