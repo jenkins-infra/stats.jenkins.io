@@ -1,4 +1,3 @@
-// src/components/StatsInDetail/Layout/Drawer.tsx
 import React from 'react'
 import {
     Box,

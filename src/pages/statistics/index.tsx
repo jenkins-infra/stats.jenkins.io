@@ -1,4 +1,3 @@
-// src/pages/Statistics.tsx
 import React from 'react'
 import { Box, Paper, Stack } from '@mui/material'
 import Chart from '../../components/StatsInDetail/Charts/OverallTrendsChart'
