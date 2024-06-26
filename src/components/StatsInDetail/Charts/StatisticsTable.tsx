@@ -21,7 +21,6 @@ interface StatisticsTableProps {
 const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [modalData, setModalData] = useState<{ type: GraphType; month: string; year: string } | null>(null)
-    const isMobile = useIsMobile()
 
     const handleOpenModal = (type: GraphType, month: string, year: string) => {
         setModalData({ type, month, year })
