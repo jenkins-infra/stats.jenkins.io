@@ -65,7 +65,7 @@ const PluginTable: React.FC = () => {
             >
                 <Box
                     sx={{
-                        overflow: 'scroll',
+                        overflow: 'auto',
                     }}
                 >
                     <PluginVersionsTable parsedData={parsedData!} loading={loading} selectedPlugin={selectedPlugin} />
