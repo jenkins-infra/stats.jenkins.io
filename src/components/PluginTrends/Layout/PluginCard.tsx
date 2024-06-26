@@ -21,7 +21,12 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
             (sum, installations) => sum + installations,
             0
         )
-        return (totalInstallations / 1000).toFixed(1) + 'K'
+        return (
+            (totalInstallations / 1000).toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1,
+            }) + 'K'
+        )
     }, [plugin.chartData])
 
     return (
