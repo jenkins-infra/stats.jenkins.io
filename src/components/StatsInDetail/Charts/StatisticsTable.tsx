@@ -5,7 +5,6 @@ import GraphModal from './GraphModal'
 import { GraphType } from '../../../data/types'
 import { InsertChartOutlined } from '@mui/icons-material'
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
-import useIsMobile from '../../../hooks/useIsMobile'
 
 // Utility function to get the month abbreviation
 const getMonth = (month: string) => {
