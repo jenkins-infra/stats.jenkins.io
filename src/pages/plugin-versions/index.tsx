@@ -18,6 +18,7 @@ const PluginTable: React.FC = () => {
     }
 
     const handleAutocompleteChange = (_event: unknown, value: string | null) => {
+
         setSelectedPlugin(pluginList.find((p) => p.id === value) || null)
     }
 
@@ -29,11 +30,13 @@ const PluginTable: React.FC = () => {
         setSelectedPlugin(null)
         setSearchTerm('')
         setParsedData(null)
+
     }
 
     useEffect(() => {
         if (selectedPlugin && versionData) {
             setParsedData(parseData(versionData, selectedPlugin.id))
+
         } else {
             setParsedData(null)
         }

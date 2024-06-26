@@ -2,12 +2,11 @@ import React from 'react'
 import { Box, Paper, Stack } from '@mui/material'
 import Chart from '../../components/StatsInDetail/Charts/OverallTrendsChart'
 import StatisticsTable from '../../components/StatsInDetail/Charts/StatisticsTable'
-import Sidebar from '../../components/StatsInDetail/Layout/Sidebar'
-import MobileDrawer from '../../components/StatsInDetail/Layout/MobileDrawer'
 import useSidebarState from '../../hooks/useSidebarState'
 import useSelectionState from '../../hooks/useSelectionState'
 import useIsMobile from '../../hooks/useIsMobile'
 import JVMChart from '../../components/StatsInDetail/Charts/JVMChart'
+import Drawer from '../../components/StatsInDetail/Layout/Drawer'
 
 const chartTitles: Record<string, string> = {
     plugins: 'Monthly Plugins Usage',
@@ -42,25 +41,15 @@ const Statistics: React.FC = () => {
                     backgroundColor: '#d5d5d5',
                 }}
             >
-                {isMobile ? (
-                    <MobileDrawer
-                        sidebarOpen={sidebarOpen}
-                        toggleSidebar={toggleSidebar}
-                        selectedChart={selectedChart}
-                        selectedYear={selectedYear}
-                        handleChartSelect={handleChartSelect}
-                        handleYearSelect={handleYearSelect}
-                    />
-                ) : (
-                    <Sidebar
-                        sidebarOpen={sidebarOpen}
-                        toggleSidebar={toggleSidebar}
-                        selectedChart={selectedChart}
-                        selectedYear={selectedYear}
-                        handleChartSelect={handleChartSelect}
-                        handleYearSelect={handleYearSelect}
-                    />
-                )}
+                <Drawer
+                    sidebarOpen={sidebarOpen}
+                    toggleSidebar={toggleSidebar}
+                    selectedChart={selectedChart}
+                    selectedYear={selectedYear}
+                    handleChartSelect={handleChartSelect}
+                    handleYearSelect={handleYearSelect}
+                    isMobile={isMobile}
+                />
 
                 {selectedTab === 'monthly' && <StatisticsTable year={selectedYear} />}
                 {selectedTab === 'overall' && (
@@ -70,7 +59,7 @@ const Statistics: React.FC = () => {
                                 elevation={16}
                                 sx={{
                                     width: '100%',
-                                    height: isMobile ? '80vh' : '78vh',
+                                    maxHeight: isMobile ? 'calc(100vh - 180px)' : 'calc(100vh - 128px)',
                                     display: 'flex',
                                     flexDirection: 'column',
                                     justifyContent: 'center',
