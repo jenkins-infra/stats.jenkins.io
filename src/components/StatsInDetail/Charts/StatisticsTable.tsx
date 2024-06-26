@@ -5,6 +5,7 @@ import GraphModal from './GraphModal'
 import { GraphType } from '../../../data/types'
 import { InsertChartOutlined } from '@mui/icons-material'
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
+import useIsMobile from '../../../hooks/useIsMobile'
 
 // Utility function to get the month abbreviation
 const getMonth = (month: string) => {
@@ -20,6 +21,7 @@ interface StatisticsTableProps {
 const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [modalData, setModalData] = useState<{ type: GraphType; month: string; year: string } | null>(null)
+    const isMobile = useIsMobile()
 
     const handleOpenModal = (type: GraphType, month: string, year: string) => {
         setModalData({ type, month, year })
