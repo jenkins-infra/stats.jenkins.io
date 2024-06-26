@@ -68,12 +68,7 @@ const PluginVersionsTable: React.FC<PluginVersionsTableProps> = ({ parsedData, l
                         </div>
                     )
                 )
-            ) : (
-                <>
-                    <h1>Plugin Versions</h1>
-                    <p>Please click on a plugin in the list available from the side navbar to view its versions</p>
-                </>
-            )}
+            ) : null}
         </div>
     )
 }
