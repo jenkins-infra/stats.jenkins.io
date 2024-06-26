@@ -51,7 +51,20 @@ const Statistics: React.FC = () => {
                     isMobile={isMobile}
                 />
 
-                {selectedTab === 'monthly' && <StatisticsTable year={selectedYear} />}
+                {selectedTab === 'monthly' && (
+                    <Paper
+                        elevation={16}
+                        sx={{
+                            borderRadius: '1rem',
+                            margin: '2rem',
+                            marginBottom: 'auto',
+                            maxHeight: isMobile ? 'calc(100vh - 168px)' : 'calc(100vh - 100px)',
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <StatisticsTable year={selectedYear} />
+                    </Paper>
+                )}
                 {selectedTab === 'overall' && (
                     <>
                         {selectedChart && (
