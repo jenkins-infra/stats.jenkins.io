@@ -7,6 +7,7 @@ import './index.css'
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './theme/theme.ts'
 import PluginTrends from './pages/plugin-trends/index.tsx'
+import PluginVersions from './pages/plugin-versions/index.tsx'
 import NavBar from './components/Layout/NavBar.tsx'
 import { Stack } from '@mui/material'
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
     {
         path: '/plugin-trends',
         element: <PluginTrends />,
+    },
+    {
+        path: '/plugin-versions',
+        element: <PluginVersions />,
     },
 ])
 

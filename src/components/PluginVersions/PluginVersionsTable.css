@@ -1,0 +1,85 @@
+#versionsContainer {
+    font-family: monospace;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    color: black;
+}
+
+#versionsContainer table {
+    border-collapse: collapse;
+    width: max-content;
+    table-layout: fixed;
+}
+
+#versionsContainer thead th,
+#versionsContainer tfoot th,
+#versionsContainer tfoot td {
+    position: sticky;
+    background-color: #212529;
+    color: white;
+    z-index: 1;
+    padding: 3px 6px;
+}
+
+#versionsContainer thead th {
+    top: 0;
+}
+
+#versionsContainer tfoot th,
+#versionsContainer tfoot td {
+    bottom: 0;
+}
+
+#versionsContainer table td,
+#versionsContainer table th {
+    text-align: center;
+    padding: 3px 6px;
+    border: 0;
+    max-width: 150px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+#versionsContainer tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+#versionsContainer tr:nth-child(even) {
+    background-color: #eee;
+}
+
+#versionsContainer tr.lts:nth-child(odd) {
+    background-color: #ccc;
+}
+
+#versionsContainer tr.lts:nth-child(even) {
+    background-color: #bbb;
+}
+
+#versionsContainer tr:nth-child(odd) td.subtotal {
+    background-color: #999;
+}
+
+#versionsContainer tr:nth-child(even) td.subtotal {
+    background-color: #888;
+}
+
+#versionsContainer::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+#versionsContainer::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 3px solid #f0f0f0;
+}
+
+#versionsContainer::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+#versionsContainer::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+}
