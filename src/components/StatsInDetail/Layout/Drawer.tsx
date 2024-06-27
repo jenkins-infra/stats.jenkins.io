@@ -33,8 +33,10 @@ const ListButton = styled(ListItemButton)({
 
 const ListText = styled(ListItemText)({
     color: 'white',
-    fontFamily: 'Georgia',
+    fontFamily: 'Monospace',
     fontWeight: 'bold',
+    marginTop: '2px',
+    marginBottom: '2px',
 })
 
 const AccordionSummaryBox = styled(AccordionSummary)({
