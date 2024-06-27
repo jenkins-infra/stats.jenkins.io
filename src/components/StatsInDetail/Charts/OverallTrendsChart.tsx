@@ -3,7 +3,9 @@ import * as echarts from 'echarts'
 import useCSVData from '../../../hooks/useCSVData'
 import usePluginCount from '../../../hooks/usePluginCount'
 import { handleCSVDownload } from '../../../utils/csvUtils'
+import monospaceTheme from '../../../theme/monospaceTheme'
 
+echarts.registerTheme('monospace', monospaceTheme)
 interface ChartProps {
     csvPath: string
     title: string
@@ -124,6 +126,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 style: {
                     text: `Available Plugins:  ${pluginCount.toLocaleString()}`,
                     fontSize: 14,
+                    fontFamily: 'monospace',
                     fontWeight: 'bold',
                     fill: 'blue',
                 },
@@ -136,7 +139,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         if (data.length === 0) return
 
         const chartDom = document.getElementById(title) as HTMLElement
-        const myChart = echarts.init(chartDom, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartDom, 'monospace', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

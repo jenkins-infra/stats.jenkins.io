@@ -2,11 +2,14 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
+import monospaceTheme from '../../../../theme/monospaceTheme.ts'
 
 interface JobsGraphProps {
     year: string
     month: string
 }
+
+echarts.registerTheme('monospace', monospaceTheme)
 
 const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
@@ -63,7 +66,7 @@ const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
                 axisTick: { show: true },
                 name: `Job Type (${xData.length.toLocaleString()} Jobs)`,
                 nameLocation: 'middle',
-                nameGap: 80,
+                nameGap: 95,
                 nameTextStyle: { fontWeight: 'bold' },
             },
             yAxis: {
@@ -110,14 +113,14 @@ const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
                     },
                 },
             },
-            grid: { left: '20', right: '30', bottom: '75', top: '60', containLabel: true },
+            grid: { left: '20', right: '30', bottom: '85', top: '60', containLabel: true },
         }
     }, [title, totalSum, xData, yData, downloadCSV])
 
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'monospace', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

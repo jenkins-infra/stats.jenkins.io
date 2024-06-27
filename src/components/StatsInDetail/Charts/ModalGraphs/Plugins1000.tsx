@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
+import monospaceTheme from '../../../../theme/monospaceTheme'
 
+echarts.registerTheme('monospace', monospaceTheme)
 interface PluginsGraph1000Props {
     year: string
     month: string
@@ -67,7 +69,7 @@ const PluginsGraph1000: React.FC<PluginsGraph1000Props> = ({ year, month }) => {
                 axisTick: { show: true },
                 name: `Plugin Name (${xData.length.toLocaleString()} plugins)`,
                 nameLocation: 'middle',
-                nameGap: 85,
+                nameGap: 95,
                 nameTextStyle: { fontWeight: 'bold' },
             },
             yAxis: {
@@ -114,14 +116,14 @@ const PluginsGraph1000: React.FC<PluginsGraph1000Props> = ({ year, month }) => {
                     },
                 },
             },
-            grid: { left: '20', right: '30', bottom: '75', top: '60', containLabel: true },
+            grid: { left: '20', right: '30', bottom: '85', top: '60', containLabel: true },
         }
     }, [title, totalSum, xData, yData, downloadCSV])
 
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'monospace', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

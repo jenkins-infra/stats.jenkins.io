@@ -81,6 +81,7 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                                     sx={{
                                         fontSize: '1.25rem',
                                         fontWeight: 'bold',
+                                        fontFamily: 'Monospace',
                                     }}
                                 >
                                     {plugin.chartData.name}
