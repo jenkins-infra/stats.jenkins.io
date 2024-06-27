@@ -37,11 +37,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
         <>
             <TableContainer
                 component={Paper}
-                elevation={16}
                 sx={{
-                    borderRadius: '1rem',
-                    margin: '2rem',
-                    marginBottom: 'auto',
                     maxHeight: 'calc(100vh - 124px)',
                     overflow: 'auto',
                 }}
@@ -59,7 +55,6 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                 backgroundColor: '#212529',
                                 color: 'white',
                                 fontWeight: 'bold',
-                                // whiteSpace: 'nowrap',
                             },
                         }}
                     >
