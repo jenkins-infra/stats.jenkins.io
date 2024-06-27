@@ -139,7 +139,7 @@ const LandingPage: React.FC = () => {
                         >
                             <StatsLink to={'/statistics'}>1. Statistics in Detail</StatsLink>
                             <StatsLink to={'/plugin-trends'}>2. Plugin Installation Trend</StatsLink>
-                            <StatsLink to="https://www.jenkins.io">3. Plugin Versions by Jenkins Version</StatsLink>
+                            <StatsLink to={'/plugin-versions'}>3. Plugin Versions by Jenkins Version</StatsLink>
                             <StatsLink to="https://www.jenkins.io">4. Jenkins Plugin Dependency Graph</StatsLink>
                         </Stack>
                     </Box>
