@@ -22,16 +22,25 @@ const StatsLink = styled(NavLink)({
     color: 'black',
     fontSize: '1rem',
     fontFamily: 'Monospace',
+    backgroundColor: 'rgba(240, 240, 240, 0.8)',
+    padding: '0.5rem',
+    paddingLeft: '1rem',
+    borderRadius: '0.75rem',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    transition: 'all 0.3s ease-in-out',
     '&:hover': {
-        color: 'blue',
+        color: 'white',
         fontWeight: 'bold',
+        backgroundImage: 'linear-gradient(215deg, #005BBB 0%, #80D0FF 74%)',
+        transform: 'scale(1.05)',
     },
     '@media (max-width: 1024px)': {
-        fontSize: '0.8rem',
+        fontSize: '0.9rem',
         marginBottom: '0.8rem',
     },
     '@media (max-width: 768px)': {
-        fontSize: '0.7rem',
+        fontSize: '0.8rem',
         marginBottom: '0.5rem',
     },
 })
@@ -137,10 +146,10 @@ const LandingPage: React.FC = () => {
                                 alignItems: 'center',
                             }}
                         >
-                            <StatsLink to={'/statistics'}>1. Statistics in Detail</StatsLink>
-                            <StatsLink to={'/plugin-trends'}>2. Plugin Installation Trend</StatsLink>
-                            <StatsLink to={'/plugin-versions'}>3. Plugin Versions by Jenkins Version</StatsLink>
-                            <StatsLink to="https://www.jenkins.io">4. Jenkins Plugin Dependency Graph</StatsLink>
+                            <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
+                            <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
+                            <StatsLink to={'/plugin-versions'}>Plugin Versions by Jenkins Version</StatsLink>
+                            <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
                         </Stack>
                     </Box>
                 </Paper>
