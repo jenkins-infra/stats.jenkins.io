@@ -32,7 +32,7 @@ const StatsLink = styled(NavLink)({
     '&:hover': {
         color: 'white',
         fontWeight: 'bold',
-        backgroundImage: 'linear-gradient(215deg, #005BBB 0%, #80D0FF 74%)',
+        backgroundColor: '#212529',
         transform: 'scale(1.05)',
     },
     '@media (max-width: 1024px)': {
