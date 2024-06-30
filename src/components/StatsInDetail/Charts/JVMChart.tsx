@@ -2,9 +2,9 @@ import React, { useEffect, useMemo } from 'react'
 import { Typography } from '@mui/material'
 import * as echarts from 'echarts'
 import useJVMData from '../../../hooks/useJVMData'
-import monospaceTheme from '../../../theme/monospaceTheme'
+import customTheme from '../../../theme/customTheme'
 
-echarts.registerTheme('monospace', monospaceTheme)
+echarts.registerTheme('customTheme', customTheme)
 interface JVMChartProps {
     title: string
     width?: string
@@ -95,7 +95,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
         if (!data) return
 
         const chartDom = document.getElementById('jvm-chart') as HTMLElement
-        const myChart = echarts.init(chartDom, 'monospace', { renderer: 'svg' })
+        const myChart = echarts.init(chartDom, 'customTheme', { renderer: 'svg' })
         myChart.setOption(chartOptions)
 
         const handleResize = () => myChart.resize()

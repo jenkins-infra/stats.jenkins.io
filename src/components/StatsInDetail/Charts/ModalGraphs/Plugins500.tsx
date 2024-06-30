@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
-import monospaceTheme from '../../../../theme/monospaceTheme'
+import customTheme from '../../../../theme/customTheme'
 
-echarts.registerTheme('monospace', monospaceTheme)
+echarts.registerTheme('customTheme', customTheme)
 
 interface PluginsGraph500Props {
     year: string
@@ -124,7 +124,7 @@ const PluginsGraph500: React.FC<PluginsGraph500Props> = ({ year, month }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, 'monospace', { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

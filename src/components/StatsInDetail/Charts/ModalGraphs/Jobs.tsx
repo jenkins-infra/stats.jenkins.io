@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
-import monospaceTheme from '../../../../theme/monospaceTheme.ts'
+import customTheme from '../../../../theme/customTheme.ts'
 
 interface JobsGraphProps {
     year: string
     month: string
 }
 
-echarts.registerTheme('monospace', monospaceTheme)
+echarts.registerTheme('customTheme', customTheme)
 
 const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
@@ -120,7 +120,7 @@ const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, 'monospace', { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

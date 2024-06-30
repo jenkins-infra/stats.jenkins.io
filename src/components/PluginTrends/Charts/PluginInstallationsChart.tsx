@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../data/plugins'
-import monospaceTheme from '../../../theme/monospaceTheme'
+import customTheme from '../../../theme/customTheme'
 
-echarts.registerTheme('monospace', monospaceTheme)
+echarts.registerTheme('customTheme', customTheme)
 
 const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
@@ -129,7 +129,7 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, 'monospace', { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()
