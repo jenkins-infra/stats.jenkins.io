@@ -18,13 +18,16 @@ const fadeIn = keyframes`
 const StatsLink = styled(NavLink)({
     display: 'block',
     width: '100%',
+    // boxSizing: 'border-box',
     marginBottom: '1rem',
     color: 'black',
     fontSize: '1rem',
-    fontFamily: 'Monospace',
+    fontFamily:
+        'system-ui, "Segoe UI", roboto, "Noto Sans", oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     backgroundColor: 'rgba(240, 240, 240, 0.8)',
     padding: '0.5rem',
     paddingLeft: '1rem',
+    marginLeft: '0.5rem',
     borderRadius: '0.75rem',
     backdropFilter: 'blur(10px)',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -32,7 +35,7 @@ const StatsLink = styled(NavLink)({
     '&:hover': {
         color: 'white',
         fontWeight: 'bold',
-        backgroundImage: 'linear-gradient(215deg, #005BBB 0%, #80D0FF 74%)',
+        backgroundColor: '#212529',
         transform: 'scale(1.05)',
     },
     '@media (max-width: 1024px)': {
@@ -81,9 +84,8 @@ const LandingPage: React.FC = () => {
                         borderRadius: '1rem',
                         marginTop: '4rem',
                         marginBottom: '4rem',
-                        gap: '5rem',
+                        gap: '3.5rem',
                         backgroundColor: 'white',
-
                         padding: '6rem',
                         '@media (max-width: 1024px)': {
                             // gap: '5rem',
@@ -133,12 +135,10 @@ const LandingPage: React.FC = () => {
                                 },
                             }}
                         >
-                            <Typography variant="h4" sx={{ fontFamily: 'Monospace', fontWeight: 'bold' }}>
+                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                                 Jenkins Statistics
                             </Typography>
-                            <Typography sx={{ fontFamily: 'Monospace' }}>
-                                Graphical representation of numbers and information around Jenkins
-                            </Typography>
+                            <Typography>Graphical representation of numbers and information around Jenkins</Typography>
                         </Box>
                         <Stack
                             sx={{

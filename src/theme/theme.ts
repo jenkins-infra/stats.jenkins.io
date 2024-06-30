@@ -2,7 +2,8 @@ import { createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
     typography: {
-        fontFamily: 'Monospace, roboto',
+        fontFamily:
+            'system-ui, "Segoe UI", roboto, "Noto Sans", oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         h3: {
             fontSize: '3rem',
             '@media (max-width:1024px)': {
