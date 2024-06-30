@@ -135,7 +135,7 @@ const LandingPage: React.FC = () => {
                                 },
                             }}
                         >
-                            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                            <Typography variant="h4" sx={{ fontFamily: 'Georgia, sarif', fontWeight: 'bold' }}>
                                 Jenkins Statistics
                             </Typography>
                             <Typography>Graphical representation of numbers and information around Jenkins</Typography>
