@@ -33,7 +33,6 @@ const ListButton = styled(ListItemButton)({
 
 const ListText = styled(ListItemText)({
     color: 'white',
-    fontFamily: 'Georgia',
     fontWeight: 'bold',
 })
 
