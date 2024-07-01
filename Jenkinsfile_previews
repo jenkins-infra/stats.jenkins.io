@@ -10,6 +10,10 @@ pipeline {
     label 'linux-arm64-docker || arm64linux'
   }
 
+  environment {
+    INFRASTATISTICS_LOCATION = 'src/data/infra-statistics'
+  }
+
   stages {
     stage('Install dependencies') {
       when {
@@ -24,6 +28,12 @@ pipeline {
         asdf install
         npm install
         '''
+      }
+    }
+
+    stage('Retrieve data from infra-statistics') {
+      steps {
+        sh './retrieve-infra-statistics-data.sh'
       }
     }
 

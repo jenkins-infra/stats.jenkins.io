@@ -35,11 +35,12 @@ If you are developing a production application, we recommend updating the config
 
 To build the website locally, follow these steps:
 
-1. **Clone the repository:**
+1. **Clone the repository and retrieve data from infra-statistics:**
 
     ```sh
     git clone https://github.com/jenkins-infra/stats.jenkins.io.git
     cd stats.jenkins.io
+    ./retrieve-infra-statistics-data.sh
     ```
 
 2. **Install dependencies:**
