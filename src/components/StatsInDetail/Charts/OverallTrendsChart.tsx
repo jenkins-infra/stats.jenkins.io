@@ -6,6 +6,7 @@ import { handleCSVDownload } from '../../../utils/csvUtils'
 import customTheme from '../../../theme/customTheme'
 
 echarts.registerTheme('customTheme', customTheme)
+
 interface ChartProps {
     csvPath: string
     title: string

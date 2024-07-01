@@ -13,7 +13,7 @@ interface PluginsGraph500Props {
 
 const PluginsGraph500: React.FC<PluginsGraph500Props> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/${year}${month}-top-plugins500.csv`
+    const csvPath = `src/data/infra-statistics/jenkins-stats/svg/${year}${month}-top-plugins500.csv`
     console.log(csvPath)
     const { data, error } = useCSVData(csvPath)
 

@@ -13,7 +13,7 @@ echarts.registerTheme('customTheme', customTheme)
 
 const JobsGraph: React.FC<JobsGraphProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/${year}${month}-jobs.csv`
+    const csvPath = `src/data/infra-statistics/jenkins-stats/svg/${year}${month}-jobs.csv`
     const { data, error } = useCSVData(csvPath)
 
     const xData = useMemo(() => data.map((row) => row[0]), [data])

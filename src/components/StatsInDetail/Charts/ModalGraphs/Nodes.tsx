@@ -12,7 +12,7 @@ interface NodesGraphProps {
 
 const NodesGraph: React.FC<NodesGraphProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/${year}${month}-nodes.csv`
+    const csvPath = `src/data/infra-statistics/jenkins-stats/svg/${year}${month}-nodes.csv`
     const { data, error } = useCSVData(csvPath)
 
     const xData = useMemo(() => data.map((row) => row[0]), [data])

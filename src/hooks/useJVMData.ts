@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 interface JVMStatsPerMonth {
     [timestamp: string]: {
@@ -25,10 +24,8 @@ const useJVMData = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<JVMDataResponse>(
-                    'https://stats.jenkins.io/plugin-installation-trend/jvms.json'
-                )
-                const jvmData = response.data
+                const response = await fetch(`/src/data/infra-statistics/plugin-installation-trend/jvms.json`)
+                const jvmData: JVMDataResponse = await response.json()
                 const parsedData: ParsedJVMData = {}
 
                 for (const [timestamp, jvms] of Object.entries(jvmData.jvmStatsPerMonth)) {
