@@ -7,6 +7,9 @@ import useSelectionState from '../../hooks/useSelectionState'
 import useIsMobile from '../../hooks/useIsMobile'
 import JVMChart from '../../components/StatsInDetail/Charts/JVMChart'
 import Drawer from '../../components/StatsInDetail/Layout/Drawer'
+import useCSVData from '../../hooks/useCSVData'
+import usePluginCount from '../../hooks/usePluginCount'
+import useJVMData from '../../hooks/useJVMData'
 
 const chartTitles: Record<string, string> = {
     plugins: 'Monthly Plugins Usage',
@@ -20,6 +23,11 @@ const Statistics: React.FC = () => {
     const { sidebarOpen, toggleSidebar } = useSidebarState()
     const { selectedChart, selectedTab, selectedYear, handleChartSelect, handleYearSelect } = useSelectionState()
     const isMobile = useIsMobile()
+
+    const csvFileName = `total-${selectedChart}`
+    const { data: csvData } = useCSVData(csvFileName)
+    const { pluginCount } = usePluginCount()
+    const { data: jvmData } = useJVMData()
 
     return (
         <Stack
@@ -88,12 +96,13 @@ const Statistics: React.FC = () => {
                                 }}
                             >
                                 {selectedChart === 'JVMs' ? (
-                                    <JVMChart title={chartTitles[selectedChart]} />
+                                    <JVMChart title={chartTitles[selectedChart]} data={jvmData} />
                                 ) : (
                                     <Chart
                                         key={`${selectedChart}`}
-                                        csvPath={`https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/total-${selectedChart}.csv`}
+                                        csvData={csvData}
                                         title={chartTitles[selectedChart]}
+                                        pluginCount={pluginCount}
                                     />
                                 )}
                             </Paper>
