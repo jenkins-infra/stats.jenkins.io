@@ -33,12 +33,7 @@ pipeline {
 
     stage('Retrieve data from infra-statistics') {
       steps {
-        sh '''
-        curl --silent --fail --output infra-statistics-gh-pages.zip --location "https://github.com/jenkins-infra/infra-statistics/archive/refs/heads/gh-pages.zip"
-        unzip -n infra-statistics-gh-pages.zip
-        mv infra-statistics-gh-pages "${INFRASTATISTICS_LOCATION}"
-        rm infra-statistics-gh-pages.zip
-        '''
+        sh './retrieve-infra-statistics-data.sh'
       }
     }
 

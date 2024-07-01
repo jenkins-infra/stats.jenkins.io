@@ -40,10 +40,7 @@ To build the website locally, follow these steps:
     ```sh
     git clone https://github.com/jenkins-infra/stats.jenkins.io.git
     cd stats.jenkins.io
-    curl --fail --output infra-statistics-gh-pages.zip --location "https://github.com/jenkins-infra/infra-statistics/archive/refs/heads/gh-pages.zip"
-    unzip infra-statistic-gh-pages.zip
-    mv infra-statistics-gh-pages src/data/infra-statistics
-    rm infra-statistics-gh-pages.zip
+    ./retrieve-infra-statistics-data.sh
     ```
 
 2. **Install dependencies:**
