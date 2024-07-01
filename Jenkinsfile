@@ -10,6 +10,10 @@ pipeline {
     label 'linux-arm64-docker || arm64linux'
   }
 
+  environment {
+    INFRASTATISTICS_LOCATION = 'src/data/infra-statistics'
+  }
+
   stages {
     stage('Check for typos') {
       steps {
@@ -35,6 +39,17 @@ pipeline {
       steps {
         sh '''
         npm run lint
+        '''
+      }
+    }
+
+    stage('Retrieve data from infra-statistics') {
+      steps {
+        sh '''
+        curl --silent --fail --output infra-statistics-gh-pages.zip --location "https://github.com/jenkins-infra/infra-statistics/archive/refs/heads/gh-pages.zip"
+        unzip -n infra-statistics-gh-pages.zip
+        mv infra-statistics-gh-pages "${INFRASTATISTICS_LOCATION}"
+        rm infra-statistics-gh-pages.zip
         '''
       }
     }
