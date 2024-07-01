@@ -63,7 +63,11 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
                                 {totalInstallationsK}
                             </Typography>
                         </Box>
-                        <CardMedia>
+                        <CardMedia
+                            sx={{
+                                height: '100px',
+                            }}
+                        >
                             {plugin.chartData ? (
                                 <PluginCardChart data={plugin.chartData} />
                             ) : (
