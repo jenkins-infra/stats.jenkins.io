@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
+import customTheme from '../../../../theme/customTheme'
 
+echarts.registerTheme('customTheme', customTheme)
 interface NodesGraphProps {
     year: string
     month: string
@@ -62,7 +64,7 @@ const NodesGraph: React.FC<NodesGraphProps> = ({ year, month }) => {
                 axisTick: { show: true },
                 name: `Node Type (${xData.length.toLocaleString()} Nodes)`,
                 nameLocation: 'middle',
-                nameGap: 90,
+                nameGap: 95,
                 nameTextStyle: { fontWeight: 'bold' },
             },
             yAxis: {
@@ -116,7 +118,7 @@ const NodesGraph: React.FC<NodesGraphProps> = ({ year, month }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

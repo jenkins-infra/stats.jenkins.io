@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import { PluginChartProps } from '../../../data/plugins'
 import dayjs from 'dayjs'
+import customTheme from '../../../theme/customTheme'
+
+echarts.registerTheme('customTheme', customTheme)
 
 const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
@@ -126,7 +129,7 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
     useEffect(() => {
         if (!chartRef.current) return
 
-        const chart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const chart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         chart.setOption(option)
 
         const handleResize = () => {

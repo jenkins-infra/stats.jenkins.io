@@ -3,7 +3,9 @@ import * as echarts from 'echarts'
 import useCSVData from '../../../hooks/useCSVData'
 import usePluginCount from '../../../hooks/usePluginCount'
 import { handleCSVDownload } from '../../../utils/csvUtils'
+import customTheme from '../../../theme/customTheme'
 
+echarts.registerTheme('customTheme', customTheme)
 interface ChartProps {
     csvPath: string
     title: string
@@ -136,7 +138,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
         if (data.length === 0) return
 
         const chartDom = document.getElementById(title) as HTMLElement
-        const myChart = echarts.init(chartDom, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartDom, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

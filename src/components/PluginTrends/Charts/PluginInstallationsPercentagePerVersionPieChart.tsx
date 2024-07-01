@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../data/plugins'
+import customTheme from '../../../theme/customTheme'
+
+echarts.registerTheme('customTheme', customTheme)
 
 const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
@@ -92,7 +95,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
     useEffect(() => {
         if (!chartRef.current) return
 
-        const chart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const chart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         chart.setOption(option)
 
         const handleResize = () => {

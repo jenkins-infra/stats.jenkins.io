@@ -2,7 +2,9 @@ import React, { useEffect, useMemo } from 'react'
 import { Typography } from '@mui/material'
 import * as echarts from 'echarts'
 import useJVMData from '../../../hooks/useJVMData'
+import customTheme from '../../../theme/customTheme'
 
+echarts.registerTheme('customTheme', customTheme)
 interface JVMChartProps {
     title: string
     width?: string
@@ -53,7 +55,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                 axisLabel: { showMinLabel: false, fontSize: 12, align: 'middle' },
                 nameTextStyle: {
                     fontSize: 12,
-                    padding: [30, 30, 10, 0],
+                    padding: [0, 0, 10, 0],
                 },
             },
             grid: { left: '0', right: '10', bottom: '20', top: '90', containLabel: true },
@@ -93,7 +95,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
         if (!data) return
 
         const chartDom = document.getElementById('jvm-chart') as HTMLElement
-        const myChart = echarts.init(chartDom, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartDom, 'customTheme', { renderer: 'svg' })
         myChart.setOption(chartOptions)
 
         const handleResize = () => myChart.resize()

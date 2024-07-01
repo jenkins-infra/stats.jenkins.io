@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
+import customTheme from '../../../../theme/customTheme'
 
+echarts.registerTheme('customTheme', customTheme)
 interface NodesPieProps {
     year: string
     month: string
@@ -101,7 +103,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

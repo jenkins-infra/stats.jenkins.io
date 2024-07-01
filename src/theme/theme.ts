@@ -14,7 +14,7 @@ const theme = createTheme({
             },
         },
         body1: {
-            fontSize: '1rem',
+            fontSize: '0.9rem',
             '@media (max-width:600px)': {
                 fontSize: '0.8rem',
             },
