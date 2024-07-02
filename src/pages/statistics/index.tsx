@@ -20,7 +20,7 @@ const Statistics: React.FC = () => {
     const { sidebarOpen, toggleSidebar } = useSidebarState()
     const { selectedChart, selectedTab, selectedYear, handleChartSelect, handleYearSelect } = useSelectionState()
     const isMobile = useIsMobile()
-    const csvPath = `src/data/infra-statistics/jenkins-stats/svg/total-${selectedChart}.csv`
+    const csvPath = `/data/infra-statistics/jenkins-stats/svg/total-${selectedChart}.csv`
 
     return (
         <Stack
