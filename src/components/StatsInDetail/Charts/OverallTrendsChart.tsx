@@ -10,9 +10,10 @@ interface ChartProps {
     title: string
     width?: string
     height?: string
+    pluginCount?: number
 }
 
-const Chart: React.FC<ChartProps> = ({ csvData, title, width = '100%', height = '100%' }) => {
+const Chart: React.FC<ChartProps> = ({ csvData, title, width = '100%', height = '100%', pluginCount }) => {
     const downloadCSV = useCallback(() => handleCSVDownload(csvData, title), [csvData, title])
 
     const chartData = useMemo(() => {
@@ -114,8 +115,21 @@ const Chart: React.FC<ChartProps> = ({ csvData, title, width = '100%', height = 
             grid: { left: '0', right: '10', bottom: '70', top: '90', containLabel: true },
         }
 
+        if (title.toLowerCase().includes('plugins') && pluginCount !== undefined) {
+            ;(baseOption as echarts.EChartsOption).graphic = {
+                type: 'text',
+                left: 'center',
+                top: '40',
+                style: {
+                    text: `Available Plugins:  ${pluginCount.toLocaleString()}`,
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                    fill: 'blue',
+                },
+            }
+        }
         return baseOption
-    }, [chartData, title, downloadCSV])
+    }, [chartData, title, pluginCount, downloadCSV])
 
     useEffect(() => {
         if (csvData.length === 0) return

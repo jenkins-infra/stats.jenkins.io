@@ -12,8 +12,7 @@ interface NodesPieProps {
 
 const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `src/data/infra-statistics/jenkins-stats/svg/${year}${month}-nodes.csv`
-    const { data, error } = useCSVData(csvPath)
+    const { data, error } = useCSVData(`${year}${month}-nodes`)
 
     const title = `Nodes by Type - ${month}/${year}`
 

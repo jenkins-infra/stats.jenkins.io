@@ -13,8 +13,7 @@ interface PluginsGraphProps {
 
 const PluginsGraph: React.FC<PluginsGraphProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `src/data/infra-statistics/jenkins-stats/svg/${year}${month}-plugins.csv`
-    const { data, error } = useCSVData(csvPath)
+    const { data, error } = useCSVData(`${year}${month}-plugins`)
 
     const xData = useMemo(() => data.map((row) => row[0]), [data])
     const yData = useMemo(() => data.map((row) => Number(row[1])).filter((value) => !isNaN(value)), [data])
