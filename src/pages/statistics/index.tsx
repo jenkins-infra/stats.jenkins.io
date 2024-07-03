@@ -24,6 +24,7 @@ const Statistics: React.FC = () => {
 
     const csvFileName = `total-${selectedChart}`
     const { data: csvData } = useCSVData(csvFileName)
+    console.log('data for total-', selectedChart, csvData)
 
     return (
         <Stack
