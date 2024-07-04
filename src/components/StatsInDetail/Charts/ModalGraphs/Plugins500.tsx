@@ -13,9 +13,7 @@ interface PluginsGraph500Props {
 
 const PluginsGraph500: React.FC<PluginsGraph500Props> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/${year}${month}-top-plugins500.csv`
-    console.log(csvPath)
-    const { data, error } = useCSVData(csvPath)
+    const { data, error } = useCSVData(`${year}${month}-top-plugins500`)
 
     const filteredData = useMemo(() => data.filter((row) => Number(row[1]) > 500), [data])
     const xData = useMemo(() => filteredData.map((row) => row[0]), [filteredData])
@@ -135,6 +133,10 @@ const PluginsGraph500: React.FC<PluginsGraph500Props> = ({ year, month }) => {
             window.removeEventListener('resize', handleResize)
         }
     }, [option])
+
+    if (!data || data.length === 0) {
+        return <div style={{ textAlign: 'center' }}>No data available for {title}</div>
+    }
 
     if (error) {
         return <div>Error loading data: {error.message}</div>

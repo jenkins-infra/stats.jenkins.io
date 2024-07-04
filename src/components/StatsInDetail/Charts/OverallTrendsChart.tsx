@@ -1,26 +1,23 @@
 import React, { useEffect, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
-import useCSVData from '../../../hooks/useCSVData'
-import usePluginCount from '../../../hooks/usePluginCount'
 import { handleCSVDownload } from '../../../utils/csvUtils'
 import customTheme from '../../../theme/customTheme'
 
 echarts.registerTheme('customTheme', customTheme)
+
 interface ChartProps {
-    csvPath: string
+    csvData: string[][]
     title: string
     width?: string
     height?: string
+    pluginCount?: number
 }
 
-const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = '100%' }) => {
-    const { data, error } = useCSVData(csvPath)
-    const { pluginCount } = usePluginCount()
-
-    const downloadCSV = useCallback(() => handleCSVDownload(data, title), [data, title])
+const Chart: React.FC<ChartProps> = ({ csvData, title, width = '100%', height = '100%', pluginCount }) => {
+    const downloadCSV = useCallback(() => handleCSVDownload(csvData, title), [csvData, title])
 
     const chartData = useMemo(() => {
-        const dates = data
+        const dates = csvData
             .filter((row) => row[0] && row[0].length === 6)
             .map((row) => {
                 const year = row[0].slice(0, 4)
@@ -28,11 +25,11 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
                 return `${month}-${year}`
             })
 
-        const values = data.map((row) => parseInt(row[1], 10)).filter((value) => !isNaN(value))
+        const values = csvData.map((row) => parseInt(row[1], 10)).filter((value) => !isNaN(value))
         const totalSum = values.reduce((acc, cur) => acc + cur, 0)
 
         return { dates, values, totalSum }
-    }, [data])
+    }, [csvData])
 
     const option = useMemo(() => {
         const baseOption = {
@@ -118,7 +115,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             grid: { left: '0', right: '10', bottom: '70', top: '90', containLabel: true },
         }
 
-        if (title.toLowerCase().includes('plugins')) {
+        if (title.toLowerCase().includes('plugins') && pluginCount !== undefined) {
             ;(baseOption as echarts.EChartsOption).graphic = {
                 type: 'text',
                 left: 'center',
@@ -135,7 +132,7 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
     }, [chartData, title, pluginCount, downloadCSV])
 
     useEffect(() => {
-        if (data.length === 0) return
+        if (csvData.length === 0) return
 
         const chartDom = document.getElementById(title) as HTMLElement
         const myChart = echarts.init(chartDom, 'customTheme', { renderer: 'svg' })
@@ -148,10 +145,10 @@ const Chart: React.FC<ChartProps> = ({ csvPath, title, width = '100%', height = 
             myChart.dispose()
             window.removeEventListener('resize', handleResize)
         }
-    }, [data, option, title])
+    }, [csvData, option, title])
 
-    if (error) {
-        return <div>Error loading data: {error.message}</div>
+    if (csvData.length === 0) {
+        return <div>Loading data...</div>
     }
 
     return <div id={title} style={{ width, height }}></div>
