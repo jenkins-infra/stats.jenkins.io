@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { VersionData } from '../data/plugins'
+import { htmlFileMapping } from '../utils/dataLoader'
 
 const fetchVersionData = async (pluginId: string): Promise<VersionData | null> => {
-    const url = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/pluginversions/${pluginId}.html`
     try {
-        const response = await axios.get(url)
-        const htmlContent = response.data
+        const htmlText = htmlFileMapping[pluginId]
+        if (!htmlText) {
+            throw new Error(`CSV file with name "${pluginId}" not found`)
+        }
 
         const parser = new DOMParser()
-        const doc = parser.parseFromString(htmlContent, 'text/html')
+        const doc = parser.parseFromString(htmlText, 'text/html')
         const scriptTags = doc.querySelectorAll('script')
 
         for (const script of scriptTags) {
@@ -17,7 +18,6 @@ const fetchVersionData = async (pluginId: string): Promise<VersionData | null> =
             if (scriptContent) {
                 const match = scriptContent.match(/var\s+versionData\s*=\s*(\{[\s\S]*?\});/)
                 if (match) {
-                    console.log(`Version data found for plugin ${pluginId}.`)
                     return JSON.parse(match[1])
                 }
             }
@@ -51,7 +51,7 @@ const useGetPluginVersionData = (pluginId: string | null) => {
 
             fetchData()
         } else {
-            setVersionData(null) // Clear version data when no plugin is selected
+            setVersionData(null)
         }
     }, [pluginId])
 
