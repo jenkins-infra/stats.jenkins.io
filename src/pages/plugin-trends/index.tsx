@@ -12,17 +12,19 @@ import {
     MenuItem,
     Autocomplete,
 } from '@mui/material'
-import useFetchAndFilterPlugins from '../../hooks/useFetchAndFilterPlugins'
 import useSortPlugins from '../../hooks/useSortPlugins'
 import usePagination from '../../hooks/usePagination'
 import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
 import { SortOption } from '../../data/types'
+import useFetchPlugins from '../../hooks/useFetchPlugins'
+import useSearchPlugins from '../../hooks/useSearchPlugins'
 
 const PluginTrends: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
-    const { filteredPlugins, loading } = useFetchAndFilterPlugins(searchTerm)
+    const { plugins, loading } = useFetchPlugins()
+    const { filteredPlugins } = useSearchPlugins(plugins, searchTerm)
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
-    const itemsPerPage = 64
+    const itemsPerPage = 72
 
     const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage)
 
