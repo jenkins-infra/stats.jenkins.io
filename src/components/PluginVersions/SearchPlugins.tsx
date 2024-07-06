@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+    Paper,
     TextField,
     Autocomplete,
     Box,
@@ -9,11 +10,13 @@ import {
     MenuItem,
     SelectChangeEvent,
 } from '@mui/material'
-import { pluginList, Plugin } from '../../data/plugins'
+import { FixedSizeList, ListChildComponentProps } from 'react-window'
+import { Plugin } from '../../data/plugins'
 import useIsMobile from '../../hooks/useIsMobile'
 
 interface SearchBarProps {
     searchTerm: string
+    pluginList: { id: string }[]
     selectedPlugin: Plugin | null
     // eslint-disable-next-line no-unused-vars
     onSearchChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
@@ -23,8 +26,23 @@ interface SearchBarProps {
     onDropdownChange: (event: SelectChangeEvent<string>) => void
 }
 
+const renderRow = ({ index, style, data }: ListChildComponentProps) => {
+    const plugin = data[index]
+    return (
+        <MenuItem
+            key={plugin.id}
+            value={plugin.id}
+            style={style}
+            onClick={() => data.onDropdownChange({ target: { value: plugin.id } } as SelectChangeEvent<string>)}
+        >
+            {plugin.id}
+        </MenuItem>
+    )
+}
+
 const SearchBar: React.FC<SearchBarProps> = ({
     searchTerm,
+    pluginList,
     selectedPlugin,
     onSearchChange,
     onAutocompleteChange,
@@ -55,6 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 inputValue={inputValue}
                 onInputChange={(_event, newInputValue) => setInputValue(newInputValue)}
                 open={inputValue.length > 0}
+                PaperComponent={(props) => <Paper {...props} elevation={8} />}
                 renderInput={(params) => (
                     <TextField
                         {...params}
@@ -75,13 +94,28 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     value={selectedPlugin ? selectedPlugin.id : ''}
                     onChange={onDropdownChange}
                     label="Select Plugin"
-                    MenuProps={{ PaperProps: { sx: { maxHeight: '70%' } } }}
+                    MenuProps={{
+                        PaperProps: {
+                            sx: {
+                                maxHeight: '70%',
+                            },
+                        },
+                    }}
                 >
-                    {pluginList.map((plugin) => (
-                        <MenuItem key={plugin.id} value={plugin.id}>
-                            {plugin.id}
-                        </MenuItem>
-                    ))}
+                    <FixedSizeList
+                        height={384}
+                        width={'100%'}
+                        itemSize={46}
+                        itemCount={pluginList.length}
+                        itemData={{ ...pluginList, onDropdownChange }}
+                        style={{
+                            display: 'flex',
+                            flexGrow: 1,
+                            minWidth: '250px',
+                        }}
+                    >
+                        {renderRow}
+                    </FixedSizeList>
                 </Select>
             </FormControl>
         </Box>

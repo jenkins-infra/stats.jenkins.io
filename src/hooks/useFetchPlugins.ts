@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { IPluginData } from '../data/plugins'
-import jsonFileMapping from '../utils/jsonFileMapping'
+import { jsonFileMapping } from '../utils/dataLoader'
 import useGetPluginNames from './useGetPluginNames'
 
 const useFetchPlugins = () => {
