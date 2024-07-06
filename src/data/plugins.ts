@@ -18,6 +18,9 @@ export interface VersionData {
         [coreVersion: string]: number
     }
 }
+export interface PluginVersionData {
+    [pluginId: string]: VersionData
+}
 
 export interface Plugin {
     id: string

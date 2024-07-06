@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Papa from 'papaparse'
-import csvFileMapping from '../utils/csvFileMapping'
+import { csvFileMapping } from '../utils/dataLoader'
 
 const useCSVData = (csvFileName: string) => {
     const [data, setData] = useState<string[][]>([])
