@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { PluginVersionData, VersionData } from '../data/plugins'
-import rawPluginVersionData from '../data/infra-statistics/plugin-installation-trend/jenkins-version-per-plugin-version.json'
+import { jsonFileMapping } from '../utils/dataLoader'
 
-const pluginVersionData = rawPluginVersionData as PluginVersionData
+// Casting jsonFileMapping entry to PluginVersionData
+const pluginVersionData = JSON.parse(jsonFileMapping['jenkins-version-per-plugin-version.json']) as PluginVersionData
 
 const useGetPluginVersionData = (pluginId: string | null) => {
     const [versionData, setVersionData] = useState<VersionData | null>(null)
