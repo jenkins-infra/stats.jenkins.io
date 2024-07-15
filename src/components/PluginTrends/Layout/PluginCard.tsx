@@ -3,7 +3,7 @@ import { Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@
 
 import PluginCardChart from '../Charts/PluginCardChart'
 import PluginDetailModal from './PluginDetailModal'
-import { IPluginData } from '../../../data/plugins'
+import { IPluginData } from '../../../types/types'
 import downloadIcon from '../../../assets/downloadIcon.svg'
 
 interface PluginCardProps {

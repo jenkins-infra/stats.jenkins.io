@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { PluginVersionData, VersionData } from '../data/plugins'
+import { PluginVersionData, VersionData } from '../types/types'
 import rawPluginVersionData from '../data/infra-statistics/plugin-installation-trend/jenkins-version-per-plugin-version.json'
 
 const pluginVersionData = rawPluginVersionData as PluginVersionData

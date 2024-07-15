@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
-import { PluginChartProps } from '../../../data/plugins'
+import { PluginChartProps } from '../../../types/types'
 import customTheme from '../../../theme/customTheme'
 
 echarts.registerTheme('customTheme', customTheme)
