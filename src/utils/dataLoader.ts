@@ -1,8 +1,13 @@
-const csvFiles = import.meta.glob('../data/infra-statistics/jenkins-stats/svg/*.csv', { eager: true, as: 'raw' })
+const csvFiles = import.meta.glob('../data/infra-statistics/jenkins-stats/svg/*.csv', {
+    eager: true,
+    query: '?raw',
+    import: 'default',
+}) as Record<string, string>
 const jsonFiles = import.meta.glob('../data/infra-statistics/plugin-installation-trend/*.json', {
     eager: true,
-    as: 'raw',
-})
+    query: '?raw',
+    import: 'default',
+}) as Record<string, string>
 
 const csvFileMapping: Record<string, string> = {}
 const jsonFileMapping: Record<string, string> = {}
