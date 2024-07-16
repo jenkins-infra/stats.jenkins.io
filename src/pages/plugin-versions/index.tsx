@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Stack, Box, Typography, SelectChangeEvent } from '@mui/material'
-import { Plugin, ParsedData } from '../../data/plugins'
+import { Plugin, ParsedData } from '../../types/types'
 import PluginVersionsTable from '../../components/PluginVersions/PluginVersionsTable'
 import { parseData } from './parseData'
 import useGetPluginVersionData from '../../hooks/useGetPluginVersionData'

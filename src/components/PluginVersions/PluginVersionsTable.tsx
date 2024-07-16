@@ -1,5 +1,5 @@
 import React from 'react'
-import { Plugin, ParsedData } from '../../data/plugins'
+import { Plugin, ParsedData } from '../../types/types'
 import './PluginVersionsTable.css'
 
 interface PluginVersionsTableProps {

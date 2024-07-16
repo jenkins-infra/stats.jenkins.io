@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import * as echarts from 'echarts'
-import { PluginChartProps } from '../../../data/plugins'
+import { PluginChartProps } from '../../../types/types'
 import dayjs from 'dayjs'
 import customTheme from '../../../theme/customTheme'
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { PluginVersionData, VersionData } from '../data/plugins'
-import { jsonFileMapping } from '../utils/dataLoader'
+import { PluginVersionData, VersionData } from '../types/types'
+import rawPluginVersionData from '../data/infra-statistics/plugin-installation-trend/jenkins-version-per-plugin-version.json'
+
 
 // Casting jsonFileMapping entry to PluginVersionData
 const pluginVersionData = JSON.parse(jsonFileMapping['jenkins-version-per-plugin-version.json']) as PluginVersionData
