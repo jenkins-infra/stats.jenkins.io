@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { IPluginData } from '../data/plugins'
+import { IPluginData } from '../types/types'
 
 const useSearchPlugins = (plugins: IPluginData[], searchTerm: string) => {
     const filteredPlugins = useMemo(() => {

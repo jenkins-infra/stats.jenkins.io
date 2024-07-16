@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { IPluginData } from '../data/plugins'
+import { IPluginData } from '../types/types'
 import { jsonFileMapping } from '../utils/dataLoader'
 import useGetPluginNames from './useGetPluginNames'
 

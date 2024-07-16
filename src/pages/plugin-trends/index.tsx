@@ -15,7 +15,7 @@ import {
 import useSortPlugins from '../../hooks/useSortPlugins'
 import usePagination from '../../hooks/usePagination'
 import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
-import { SortOption } from '../../data/types'
+import { SortOption } from '../../types/types'
 import useFetchPlugins from '../../hooks/useFetchPlugins'
 import useSearchPlugins from '../../hooks/useSearchPlugins'
 

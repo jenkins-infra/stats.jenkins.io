@@ -1,4 +1,4 @@
-import { ParsedData, VersionData } from '../../data/plugins'
+import { ParsedData, VersionData } from '../../types/types'
 
 export function parseData(versionData: VersionData, name: string): ParsedData {
     const pluginVersionsSet = new Set<string>()

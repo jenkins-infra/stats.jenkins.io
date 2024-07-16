@@ -11,7 +11,7 @@ import {
     SelectChangeEvent,
 } from '@mui/material'
 import { FixedSizeList, ListChildComponentProps } from 'react-window'
-import { Plugin } from '../../data/plugins'
+import { Plugin } from '../../types/types'
 import useIsMobile from '../../hooks/useIsMobile'
 
 interface SearchBarProps {
