@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IPluginData } from '../data/plugins'
+import { IPluginData } from '../types/types'
 
 const usePagination = (data: IPluginData[], itemsPerPage: number) => {
     const [page, setPage] = useState<number>(1)

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material'
-import { data } from '../../../data/statisticsData'
+import { data } from '../../../utils/generateDateArray'
 import GraphModal from './GraphModal'
-import { GraphType } from '../../../data/types'
+import { GraphType } from '../../../types/types'
 import { InsertChartOutlined } from '@mui/icons-material'
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
 
