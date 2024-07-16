@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react'
+import React, { useEffect, useMemo, useCallback, useRef } from 'react'
 import * as echarts from 'echarts'
 import { handleCSVDownload } from '../../../utils/csvUtils'
 import customTheme from '../../../theme/customTheme'
@@ -6,32 +6,70 @@ import customTheme from '../../../theme/customTheme'
 echarts.registerTheme('customTheme', customTheme)
 
 interface ChartProps {
-    csvData: string[][]
+    csvData: Record<string, string[][]>
     title: string
     width?: string
     height?: string
     pluginCount?: number
+    selectedChart: string
+    secondChart?: string // Optional second chart
 }
 
-const Chart: React.FC<ChartProps> = ({ csvData, title, width = '100%', height = '100%', pluginCount }) => {
-    const downloadCSV = useCallback(() => handleCSVDownload(csvData, title), [csvData, title])
+const Chart: React.FC<ChartProps> = ({
+    csvData,
+    title,
+    width = '100%',
+    height = '100%',
+    pluginCount,
+    selectedChart,
+    secondChart, // Optional second chart
+}) => {
+    const chartRef = useRef<echarts.ECharts | null>(null)
+
+    const downloadCSV = useCallback(
+        () => handleCSVDownload(csvData[selectedChart], title),
+        [csvData, selectedChart, title]
+    )
 
     const chartData = useMemo(() => {
-        const dates = csvData
-            .filter((row) => row[0] && row[0].length === 6)
-            .map((row) => {
-                const year = row[0].slice(0, 4)
-                const month = row[0].slice(4, 6)
-                return `${month}-${year}`
-            })
+        const processChartData = (data: string[][]) => {
+            const dates = data
+                .filter((row) => row[0] && row[0].length === 6)
+                .map((row) => {
+                    const year = row[0].slice(0, 4)
+                    const month = row[0].slice(4, 6)
+                    return `${month}-${year}`
+                })
 
-        const values = csvData.map((row) => parseInt(row[1], 10)).filter((value) => !isNaN(value))
-        const totalSum = values.reduce((acc, cur) => acc + cur, 0)
+            const values = data.map((row) => parseInt(row[1], 10)).filter((value) => !isNaN(value))
+            return { dates, values }
+        }
 
-        return { dates, values, totalSum }
+        const processedData: Record<string, { dates: string[]; values: number[] }> = {}
+        Object.keys(csvData).forEach((chart) => {
+            processedData[chart] = processChartData(csvData[chart])
+        })
+
+        return processedData
     }, [csvData])
 
     const option = useMemo(() => {
+        const series = Object.keys(chartData).map((chart) => ({
+            data: chartData[chart].values,
+            type: 'line',
+            name: chart,
+            smooth: true,
+            showSymbol: false,
+            yAxisIndex: chart === secondChart ? 1 : 0, // Set yAxisIndex for second chart
+            areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    { offset: 0, color: 'rgba(0, 127, 255, 0.2)' },
+                    { offset: 1, color: 'rgba(0, 127, 255, 0.0)' },
+                ]),
+            },
+            selected: chart === selectedChart,
+        }))
+
         const baseOption = {
             title: {
                 text: title,
@@ -53,36 +91,46 @@ const Chart: React.FC<ChartProps> = ({ csvData, title, width = '100%', height = 
                     },
                 },
             },
+            legend: {
+                data: Object.keys(chartData),
+                top: '10%',
+                left: 'center',
+                selected: Object.keys(chartData).reduce(
+                    (acc, chart) => {
+                        acc[chart] = chart === selectedChart || chart === secondChart
+                        return acc
+                    },
+                    {} as Record<string, boolean>
+                ),
+            },
             xAxis: {
                 type: 'category',
-                data: chartData.dates,
+                data: chartData[selectedChart]?.dates,
                 axisLabel: {},
                 axisTick: { show: true, alignWithLabel: true },
             },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    fontSize: 12,
-                    showMinLabel: false,
-                    align: 'middle',
-                },
-                splitLine: { lineStyle: { type: 'dashed' } },
-            },
-            series: [
+            yAxis: [
                 {
-                    data: chartData.values,
-                    type: 'line',
-                    itemStyle: { color: '#007FFF' },
-                    smooth: true,
-                    showSymbol: false,
-                    areaStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: 'rgba(0, 127, 255, 0.2)' },
-                            { offset: 1, color: 'rgba(0, 127, 255, 0.0)' },
-                        ]),
+                    type: 'value',
+                    axisLabel: {
+                        fontSize: 12,
+                        showMinLabel: false,
+                        align: 'middle',
                     },
+                    splitLine: { lineStyle: { type: 'dashed' } },
+                },
+                {
+                    type: 'value',
+                    axisLabel: {
+                        fontSize: 12,
+                        showMinLabel: false,
+                        align: 'middle',
+                    },
+                    splitLine: { lineStyle: { type: 'dashed' } },
+                    position: 'right', // Position the second y-axis on the right
                 },
             ],
+            series: series,
             dataZoom: [
                 {
                     type: 'inside',
@@ -129,17 +177,33 @@ const Chart: React.FC<ChartProps> = ({ csvData, title, width = '100%', height = 
             }
         }
         return baseOption
-    }, [chartData, title, pluginCount, downloadCSV])
+    }, [chartData, title, pluginCount, downloadCSV, selectedChart, secondChart])
 
     useEffect(() => {
-        if (csvData.length === 0) return
+        if (Object.keys(csvData).length === 0) return
 
         const chartDom = document.getElementById(title) as HTMLElement
         const myChart = echarts.init(chartDom, 'customTheme', { renderer: 'svg' })
+        chartRef.current = myChart
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()
         window.addEventListener('resize', handleResize)
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const handleLegendSelectChanged = (params: any) => {
+            const selectedCount = Object.values(params.selected).filter(Boolean).length
+            if (selectedCount > 2) {
+                params.selected[params.name] = false
+                myChart.setOption({
+                    legend: {
+                        selected: params.selected,
+                    },
+                })
+            }
+        }
+
+        myChart.on('legendselectchanged', handleLegendSelectChanged)
 
         return () => {
             myChart.dispose()
@@ -147,7 +211,7 @@ const Chart: React.FC<ChartProps> = ({ csvData, title, width = '100%', height = 
         }
     }, [csvData, option, title])
 
-    if (csvData.length === 0) {
+    if (Object.keys(csvData).length === 0) {
         return <div>Loading data...</div>
     }
 
