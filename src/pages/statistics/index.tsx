@@ -114,8 +114,8 @@ const Statistics: React.FC = () => {
                             },
                         }}
                     >
-                        <FormControl sx={{}}>
-                            <InputLabel id="second-chart-select-label">Overlay Chart</InputLabel>
+                        <FormControl sx={{ alignSelf: 'flex-start' }}>
+                            <InputLabel id="comparison-chart-select-label">Compare with</InputLabel>
                             <Select
                                 labelId="second-chart-select-label"
                                 id="second-chart-select"
