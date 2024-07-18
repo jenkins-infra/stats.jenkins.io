@@ -54,6 +54,13 @@ const Chart: React.FC<ChartProps> = ({
     }, [csvData])
 
     const option = useMemo(() => {
+        const seriesColors: Record<string, string> = {
+            plugins: '#007FFF',
+            jobs: '#32CD32',
+            jenkins: '#FFD700',
+            nodes: '#FF4500',
+        }
+
         const series = Object.keys(chartData).map((chart) => ({
             data: chartData[chart].values,
             type: 'line',
@@ -61,10 +68,16 @@ const Chart: React.FC<ChartProps> = ({
             smooth: true,
             showSymbol: false,
             yAxisIndex: chart === secondChart ? 1 : 0, // Set yAxisIndex for second chart
+            // areaStyle: {
+            //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            //         { offset: 0, color: 'rgba(0, 127, 255, 0.2)' },
+            //         { offset: 1, color: 'rgba(0, 127, 255, 0.0)' },
+            //     ]),
+            // },
             areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: 'rgba(0, 127, 255, 0.2)' },
-                    { offset: 1, color: 'rgba(0, 127, 255, 0.0)' },
+                    { offset: 0, color: `${seriesColors[chart]}40` }, // 70% opacity
+                    { offset: 1, color: `${seriesColors[chart]}00` }, // 0% opacity
                 ]),
             },
             selected: chart === selectedChart,
