@@ -12,7 +12,7 @@ interface ChartProps {
     height?: string
     pluginCount?: number
     selectedChart: string
-    secondChart?: string // Optional second chart
+    secondChart?: string
 }
 
 const Chart: React.FC<ChartProps> = ({
@@ -22,7 +22,7 @@ const Chart: React.FC<ChartProps> = ({
     height = '100%',
     pluginCount,
     selectedChart,
-    secondChart, // Optional second chart
+    secondChart,
 }) => {
     const chartRef = useRef<echarts.ECharts | null>(null)
 
@@ -67,17 +67,11 @@ const Chart: React.FC<ChartProps> = ({
             name: chart,
             smooth: true,
             showSymbol: false,
-            yAxisIndex: chart === secondChart ? 1 : 0, // Set yAxisIndex for second chart
-            // areaStyle: {
-            //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            //         { offset: 0, color: 'rgba(0, 127, 255, 0.2)' },
-            //         { offset: 1, color: 'rgba(0, 127, 255, 0.0)' },
-            //     ]),
-            // },
+            yAxisIndex: chart === secondChart ? 1 : 0,
             areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: `${seriesColors[chart]}40` }, // 70% opacity
-                    { offset: 1, color: `${seriesColors[chart]}00` }, // 0% opacity
+                    { offset: 0, color: `${seriesColors[chart]}40` },
+                    { offset: 1, color: `${seriesColors[chart]}00` },
                 ]),
             },
             selected: chart === selectedChart,
@@ -140,7 +134,7 @@ const Chart: React.FC<ChartProps> = ({
                         align: 'middle',
                     },
                     splitLine: { lineStyle: { type: 'dashed' } },
-                    position: 'right', // Position the second y-axis on the right
+                    position: 'right',
                 },
             ],
             series: series,
