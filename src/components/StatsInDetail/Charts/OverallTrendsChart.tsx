@@ -57,7 +57,7 @@ const Chart: React.FC<ChartProps> = ({
         const seriesColors: Record<string, string> = {
             plugins: '#007FFF',
             jobs: '#32CD32',
-            jenkins: '#FFD700',
+            jenkins: '#800080',
             nodes: '#FF4500',
         }
 
@@ -67,17 +67,21 @@ const Chart: React.FC<ChartProps> = ({
             name: chart,
             smooth: true,
             showSymbol: false,
-            yAxisIndex: chart === secondChart ? 1 : 0, // Set yAxisIndex for second chart
+            yAxisIndex: chart === secondChart ? 1 : 0,
+            lineStyle: {
+                color: seriesColors[chart],
+            },
             areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: `${seriesColors[chart]}40` }, // 70% opacity
-                    { offset: 1, color: `${seriesColors[chart]}00` }, // 0% opacity
+                    { offset: 0, color: `${seriesColors[chart]}40` },
+                    { offset: 1, color: `${seriesColors[chart]}00` },
                 ]),
             },
             selected: chart === selectedChart || chart === secondChart,
         }))
 
         const baseOption = {
+            color: Object.values(seriesColors),
             title: {
                 text: title,
                 left: 'center',
@@ -99,9 +103,9 @@ const Chart: React.FC<ChartProps> = ({
                 },
             },
             legend: {
-                show: false,
-                data: Object.keys(chartData),
-                top: '10%',
+                show: true,
+                data: [selectedChart, ...(secondChart ? [secondChart] : [])],
+                top: 100,
                 left: 'center',
                 selected: Object.keys(chartData).reduce(
                     (acc, chart) => {
@@ -120,22 +124,32 @@ const Chart: React.FC<ChartProps> = ({
             yAxis: [
                 {
                     type: 'value',
+                    name: selectedChart.charAt(0).toUpperCase() + selectedChart.slice(1),
+                    nameTextStyle: {
+                        color: secondChart ? seriesColors[selectedChart] : '',
+                    },
                     axisLabel: {
                         fontSize: 12,
                         showMinLabel: false,
                         align: 'middle',
+                        color: secondChart ? seriesColors[selectedChart] : '',
                     },
                     splitLine: { lineStyle: { type: 'dashed' } },
                 },
                 {
                     type: 'value',
+                    name: secondChart ? secondChart.charAt(0).toUpperCase() + secondChart.slice(1) : '',
+                    nameTextStyle: {
+                        color: secondChart ? seriesColors[secondChart] : '#000',
+                    },
                     axisLabel: {
                         fontSize: 12,
                         showMinLabel: false,
-                        align: 'middle',
+                        align: 'end',
+                        color: secondChart ? seriesColors[secondChart] : '#000',
                     },
                     splitLine: { lineStyle: { type: 'dashed' } },
-                    position: 'right', // Position the second y-axis on the right
+                    position: 'right',
                 },
             ],
             series: series,

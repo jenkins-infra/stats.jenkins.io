@@ -114,8 +114,8 @@ const Statistics: React.FC = () => {
                             },
                         }}
                     >
-                        <FormControl sx={{ alignSelf: 'flex-start' }}>
-                            <InputLabel id="comparison-chart-select-label">Compare with</InputLabel>
+                        <FormControl sx={{ alignSelf: 'flex-start', minWidth: '128px' }}>
+                            <InputLabel id="comparison-chart-select-label">Compare</InputLabel>
                             <Select
                                 labelId="second-chart-select-label"
                                 id="second-chart-select"
