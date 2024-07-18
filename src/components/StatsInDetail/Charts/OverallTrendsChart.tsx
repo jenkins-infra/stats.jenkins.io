@@ -12,7 +12,7 @@ interface ChartProps {
     height?: string
     pluginCount?: number
     selectedChart: string
-    secondChart?: string
+    secondChart?: string // Optional second chart
 }
 
 const Chart: React.FC<ChartProps> = ({
@@ -22,7 +22,7 @@ const Chart: React.FC<ChartProps> = ({
     height = '100%',
     pluginCount,
     selectedChart,
-    secondChart,
+    secondChart, // Optional second chart
 }) => {
     const chartRef = useRef<echarts.ECharts | null>(null)
 
@@ -67,14 +67,14 @@ const Chart: React.FC<ChartProps> = ({
             name: chart,
             smooth: true,
             showSymbol: false,
-            yAxisIndex: chart === secondChart ? 1 : 0,
+            yAxisIndex: chart === secondChart ? 1 : 0, // Set yAxisIndex for second chart
             areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: `${seriesColors[chart]}40` },
-                    { offset: 1, color: `${seriesColors[chart]}00` },
+                    { offset: 0, color: `${seriesColors[chart]}40` }, // 70% opacity
+                    { offset: 1, color: `${seriesColors[chart]}00` }, // 0% opacity
                 ]),
             },
-            selected: chart === selectedChart,
+            selected: chart === selectedChart || chart === secondChart,
         }))
 
         const baseOption = {
@@ -99,6 +99,7 @@ const Chart: React.FC<ChartProps> = ({
                 },
             },
             legend: {
+                show: false,
                 data: Object.keys(chartData),
                 top: '10%',
                 left: 'center',
@@ -134,7 +135,7 @@ const Chart: React.FC<ChartProps> = ({
                         align: 'middle',
                     },
                     splitLine: { lineStyle: { type: 'dashed' } },
-                    position: 'right',
+                    position: 'right', // Position the second y-axis on the right
                 },
             ],
             series: series,
@@ -196,21 +197,6 @@ const Chart: React.FC<ChartProps> = ({
 
         const handleResize = () => myChart.resize()
         window.addEventListener('resize', handleResize)
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const handleLegendSelectChanged = (params: any) => {
-            const selectedCount = Object.values(params.selected).filter(Boolean).length
-            if (selectedCount > 2) {
-                params.selected[params.name] = false
-                myChart.setOption({
-                    legend: {
-                        selected: params.selected,
-                    },
-                })
-            }
-        }
-
-        myChart.on('legendselectchanged', handleLegendSelectChanged)
 
         return () => {
             myChart.dispose()
