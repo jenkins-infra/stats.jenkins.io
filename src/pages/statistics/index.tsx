@@ -114,28 +114,30 @@ const Statistics: React.FC = () => {
                             },
                         }}
                     >
-                        <FormControl sx={{ alignSelf: 'flex-start', minWidth: '128px' }}>
-                            <InputLabel id="comparison-chart-select-label">Compare</InputLabel>
-                            <Select
-                                labelId="second-chart-select-label"
-                                id="second-chart-select"
-                                value={secondChart || ''}
-                                onChange={handleSecondChartSelect}
-                                label="Overlay Chart"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                {availableCharts.map((chart) => (
-                                    <MenuItem key={chart} value={chart}>
-                                        {chartTitles[chart]}
+                        {chartToDisplay !== 'JVMs' && (
+                            <FormControl sx={{ alignSelf: 'flex-start', minWidth: '128px' }}>
+                                <InputLabel id="comparison-chart-select-label">Compare</InputLabel>
+                                <Select
+                                    labelId="second-chart-select-label"
+                                    id="second-chart-select"
+                                    value={secondChart || ''}
+                                    onChange={handleSecondChartSelect}
+                                    label="Overlay Chart"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
                                     </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                                    {availableCharts.map((chart) => (
+                                        <MenuItem key={chart} value={chart}>
+                                            {chartTitles[chart]}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        )}
 
                         {chartToDisplay === 'JVMs' ? (
-                            <JVMChart title={chartTitles['JVMs']} data={jvmData} />
+                            <JVMChart title={'JVMs By Date'} data={jvmData} />
                         ) : (
                             <Chart
                                 key={chartToDisplay}
