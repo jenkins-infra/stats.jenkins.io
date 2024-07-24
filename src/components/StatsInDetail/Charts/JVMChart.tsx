@@ -42,7 +42,18 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
             },
             tooltip: {
                 trigger: 'axis',
-                axisPointer: { type: 'line' },
+                backgroundColor: '#333',
+                borderColor: '#777',
+                borderWidth: 1,
+                textStyle: {
+                    color: '#fff',
+                },
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#777',
+                    },
+                },
             },
             xAxis: {
                 type: 'time',
