@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { IPluginData } from '../types/types'
-import { jsonFileMapping } from '../utils/dataLoader'
-import useGetPluginNames from './useGetPluginNames'
+import useGetPluginNames from './useGetPluginNamesAndCount'
+
+const BATCH_SIZE = 100
 
 const useFetchPlugins = () => {
     const [plugins, setPlugins] = useState<IPluginData[]>([])
@@ -9,17 +10,41 @@ const useFetchPlugins = () => {
     const { pluginNames } = useGetPluginNames()
 
     useEffect(() => {
-        const fetchPluginList = async () => {
-            try {
-                const pluginData = pluginNames.map((name) => {
-                    const jsonText = jsonFileMapping[name]
-                    if (!jsonText) {
+        const fetchPluginsInBatch = async (batch: string[]) => {
+            const pluginData = await Promise.all(
+                batch.map(async (name) => {
+                    const fileUrl = new URL(
+                        `../data/infra-statistics/plugin-installation-trend/${name}.stats.json`,
+                        import.meta.url
+                    ).href
+                    const response = await fetch(fileUrl)
+                    if (!response.ok) {
                         throw new Error(`JSON file for plugin with id "${name}" not found`)
                     }
-                    const chartData = JSON.parse(jsonText)
+                    const chartData = await response.json()
                     return { id: name, chartData }
                 })
-                setPlugins(pluginData)
+            )
+            return pluginData
+        }
+
+        const fetchAllPlugins = async () => {
+            setLoading(true)
+            try {
+                const allPlugins: IPluginData[] = []
+                const fetchedIds = new Set<string>()
+                for (let i = 0; i < pluginNames.length; i += BATCH_SIZE) {
+                    const batch = pluginNames.slice(i, i + BATCH_SIZE)
+                    const batchData = await fetchPluginsInBatch(batch)
+                    batchData.forEach((plugin) => {
+                        if (!fetchedIds.has(plugin.id)) {
+                            fetchedIds.add(plugin.id)
+                            allPlugins.push(plugin)
+                        }
+                    })
+                    setPlugins([...allPlugins])
+                    setLoading(false)
+                }
             } catch (error) {
                 console.error('Error fetching plugin data', error)
             } finally {
@@ -28,7 +53,9 @@ const useFetchPlugins = () => {
         }
 
         if (pluginNames.length > 0) {
-            fetchPluginList()
+            fetchAllPlugins()
+        } else {
+            setLoading(false)
         }
     }, [pluginNames])
 

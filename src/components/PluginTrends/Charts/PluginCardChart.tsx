@@ -3,7 +3,7 @@ import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../types/types'
 
-const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
+const PluginCardChart: React.FC<PluginChartProps> = React.memo(({ data }) => {
     const chartRef = useRef(null)
 
     const chartData = useMemo(() => {
@@ -118,6 +118,6 @@ const PluginCardChart: React.FC<PluginChartProps> = ({ data }) => {
             }}
         />
     )
-}
+})
 
 export default PluginCardChart
