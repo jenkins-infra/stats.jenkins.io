@@ -7,7 +7,7 @@ import useSelectionState from '../../hooks/useSelectionState'
 import useIsMobile from '../../hooks/useIsMobile'
 import Drawer from '../../components/StatsInDetail/Layout/Drawer'
 import useCSVData from '../../hooks/useCSVData'
-import usePluginCount from '../../hooks/usePluginCount'
+import usePluginCount from '../../hooks/useGetPluginNamesAndCount'
 import useJVMData from '../../hooks/useJVMData'
 import JVMChart from '../../components/StatsInDetail/Charts/JVMChart'
 
