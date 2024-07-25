@@ -10,7 +10,7 @@ interface PluginCardProps {
     plugin: IPluginData
 }
 
-const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
+const PluginCard: React.FC<PluginCardProps> = React.memo(({ plugin }) => {
     const [open, setOpen] = useState(false)
     const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)
@@ -82,6 +82,6 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
             <PluginDetailModal open={open} handleClose={handleClose} plugin={plugin} />
         </>
     )
-}
+})
 
 export default PluginCard
