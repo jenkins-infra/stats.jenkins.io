@@ -1,38 +1,32 @@
-import { useState, useEffect } from 'react'
-import { jsonFileMapping } from '../utils/dataLoader'
-import { PluginVersionData, VersionData } from '../types/types'
+import { useState, useEffect } from 'react';
+import { AllPluginVersionData } from '../types/types';
 
-const pluginVersionData = JSON.parse(jsonFileMapping['jenkins-version-per-plugin-version.json']) as PluginVersionData
-
-const useGetPluginVersionData = (pluginId: string | null) => {
-    const [versionData, setVersionData] = useState<VersionData | null>(null)
-    const [loading, setLoading] = useState<boolean>(false)
+const useGetPluginVersionData = () => {
+    const [allVersionData, setAllVersionData] = useState<AllPluginVersionData | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        if (pluginId) {
-            const fetchData = async () => {
-                setLoading(true)
-                try {
-                    const data = pluginVersionData[pluginId]
-                    if (!data) {
-                        throw new Error(`Version data not found for plugin "${pluginId}"`)
-                    }
-                    setVersionData(data)
-                } catch (error) {
-                    console.error(`Error fetching version data for plugin ${pluginId}:`, error)
-                    setVersionData(null)
-                } finally {
-                    setLoading(false)
+        const fetchData = async () => {
+            try {
+                const fileUrl = new URL(`../data/infra-statistics/plugin-installation-trend/jenkins-version-per-plugin-version.json`, import.meta.url).href;
+                const response = await fetch(fileUrl);
+                if (!response.ok) {
+                    throw new Error(`Version data not found`);
                 }
+                const data = await response.json() as AllPluginVersionData;
+                setAllVersionData(data);
+            } catch (error) {
+                console.error(`Error fetching version data`, error);
+                setAllVersionData(null);
+            } finally {
+                setLoading(false);
             }
+        };
 
-            fetchData()
-        } else {
-            setVersionData(null)
-        }
-    }, [pluginId])
+        fetchData();
+    }, []);
 
-    return { versionData, loading }
-}
+    return { allVersionData, loading };
+};
 
-export default useGetPluginVersionData
+export default useGetPluginVersionData;

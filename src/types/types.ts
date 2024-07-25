@@ -31,7 +31,7 @@ export interface VersionData {
         [coreVersion: string]: number
     }
 }
-export interface PluginVersionData {
+export interface AllPluginVersionData {
     [pluginId: string]: VersionData
 }
 

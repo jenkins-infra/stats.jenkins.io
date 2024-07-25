@@ -1,35 +1,37 @@
-import { useState, useEffect } from 'react'
-import Papa from 'papaparse'
-import { csvFileMapping } from '../utils/dataLoader'
+import { useState, useEffect } from 'react';
+import Papa from 'papaparse';
 
 const useCSVData = (csvFileName: string) => {
-    const [data, setData] = useState<string[][]>([])
-    const [error, setError] = useState<Error | null>(null)
+    const [data, setData] = useState<string[][]>([]);
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-        const fetchData = () => {
+        const fetchData = async () => {
             try {
-                const csvText = csvFileMapping[csvFileName]
-                if (!csvText) {
-                    throw new Error(`CSV file with name "${csvFileName}" not found`)
+                const fileUrl = new URL(`../data/infra-statistics/jenkins-stats/svg/${csvFileName}.csv`, import.meta.url).href;
+                const response = await fetch(fileUrl);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch CSV file: ${response.statusText}`);
                 }
-                const parsedData = Papa.parse<string[]>(csvText, { header: false }).data
+                const csvText = await response.text();
+                const parsedData = Papa.parse<string[]>(csvText, { header: false }).data;
                 // Filter out empty rows
-                const filteredData = parsedData.filter((row) => row.some((cell) => cell.trim() !== ''))
-                setData(filteredData)
+                const filteredData = parsedData.filter((row) => row.some((cell) => cell.trim() !== ''));
+                setData(filteredData);
             } catch (err) {
                 if (err instanceof Error) {
-                    setError(err)
+                    setError(err);
                 } else {
-                    setError(new Error('An unknown error occurred'))
+                    setError(new Error('An unknown error occurred'));
                 }
             }
-        }
+        };
 
-        fetchData()
-    }, [csvFileName])
+        fetchData();
+    }, [csvFileName]);
 
-    return { data, error }
-}
+    return { data, error };
+};
 
-export default useCSVData
+export default useCSVData;
+
