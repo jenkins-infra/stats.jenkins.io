@@ -1,636 +1,481 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as echarts from 'echarts';
-import { Box } from '@mui/material';
-import pluginData from '../../data/infra-statistics/update-center.actual.json';
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import ForceGraph3D from 'react-force-graph-3d'
+import useGetDependencyGraphData from '../../hooks/useGetDependencyGraphData'
+import { Dependency, Developer, Plugin } from '../../types/types'
 
-interface Dependency {
-  name: string;
-  optional: boolean;
-  version: string;
+interface Node {
+    id: string
+    name: string
+    description: string
+    version?: string
+    buildDate?: string
+    requiredCore?: string
+    developers?: Developer[]
+    dependencies?: Dependency[]
 }
 
-interface Developer {
-  developerId: string;
-  name: string;
+interface Link {
+    source: string
+    target: string
 }
 
-interface IssueTracker {
-  reportUrl: string;
-  type: string;
-  viewUrl: string;
+interface GraphData {
+    nodes: Node[]
+    links: Link[]
 }
 
-interface Plugin {
-  buildDate: string;
-  defaultBranch?: string;
-  dependencies?: Dependency[];
-  developers?: Developer[];
-  excerpt: string;
-  gav: string;
-  issueTrackers?: IssueTracker[];
-  labels?: string[];
-  name: string;
-  popularity: number;
-  previousTimestamp?: string;
-  previousVersion?: string;
-  releaseTimestamp: string;
-  requiredCore: string;
-  scm?: string;
-  sha1: string;
-  sha256: string;
-  size: number;
-  title: string;
-  url: string;
-  version: string;
-  wiki?: string;
-}
+const ForceGraph: React.FC = () => {
+    const json = useGetDependencyGraphData()
+    const [graphData, setGraphData] = useState<GraphData | null>(null)
+    const [hoveredNode, setHoveredNode] = useState<Node | null>(null)
+    const [searchTerm, setSearchTerm] = useState<string>('')
+    const tooltipRef = useRef<HTMLDivElement | null>(null)
 
-interface PluginData {
-  plugins: Record<string, Plugin>;
-}
-
-const pluginDataTyped = pluginData as PluginData;
-
-const EChartsGraph: React.FC = () => {
-  const chartRef = useRef<HTMLDivElement>(null);
-  const [filter, setFilter] = useState<string>('');
-  const [graphData, setGraphData] = useState<{ nodes: any[], links: any[] }>({ nodes: [], links: [] });
-
-  useEffect(() => {
-    const filteredGraphData = getGraphData(pluginDataTyped.plugins, filter);
-    setGraphData(filteredGraphData);
-  }, [filter]);
-
-  useEffect(() => {
-    if (chartRef.current) {
-      const chart = echarts.init(chartRef.current);
-
-      const option = {
-        tooltip: {
-          formatter: function (params: any) {
-            const plugin = pluginDataTyped.plugins[params.data.id];
-            let html = `<div class="tip-title">${params.name}</div>`;
-            if (plugin) {
-              html += `<div class="tip-text"><b>Excerpt:</b> ${plugin.excerpt}</div>`;
-              html += `<div class="tip-text"><b>Version:</b> ${plugin.version}</div>`;
-              html += `<div class="tip-text"><b>Build Date:</b> ${plugin.buildDate}</div>`;
-              html += `<div class="tip-text"><b>Required Core:</b> ${plugin.requiredCore}</div>`;
-              html += `<div class="tip-text"><b>Developers:</b> ${plugin.developers?.map(dev => `${dev.name} (${dev.developerId})`).join(', ')}</div>`;
-              html += `<div class="tip-text"><b>Dependencies:</b><ul>${plugin.dependencies?.map(dep => `<li>${dep.name} (version: ${dep.version}, optional: ${dep.optional})</li>`).join('') || 'None'}</ul></div>`;
+    const containsDeveloper = (pluginJSON: Plugin, filterRegexp: RegExp): boolean => {
+        if (pluginJSON.developers && pluginJSON.developers.length > 0) {
+            for (let i = 0; i < pluginJSON.developers.length; i++) {
+                const developer = pluginJSON.developers[i]
+                if (
+                    (developer.developerId && developer.developerId.match(filterRegexp)) ||
+                    (developer.name && developer.name.match(filterRegexp))
+                ) {
+                    return true
+                }
             }
-            return html;
-          },
+        }
+        return false
+    }
+
+    const buildGraphData = useCallback((data: Plugin[], filter: string | null) => {
+        const nodesMap = new Map<string, Node>()
+        const nodes: Node[] = []
+        const links: Link[] = []
+
+        let filterRegexp: RegExp | undefined
+        if (filter && filter.trim() !== '') {
+            filterRegexp = new RegExp(filter.trim(), 'i')
+        }
+
+        data.forEach((plugin) => {
+            const matchesFilter =
+                !filterRegexp ||
+                plugin.name.match(filterRegexp) ||
+                plugin.title.match(filterRegexp) ||
+                containsDeveloper(plugin, filterRegexp)
+
+            if (matchesFilter) {
+                const node: Node = {
+                    id: plugin.name,
+                    name: plugin.name,
+                    description: plugin.excerpt,
+                    version: plugin.previousVersion,
+                    buildDate: plugin.buildDate,
+                    requiredCore: plugin.requiredCore,
+                    developers: plugin.developers,
+                    dependencies: plugin.dependencies,
+                }
+                nodes.push(node)
+                nodesMap.set(node.id, node)
+
+                plugin.dependencies.forEach((dependency) => {
+                    if (!nodesMap.has(dependency.name)) {
+                        const depNode: Node = {
+                            id: dependency.name,
+                            name: dependency.name,
+                            description: '',
+                            version: '',
+                            buildDate: '',
+                            requiredCore: '',
+                            developers: [],
+                            dependencies: [],
+                        }
+                        nodes.push(depNode)
+                        nodesMap.set(depNode.id, depNode)
+                    }
+                    links.push({
+                        source: plugin.name,
+                        target: dependency.name,
+                    })
+                })
+            }
+        })
+
+        return { nodes, links }
+    }, [])
+
+    const getJsonForNode = useCallback(
+        (data: Plugin[], nodeID: string) => {
+            const nodeData = data.filter(
+                (plugin) => plugin.name === nodeID || plugin.dependencies.some((dep) => dep.name === nodeID)
+            )
+            setGraphData(buildGraphData(nodeData, null))
         },
-        series: [
-          {
-            type: 'graph',
-            layout: 'force',
-            animation: false,
-            data: graphData.nodes,
-            links: graphData.links,
-            roam: true,
-            label: {
-              show: true,
-              position: 'right',
-            },
-            force: {
-              repulsion: 20,
-              edgeLength: 100,
-              friction: 0.02,
-            },
-          },
-        ],
-      };
+        [buildGraphData]
+    )
 
-      chart.setOption(option);
+    useEffect(() => {
+        const getJsonForChart = (data: Plugin[], filter: string) => {
+            setGraphData(buildGraphData(data, filter))
+        }
 
-      return () => {
-        chart.dispose();
-      };
-    }
-  }, [graphData]);
+        if (json) {
+            getJsonForChart(json, searchTerm)
+        }
+    }, [buildGraphData, json, searchTerm])
 
-  const getGraphData = (plugins: Record<string, Plugin>, filter: string) => {
-    const nodes = [];
-    const links = [];
-    const addedNodes = new Set<string>();
-
-    const filterRegexp = filter ? new RegExp(filter, 'i') : null;
-
-    for (const pluginKey in plugins) {
-      const plugin = plugins[pluginKey];
-      if (filterRegexp && plugin.name.match(filterRegexp)) {
-        addPluginAndDependencies(plugin, nodes, links, addedNodes);
-      }
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value)
     }
 
-    if (filter && !addedNodes.has('Jenkins Core')) {
-      nodes.push({
-        id: 'Jenkins Core',
-        name: 'Jenkins Core',
-        symbolSize: 15,
-        itemStyle: { color: '#23A4FF' },
-      });
+    const handleNodeClick = (node: Node) => {
+        if (json) {
+            getJsonForNode(json, node.id)
+        }
     }
 
-    return { nodes, links };
-  };
+    useEffect(() => {
+        const handleMouseMove = (event: MouseEvent) => {
+            if (tooltipRef.current) {
+                tooltipRef.current.style.left = `${event.clientX + 10}px`
+                tooltipRef.current.style.top = `${event.clientY + 10}px`
+            }
+        }
+        window.addEventListener('mousemove', handleMouseMove)
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove)
+        }
+    }, [])
 
-  const addPluginAndDependencies = (plugin: Plugin, nodes: any[], links: any[], addedNodes: Set<string>) => {
-    if (!addedNodes.has(plugin.name)) {
-      nodes.push({
-        id: plugin.name,
-        name: plugin.title,
-        symbolSize: 10,
-        itemStyle: { color: '#83548B' },
-      });
-      addedNodes.add(plugin.name);
-
-      links.push({
-        source: plugin.name,
-        target: 'Jenkins Core',
-        lineStyle: { color: '#AAAAAA' },
-      });
-
-      if (plugin.dependencies) {
-        plugin.dependencies.forEach((dep) => {
-          const depPlugin = pluginDataTyped.plugins[dep.name];
-          if (depPlugin) {
-            addPluginAndDependencies(depPlugin, nodes, links, addedNodes);
-            links.push({
-              source: plugin.name,
-              target: dep.name,
-              lineStyle: { color: '#AAAAAA' },
-            });
-          }
-        });
-      }
+    if (!graphData) {
+        return <div>Loading...</div>
     }
-  };
 
-  return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      width: '100%',
-    }}>
-      <input
-        type="text"
-        placeholder="Filter plugins..."
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-      />
-      <div ref={chartRef} style={{ width: '100%', height: '100%' }} />
-    </Box>
-  );
-};
+    return (
+        <>
+            <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                style={{ padding: '5px', width: '100%' }}
+            />
+            <ForceGraph3D
+                graphData={graphData}
+                nodeLabel={(node: Node) => node.name}
+                onNodeHover={(node) => setHoveredNode(node as Node)}
+                onNodeClick={(node) => handleNodeClick(node as Node)}
+                onNodeDragEnd={(node) => {
+                    node.fx = node.x
+                    node.fy = node.y
+                    node.fz = node.z
+                }}
+                nodeAutoColorBy="name"
+                linkDirectionalParticles={1}
+            />
+            {hoveredNode && (
+                <div ref={tooltipRef} style={tooltipStyle}>
+                    <div className="tip-title">{hoveredNode.name}</div>
+                    <div className="tip-text" style={{ marginBottom: '5px' }}>
+                        <b>Excerpt:</b> {hoveredNode.description}
+                    </div>
+                    <div className="tip-text">
+                        <b>Version:</b> {hoveredNode.version}
+                    </div>
+                    <div className="tip-text">
+                        <b>Build Date:</b> {hoveredNode.buildDate}
+                    </div>
+                    <div className="tip-text">
+                        <b>Required Core:</b> {hoveredNode.requiredCore}
+                    </div>
+                    <div className="tip-text" style={{ marginTop: '5px' }}>
+                        <b>Developers:</b>{' '}
+                        {hoveredNode.developers?.map((dev, index) => (
+                            <span key={dev.developerId}>
+                                {dev.name} ({dev.developerId})
+                                {index < (hoveredNode.developers?.length ?? 0) - 1 && ', '}
+                            </span>
+                        ))}
+                    </div>
+                    {hoveredNode.dependencies && hoveredNode.dependencies.length > 0 && (
+                        <div className="tip-text" style={{ marginTop: '5px' }}>
+                            <b>Dependencies:</b>
+                            <ul>
+                                {hoveredNode.dependencies.map((dep) => (
+                                    <li key={dep.name}>
+                                        {dep.name} (version: {dep.version} / optional: {dep.optional.toString()})
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            )}
+        </>
+    )
+}
 
-export default EChartsGraph;
+const tooltipStyle: React.CSSProperties = {
+    position: 'absolute',
+    padding: '8px',
+    background: 'rgba(0, 0, 0, 0.75)',
+    color: '#fff',
+    borderRadius: '4px',
+    pointerEvents: 'none',
+    zIndex: 10,
+}
 
+export default ForceGraph
 
-// // EChartsGraph.tsx
-// import React, { useEffect, useRef, useState } from 'react';
-// import * as echarts from 'echarts';
-// import { Box } from '@mui/material';
-// import pluginData from '../../data/infra-statistics/update-center.actual.json';
+// import React, { useEffect, useState, useRef } from 'react'
+// import ForceGraph3D from 'react-force-graph-3d'
+// import useGetDependencyGraphData from '../../hooks/useGetDependencyGraphData'
+// import { Dependency, Developer, Plugin } from '../../types/types'
 
-// interface Dependency {
-//   name: string;
-//   optional: boolean;
-//   version: string;
+// interface Node {
+//     id: string
+//     name: string
+//     description: string
+//     version?: string
+//     buildDate?: string
+//     requiredCore?: string
+//     developers?: Developer[]
+//     dependencies?: Dependency[]
 // }
 
-// interface Developer {
-//   developerId: string;
-//   name: string;
+// interface Link {
+//     source: string
+//     target: string
 // }
 
-// interface IssueTracker {
-//   reportUrl: string;
-//   type: string;
-//   viewUrl: string;
+// interface GraphData {
+//     nodes: Node[]
+//     links: Link[]
 // }
 
-// interface Plugin {
-//   buildDate: string;
-//   defaultBranch?: string;
-//   dependencies?: Dependency[];
-//   developers?: Developer[];
-//   excerpt: string;
-//   gav: string;
-//   issueTrackers?: IssueTracker[];
-//   labels?: string[];
-//   name: string;
-//   popularity: number;
-//   previousTimestamp?: string;
-//   previousVersion?: string;
-//   releaseTimestamp: string;
-//   requiredCore: string;
-//   scm?: string;
-//   sha1: string;
-//   sha256: string;
-//   size: number;
-//   title: string;
-//   url: string;
-//   version: string;
-//   wiki?: string;
-// }
+// const ForceGraph: React.FC = () => {
+//     const json = useGetDependencyGraphData()
+//     const [graphData, setGraphData] = useState<GraphData | null>(null)
+//     const [hoveredNode, setHoveredNode] = useState<Node | null>(null)
+//     const tooltipRef = useRef<HTMLDivElement | null>(null)
 
-// interface PluginData {
-//   plugins: Record<string, Plugin>;
-// }
-
-// const pluginDataTyped = pluginData as PluginData;
-
-// const EChartsGraph: React.FC = () => {
-//   const chartRef = useRef<HTMLDivElement>(null);
-//   const [filter, setFilter] = useState<string>('');
-//   const [graphData, setGraphData] = useState<{ nodes: any[], links: any[] }>({ nodes: [], links: [] });
-
-//   useEffect(() => {
-//     const filteredGraphData = getGraphData(pluginDataTyped.plugins, filter);
-//     setGraphData(filteredGraphData);
-//   }, [filter]);
-
-//   useEffect(() => {
-//     if (chartRef.current) {
-//       const chart = echarts.init(chartRef.current);
-
-//       const option = {
-//         tooltip: {
-//           formatter: function (params: any) {
-//             const plugin = pluginDataTyped.plugins[params.data.id];
-//             let html = `<div class="tip-title">${params.name}</div>`;
-//             if (plugin) {
-//               html += `<div class="tip-text"><b>Excerpt:</b> ${plugin.excerpt}</div>`;
-//               html += `<div class="tip-text"><b>Version:</b> ${plugin.version}</div>`;
-//               html += `<div class="tip-text"><b>Build Date:</b> ${plugin.buildDate}</div>`;
-//               html += `<div class="tip-text"><b>Required Core:</b> ${plugin.requiredCore}</div>`;
-//               html += `<div class="tip-text"><b>Developers:</b> ${plugin.developers?.map(dev => `${dev.name} (${dev.developerId})`).join(', ')}</div>`;
-//               html += `<div class="tip-text"><b>Dependencies:</b><ul>${plugin.dependencies?.map(dep => `<li>${dep.name} (version: ${dep.version}, optional: ${dep.optional})</li>`).join('') || 'None'}</ul></div>`;
+//     const containsDeveloper = (pluginJSON: Plugin, filterRegexp: RegExp): boolean => {
+//         if (pluginJSON.developers && pluginJSON.developers.length > 0) {
+//             for (let i = 0; i < pluginJSON.developers.length; i++) {
+//                 const developer = pluginJSON.developers[i]
+//                 if (
+//                     (developer.developerId && developer.developerId.match(filterRegexp)) ||
+//                     (developer.name && developer.name.match(filterRegexp))
+//                 ) {
+//                     return true
+//                 }
 //             }
-//             return html;
-//           },
-//         },
-//         series: [
-//           {
-//             type: 'graph',
-//             layout: 'force',
-//             animation: false,
-//             data: graphData.nodes,
-//             links: graphData.links,
-//             roam: true,
-//             label: {
-//               show: true,
-//               position: 'right',
-//             },
-//             force: {
-//               repulsion: 20,
-//               edgeLength: 100,
-//               friction: 0.02,
-//             },
-//           },
-//         ],
-//       };
-
-//       chart.setOption(option);
-
-//       return () => {
-//         chart.dispose();
-//       };
+//         }
+//         return false
 //     }
-//   }, [graphData]);
 
-//   const getGraphData = (plugins: Record<string, Plugin>, filter: string) => {
-//     const nodes = [];
-//     const links = [];
+//     const getJsonForChart = (data: Plugin[], filter: string) => {
+//         const nodesMap = new Map<string, Node>()
+//         const nodes: Node[] = []
+//         const links: Link[] = []
 
-//     const filterRegexp = filter ? new RegExp(filter, 'i') : null;
-
-//     for (const pluginKey in plugins) {
-//       const plugin = plugins[pluginKey];
-//       if (!filterRegexp || plugin.name.match(filterRegexp)) {
-//         nodes.push({
-//           id: plugin.name,
-//           name: plugin.title,
-//           symbolSize: 10,
-//           itemStyle: { color: '#83548B' },
-//         });
-
-//         if (plugin.dependencies) {
-//           plugin.dependencies.forEach((dep) => {
-//             links.push({
-//               source: plugin.name,
-//               target: dep.name,
-//               lineStyle: { color: '#AAAAAA' },
-//             });
-//           });
+//         let filterRegexp: RegExp | undefined
+//         if (filter && filter.trim() !== '') {
+//             filterRegexp = new RegExp(filter.trim(), 'i')
 //         }
 
-//         links.push({
-//           source: plugin.name,
-//           target: 'Jenkins Core',
-//           lineStyle: { color: '#AAAAAA' },
-//         });
-//       }
-//     }
-
-//     nodes.push({
-//       id: 'Jenkins Core',
-//       name: 'Jenkins Core',
-//       symbolSize: 15,
-//       itemStyle: { color: '#23A4FF' },
-//     });
-
-//     return { nodes, links };
-//   };
-
-//   return (
-//     <Box sx={{
-//       display: 'flex',
-//       flexDirection: 'column',
-//       height: '100%',
-//       width: '100%',
-//     }}>
-//       <input
-//         type="text"
-//         placeholder="Filter plugins..."
-//         value={filter}
-//         onChange={(e) => setFilter(e.target.value)}
-//       />
-//       <div ref={chartRef} style={{ width: '100%', height: '100%' }} />
-//     </Box>  );
-// };
-
-// export default EChartsGraph;
-
-
-
-// // EChartsGraph.tsx
-// import React, { useEffect, useRef } from 'react';
-// import * as echarts from 'echarts';
-// import pluginData from '../../data/infra-statistics/update-center.actual.json';
-
-// interface Dependency {
-//   name: string;
-//   optional: boolean;
-//   version: string;
-// }
-
-// interface Developer {
-//   developerId: string;
-//   name: string;
-// }
-
-// interface IssueTracker {
-//   reportUrl: string;
-//   type: string;
-//   viewUrl: string;
-// }
-
-// interface Plugin {
-//   buildDate: string;
-//   defaultBranch?: string;
-//   dependencies?: Dependency[];
-//   developers?: Developer[];
-//   excerpt: string;
-//   gav: string;
-//   issueTrackers?: IssueTracker[];
-//   labels?: string[];
-//   name: string;
-//   popularity: number;
-//   previousTimestamp?: string;
-//   previousVersion?: string;
-//   releaseTimestamp: string;
-//   requiredCore: string;
-//   scm?: string;
-//   sha1: string;
-//   sha256: string;
-//   size: number;
-//   title: string;
-//   url: string;
-//   version: string;
-//   wiki?: string;
-// }
-
-// interface PluginData {
-//   plugins: Record<string, Plugin>;
-// }
-
-// const pluginDataTyped = pluginData as PluginData;
-
-// const EChartsGraph: React.FC = () => {
-//   const chartRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     if (chartRef.current) {
-//       const chart = echarts.init(chartRef.current);
-//       const graphData = getGraphData(pluginDataTyped.plugins);
-
-//       const option = {
-//         tooltip: {
-//           formatter: function (params: any) {
-//             const plugin = pluginDataTyped.plugins[params.data.id];
-//             let html = `<div class="tip-title">${params.name}</div>`;
-//             if (plugin) {
-//               html += `<div class="tip-text"><b>Excerpt:</b> ${plugin.excerpt}</div>`;
-//               html += `<div class="tip-text"><b>Version:</b> ${plugin.version}</div>`;
-//               html += `<div class="tip-text"><b>Build Date:</b> ${plugin.buildDate}</div>`;
-//               html += `<div class="tip-text"><b>Required Core:</b> ${plugin.requiredCore}</div>`;
-//               html += `<div class="tip-text"><b>Developers:</b> ${plugin.developers?.map(dev => `${dev.name} (${dev.developerId})`).join(', ')}</div>`;
-//               html += `<div class="tip-text"><b>Dependencies:</b><ul>${plugin.dependencies?.map(dep => `<li>${dep.name} (version: ${dep.version}, optional: ${dep.optional})</li>`).join('') || 'None'}</ul></div>`;
+//         data.forEach((plugin) => {
+//             if (
+//                 !filterRegexp ||
+//                 plugin.name.match(filterRegexp) ||
+//                 plugin.title.match(filterRegexp) ||
+//                 containsDeveloper(plugin, filterRegexp)
+//             ) {
+//                 const node: Node = {
+//                     id: plugin.name,
+//                     name: plugin.name,
+//                     description: plugin.excerpt,
+//                     version: plugin.previousVersion,
+//                     buildDate: plugin.buildDate,
+//                     requiredCore: plugin.requiredCore,
+//                     developers: plugin.developers,
+//                     dependencies: plugin.dependencies,
+//                 }
+//                 nodes.push(node)
+//                 nodesMap.set(node.id, node)
 //             }
-//             return html;
-//           },
-//         },
-//         series: [
-//           {
-//             type: 'graph',
-//             layout: 'force',
-            
-//             animation: false,
-//             data: graphData.nodes,
-//             links: graphData.links,
-//             roam: true,
-//             label: {
-//               show: true,
-//               position: 'middle',
-//             },
-//             force: {
-//               repulsion: 30,
-//               friction: 0.02,
-              
-//             },
-//           },
-//         ],
-//       };
+//         })
 
-//       chart.setOption(option);
+//         data.forEach((plugin) => {
+//             plugin.dependencies.forEach((dependency) => {
+//                 if (nodesMap.has(dependency.name)) {
+//                     links.push({
+//                         source: plugin.name,
+//                         target: dependency.name,
+//                     })
+//                 } else {
+//                     console.warn(`Node not found: ${dependency.name}`)
+//                 }
+//             })
+//         })
 
-//       return () => {
-//         chart.dispose();
-//       };
-//     }
-//   }, []);
-
-//   const getGraphData = (plugins: Record<string, Plugin>) => {
-//     const nodes = [];
-//     const links = [];
-
-//     for (const pluginKey in plugins) {
-//       const plugin = plugins[pluginKey];
-//       nodes.push({
-//         id: plugin.name,
-//         name: plugin.title,
-//         symbolSize: 10,
-//         itemStyle: { color: '#83548B' },
-//       });
-
-//       if (plugin.dependencies) {
-//         plugin.dependencies.forEach((dep) => {
-//           links.push({
-//             source: plugin.name,
-//             target: dep.name,
-//             lineStyle: { color: '#AAAAAA' },
-//           });
-//         });
-//       }
-
-//       links.push({
-//         source: plugin.name,
-//         target: 'Jenkins Core',
-//         lineStyle: { color: '#AAAAAA'},
-//       });
+//         setGraphData({ nodes, links })
 //     }
 
-//     nodes.push({
-//       id: 'Jenkins Core',
-//       name: 'Jenkins Core',
-//       symbolSize: 15,
-//       itemStyle: { color: '#23A4FF' },
-//     });
+//     const getJsonForNode = (data: Plugin[], nodeID: string) => {
+//         const nodesMap = new Map<string, Node>()
+//         const nodes: Node[] = []
+//         const links: Link[] = []
 
-//     return { nodes, links };
-//   };
+//         data.forEach((plugin) => {
+//             const node: Node = {
+//                 id: plugin.name,
+//                 name: plugin.name,
+//                 description: plugin.excerpt,
+//                 version: plugin.previousVersion,
+//                 buildDate: plugin.buildDate,
+//                 requiredCore: plugin.requiredCore,
+//                 developers: plugin.developers,
+//                 dependencies: plugin.dependencies,
+//             }
+//             nodes.push(node)
+//             nodesMap.set(node.id, node)
+//         })
 
-//   return <div ref={chartRef} style={{ width: '100%', height: '100%' }} />;
-// };
+//         data.forEach((plugin) => {
+//             plugin.dependencies.forEach((dependency) => {
+//                 if (nodesMap.has(dependency.name)) {
+//                     links.push({
+//                         source: plugin.name,
+//                         target: dependency.name,
+//                     })
+//                 } else {
+//                     console.warn(`Node not found: ${dependency.name}`)
+//                 }
+//             })
+//         })
 
-// export default EChartsGraph;
+//         setGraphData({ nodes, links })
+//     }
 
+//     // useEffect(() => {
+//     //     if (json) {
+//     //         const nodesMap = new Map<string, Node>()
+//     //         const nodes: Node[] = []
+//     //         const links: Link[] = []
 
+//     //         json.forEach((plugin) => {
+//     //             const node: Node = {
+//     //                 id: plugin.name,
+//     //                 name: plugin.name,
+//     //                 description: plugin.excerpt,
+//     //                 version: plugin.previousVersion,
+//     //                 buildDate: plugin.buildDate,
+//     //                 requiredCore: plugin.requiredCore,
+//     //                 developers: plugin.developers,
+//     //                 dependencies: plugin.dependencies,
+//     //             }
+//     //             nodes.push(node)
+//     //             nodesMap.set(node.id, node)
+//     //         })
 
+//     //         json.forEach((plugin) => {
+//     //             plugin.dependencies.forEach((dependency) => {
+//     //                 if (nodesMap.has(dependency.name)) {
+//     //                     links.push({
+//     //                         source: plugin.name,
+//     //                         target: dependency.name,
+//     //                     })
+//     //                 } else {
+//     //                     console.warn(`Node not found: ${dependency.name}`)
+//     //                 }
+//     //             })
+//     //         })
 
+//     //         setGraphData({ nodes, links })
+//     //     }
+//     // }, [json])
 
+//     useEffect(() => {
+//         const handleMouseMove = (event: MouseEvent) => {
+//             if (tooltipRef.current) {
+//                 tooltipRef.current.style.left = `${event.clientX + 10}px`
+//                 tooltipRef.current.style.top = `${event.clientY + 10}px`
+//             }
+//         }
+//         window.addEventListener('mousemove', handleMouseMove)
+//         return () => {
+//             window.removeEventListener('mousemove', handleMouseMove)
+//         }
+//     }, [])
 
+//     if (!graphData) {
+//         return <div>Loading...</div>
+//     }
 
-
-// import React from 'react';
-// import pluginData from '../../data/infra-statistics/update-center.actual.json';
-
-// interface Dependency {
-//   name: string;
-//   optional: boolean;
-//   version: string;
+//     return (
+//         <>
+//             <ForceGraph3D
+//                 graphData={graphData}
+//                 nodeLabel=""
+//                 onNodeHover={(node) => setHoveredNode(node as Node)}
+//                 onNodeDragEnd={(node) => {
+//                     node.fx = node.x
+//                     node.fy = node.y
+//                     node.fz = node.z
+//                 }}
+//                 nodeAutoColorBy="name"
+//                 linkDirectionalParticles={1}
+//             />
+//             {hoveredNode && (
+//                 <div ref={tooltipRef} style={tooltipStyle}>
+//                     <div className="tip-title">{hoveredNode.name}</div>
+//                     <div className="tip-text" style={{ marginBottom: '5px' }}>
+//                         <b>Excerpt:</b> {hoveredNode.description}
+//                     </div>
+//                     <div className="tip-text">
+//                         <b>Version:</b> {hoveredNode.version}
+//                     </div>
+//                     <div className="tip-text">
+//                         <b>Build Date:</b> {hoveredNode.buildDate}
+//                     </div>
+//                     <div className="tip-text">
+//                         <b>Required Core:</b> {hoveredNode.requiredCore}
+//                     </div>
+//                     <div className="tip-text" style={{ marginTop: '5px' }}>
+//                         <b>Developers:</b>{' '}
+//                         {hoveredNode.developers?.map((dev, index) => (
+//                             <span key={dev.developerId}>
+//                                 {dev.name} ({dev.developerId})
+//                                 {index < (hoveredNode.developers?.length ?? 0) - 1 && ', '}
+//                             </span>
+//                         ))}
+//                     </div>
+//                     {hoveredNode.dependencies && hoveredNode.dependencies.length > 0 && (
+//                         <div className="tip-text" style={{ marginTop: '5px' }}>
+//                             <b>Dependencies:</b>
+//                             <ul>
+//                                 {hoveredNode.dependencies.map((dep) => (
+//                                     <li key={dep.name}>
+//                                         {dep.name} (version: {dep.version} / optional: {dep.optional.toString()})
+//                                     </li>
+//                                 ))}
+//                             </ul>
+//                         </div>
+//                     )}
+//                 </div>
+//             )}
+//         </>
+//     )
 // }
 
-// interface Developer {
-//   developerId: string;
-//   name: string;
+// const tooltipStyle: React.CSSProperties = {
+//     position: 'absolute',
+//     padding: '8px',
+//     background: 'rgba(0, 0, 0, 0.75)',
+//     color: '#fff',
+//     borderRadius: '4px',
+//     pointerEvents: 'none',
+//     zIndex: 10,
 // }
 
-// interface IssueTracker {
-//   reportUrl: string;
-//   type: string;
-//   viewUrl: string;
-// }
-
-// interface Plugin {
-//   buildDate: string;
-//   defaultBranch?: string;
-//   dependencies?: Dependency[];
-//   developers?: Developer[];
-//   excerpt: string;
-//   gav: string;
-//   issueTrackers?: IssueTracker[];
-//   labels?: string[];
-//   name: string;
-//   popularity: number;
-//   previousTimestamp?: string;
-//   previousVersion?: string;
-//   releaseTimestamp: string;
-//   requiredCore: string;
-//   scm?: string;
-//   sha1: string;
-//   sha256: string;
-//   size: number;
-//   title: string;
-//   url: string;
-//   version: string;
-//   wiki?: string;
-// }
-
-// interface PluginData {
-//   plugins: Record<string, Plugin>;
-// }
-
-// const pluginDataTyped = pluginData as PluginData;
-
-// const PluginList: React.FC = () => {
-//   const plugins = pluginDataTyped.plugins;
-
-//   return (
-//     <div>
-//       <h1>Plugins List</h1>
-//       <ul>
-//         {Object.keys(plugins).map((pluginKey) => {
-//           const plugin = plugins[pluginKey];
-//           return (
-//             <li key={pluginKey}>
-//               <h2>{plugin.title}</h2>
-//               <p><strong>Name:</strong> {plugin.name}</p>
-//               <p><strong>Version:</strong> {plugin.version}</p>
-//               <p><strong>Build Date:</strong> {plugin.buildDate}</p>
-//               <p><strong>Default Branch:</strong> {plugin.defaultBranch}</p>
-//               <p><strong>GAV:</strong> {plugin.gav}</p>
-//               <p><strong>Popularity:</strong> {plugin.popularity}</p>
-//               <p><strong>Excerpt:</strong> {plugin.excerpt}</p>
-//               <p><strong>Release Timestamp:</strong> {plugin.releaseTimestamp}</p>
-//               <p><strong>Required Core:</strong> {plugin.requiredCore}</p>
-//               <p><strong>SCM:</strong> {plugin.scm}</p>
-//               <p><strong>SHA1:</strong> {plugin.sha1}</p>
-//               <p><strong>SHA256:</strong> {plugin.sha256}</p>
-//               <p><strong>Size:</strong> {plugin.size}</p>
-//               <p><strong>URL:</strong> <a href={plugin.url}>{plugin.url}</a></p>
-//               <p><strong>Wiki:</strong> <a href={plugin.wiki}>{plugin.wiki}</a></p>
-//               <p><strong>Labels:</strong> {plugin.labels?.join(', ')}</p>
-//               <p><strong>Dependencies:</strong></p>
-//               <ul>
-//                 {plugin.dependencies?.map((dep, index) => (
-//                   <li key={index}>{dep.name} (version: {dep.version}, optional: {dep.optional.toString()})</li>
-//                 )) || <li>None</li>}
-//               </ul>
-//               <p><strong>Developers:</strong></p>
-//               <ul>
-//                 {plugin.developers?.map((dev, index) => (
-//                   <li key={index}>{dev.name} (ID: {dev.developerId})</li>
-//                 )) || <li>None</li>}
-//               </ul>
-//               <p><strong>Issue Trackers:</strong></p>
-//               <ul>
-//                 {plugin.issueTrackers?.map((tracker, index) => (
-//                   <li key={index}>
-//                     {tracker.type}: <a href={tracker.viewUrl}>{tracker.viewUrl}</a> (Report URL: <a href={tracker.reportUrl}>{tracker.reportUrl}</a>)
-//                   </li>
-//                 )) || <li>None</li>}
-//               </ul>
-//             </li>
-//           );
-//         })}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default PluginList;
+// export default ForceGraph
