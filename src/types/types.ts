@@ -76,14 +76,14 @@ export interface IssueTracker {
     viewUrl: string
 }
 
-export interface Plugin {
+export interface PluginNode {
     buildDate: string
-    defaultBranch: string
+    defaultBranch?: string
     dependencies: Dependency[]
     developers: Developer[]
     excerpt: string
     gav: string
-    issueTrackers: IssueTracker[]
+    issueTrackers?: IssueTracker[]
     labels: string[]
     name: string
     popularity: number
@@ -91,7 +91,7 @@ export interface Plugin {
     previousVersion?: string
     releaseTimestamp: string
     requiredCore: string
-    scm: string
+    scm?: string
     sha1: string
     sha256: string
     size: number
@@ -103,6 +103,6 @@ export interface Plugin {
 
 export interface PluginData {
     plugins: {
-        [key: string]: Plugin
+        [key: string]: PluginNode
     }
 }
