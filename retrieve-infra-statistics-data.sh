@@ -17,4 +17,3 @@ rm infra-statistics-gh-pages.zip
 
 # Fetch update-center.actual.json
 curl --silent --fail --output "${INFRASTATISTICS_LOCATION}/update-center.actual.json" --location "https://updates.jenkins.io/current/update-center.actual.json"
-
