@@ -106,3 +106,25 @@ export interface PluginData {
         [key: string]: PluginNode
     }
 }
+
+export interface Node {
+    id: string
+    name: string
+    description: string
+    version?: string
+    buildDate?: string
+    requiredCore?: string
+    developers?: Developer[]
+    dependencies?: Dependency[]
+    color?: string
+}
+
+export interface Link {
+    source: string
+    target: string
+}
+
+export interface GraphData {
+    nodes: Node[]
+    links: Link[]
+}
