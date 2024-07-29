@@ -8,13 +8,13 @@ const useSelectionState = () => {
     const handleChartSelect = (chart: string) => {
         setSelectedChart(chart)
         setSelectedTab('overall')
-        setSelectedYear('null')
+        setSelectedYear(null)
     }
 
     const handleYearSelect = (year: string | null) => {
         setSelectedYear(year)
         setSelectedTab('monthly')
-        setSelectedChart('null')
+        setSelectedChart(null)
     }
 
     return {
