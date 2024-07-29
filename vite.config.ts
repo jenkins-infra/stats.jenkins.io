@@ -11,4 +11,7 @@ export default defineConfig({
             filename: 'bundle-analysis.html',
         }),
     ],
+    optimizeDeps: {
+        include: ['react-force-graph-3d'],
+    },
 })

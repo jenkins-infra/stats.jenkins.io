@@ -56,3 +56,75 @@ export interface ParsedData {
     }[]
     totalInstalls: number
 }
+
+// dependency graph types
+
+export interface Dependency {
+    name: string
+    optional: boolean
+    version: string
+}
+
+export interface Developer {
+    developerId: string
+    name: string
+}
+
+export interface IssueTracker {
+    reportUrl: string
+    type: string
+    viewUrl: string
+}
+
+export interface PluginNode {
+    buildDate: string
+    defaultBranch?: string
+    dependencies: Dependency[]
+    developers: Developer[]
+    excerpt: string
+    gav: string
+    issueTrackers?: IssueTracker[]
+    labels: string[]
+    name: string
+    popularity: number
+    previousTimestamp?: string
+    previousVersion?: string
+    releaseTimestamp: string
+    requiredCore: string
+    scm?: string
+    sha1: string
+    sha256: string
+    size: number
+    title: string
+    url: string
+    version: string
+    wiki: string
+}
+
+export interface PluginData {
+    plugins: {
+        [key: string]: PluginNode
+    }
+}
+
+export interface Node {
+    id: string
+    name: string
+    description: string
+    version?: string
+    buildDate?: string
+    requiredCore?: string
+    developers?: Developer[]
+    dependencies?: Dependency[]
+    color?: string
+}
+
+export interface Link {
+    source: string
+    target: string
+}
+
+export interface GraphData {
+    nodes: Node[]
+    links: Link[]
+}

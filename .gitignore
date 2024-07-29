@@ -25,3 +25,6 @@ dist-ssr
 
 # infra-statistics
 src/data/infra-statistics
+
+# bundle analyzer
+bundle-analysis.html
