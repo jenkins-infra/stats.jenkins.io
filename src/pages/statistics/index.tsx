@@ -42,8 +42,6 @@ const Statistics: React.FC = () => {
 
     const [secondChart, setSecondChart] = useState<string | undefined>(undefined)
 
-    const chartToDisplay = selectedChart || defaultChart
-
     const handleSecondChartSelect = (event: SelectChangeEvent<string>) => {
         setSecondChart(event.target.value as string)
     }
@@ -73,7 +71,7 @@ const Statistics: React.FC = () => {
                 <Drawer
                     sidebarOpen={sidebarOpen}
                     toggleSidebar={toggleSidebar}
-                    selectedChart={chartToDisplay}
+                    selectedChart={selectedChart}
                     selectedYear={selectedYear}
                     handleChartSelect={handleChartSelect}
                     handleYearSelect={handleYearSelect}
@@ -114,7 +112,7 @@ const Statistics: React.FC = () => {
                             },
                         }}
                     >
-                        {chartToDisplay !== 'JVMs' && (
+                        {selectedChart !== 'JVMs' && (
                             <FormControl sx={{ alignSelf: 'flex-start', minWidth: '128px' }}>
                                 <InputLabel id="comparison-chart-select-label">Compare</InputLabel>
                                 <Select
@@ -136,15 +134,15 @@ const Statistics: React.FC = () => {
                             </FormControl>
                         )}
 
-                        {chartToDisplay === 'JVMs' ? (
+                        {selectedChart === 'JVMs' ? (
                             <JVMChart title={'JVMs By Date'} data={jvmData} />
                         ) : (
                             <Chart
-                                key={chartToDisplay}
+                                key={selectedChart}
                                 csvData={csvData}
-                                title={chartTitles[chartToDisplay]}
+                                title={selectedChart == null ? chartTitles[defaultChart] : chartTitles[selectedChart]}
                                 pluginCount={pluginCount}
-                                selectedChart={chartToDisplay}
+                                selectedChart={selectedChart == null ? defaultChart : selectedChart}
                                 secondChart={secondChart}
                             />
                         )}
