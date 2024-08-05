@@ -237,7 +237,7 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(({ node }, ref) =
                     <ul>
                         {node.dependencies.map((dep) => (
                             <li key={dep.name}>
-                                {dep.name} (version: {dep.version} / optional: {dep.optional.toString()})
+                                {dep.name} (version: {dep.version}) {dep.optional ? ' -- OPTIONAL' : ''}
                             </li>
                         ))}
                     </ul>
