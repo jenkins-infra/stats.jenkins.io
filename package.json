@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "lint": "npx eslint . --report-unused-disable-directives --max-warnings 0",
         "format": "prettier --write .",
         "preview": "vite preview"
     },
@@ -37,6 +37,9 @@
         "three": "^0.167.0"
     },
     "devDependencies": {
+        "@eslint/compat": "^1.1.1",
+        "@eslint/eslintrc": "^3.1.0",
+        "@eslint/js": "^9.8.0",
         "@types/jsdom": "^21.1.7",
         "@types/papaparse": "^5.3.14",
         "@types/react": "^18.3.3",
@@ -50,6 +53,7 @@
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-react-hooks": "^4.6.2",
         "eslint-plugin-react-refresh": "^0.4.7",
+        "globals": "^15.9.0",
         "prettier": "3.3.3",
         "rollup-plugin-visualizer": "^5.12.0",
         "typescript": "^5.4.5",
