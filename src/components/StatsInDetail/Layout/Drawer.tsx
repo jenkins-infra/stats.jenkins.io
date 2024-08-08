@@ -17,7 +17,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MenuIcon from '@mui/icons-material/Menu'
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import { data } from '../../../data/statisticsData'
+import { data } from '../../../utils/generateDateArray'
 
 const ListButton = styled(ListItemButton)({
     '&.Mui-selected': {
@@ -33,8 +33,9 @@ const ListButton = styled(ListItemButton)({
 
 const ListText = styled(ListItemText)({
     color: 'white',
-    fontFamily: 'Georgia',
     fontWeight: 'bold',
+    marginTop: '2px',
+    marginBottom: '2px',
 })
 
 const AccordionSummaryBox = styled(AccordionSummary)({

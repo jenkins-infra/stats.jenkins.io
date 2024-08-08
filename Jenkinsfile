@@ -10,6 +10,10 @@ pipeline {
     label 'linux-arm64-docker || arm64linux'
   }
 
+  environment {
+    INFRASTATISTICS_LOCATION = 'src/data/infra-statistics'
+  }
+
   stages {
     stage('Check for typos') {
       steps {
@@ -36,6 +40,12 @@ pipeline {
         sh '''
         npm run lint
         '''
+      }
+    }
+
+    stage('Retrieve data from infra-statistics') {
+      steps {
+        sh './retrieve-infra-statistics-data.sh'
       }
     }
 

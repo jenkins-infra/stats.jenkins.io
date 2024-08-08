@@ -1,61 +1,32 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { VersionData } from '../data/plugins'
+import { useState, useEffect } from 'react';
+import { AllPluginVersionData } from '../types/types';
 
-const fetchVersionData = async (pluginId: string): Promise<VersionData | null> => {
-    const url = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/pluginversions/${pluginId}.html`
-    try {
-        const response = await axios.get(url)
-        const htmlContent = response.data
-
-        const parser = new DOMParser()
-        const doc = parser.parseFromString(htmlContent, 'text/html')
-        const scriptTags = doc.querySelectorAll('script')
-
-        for (const script of scriptTags) {
-            const scriptContent = script.textContent
-            if (scriptContent) {
-                const match = scriptContent.match(/var\s+versionData\s*=\s*(\{[\s\S]*?\});/)
-                if (match) {
-                    console.log(`Version data found for plugin ${pluginId}.`)
-                    return JSON.parse(match[1])
-                }
-            }
-        }
-
-        console.log(`Version data not found for plugin ${pluginId}.`)
-        return null
-    } catch (error) {
-        console.error(`Error fetching version data for plugin ${pluginId}:`, error)
-        return null
-    }
-}
-
-const useGetPluginVersionData = (pluginId: string | null) => {
-    const [versionData, setVersionData] = useState<VersionData | null>(null)
-    const [loading, setLoading] = useState<boolean>(false)
+const useGetPluginVersionData = () => {
+    const [allVersionData, setAllVersionData] = useState<AllPluginVersionData | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        if (pluginId) {
-            const fetchData = async () => {
-                setLoading(true)
-                try {
-                    const data = await fetchVersionData(pluginId)
-                    setVersionData(data)
-                } catch (error) {
-                    console.error(`Error fetching plugin version data: ${error}`)
-                } finally {
-                    setLoading(false)
+        const fetchData = async () => {
+            try {
+                const fileUrl = new URL(`../data/infra-statistics/plugin-installation-trend/jenkins-version-per-plugin-version.json`, import.meta.url).href;
+                const response = await fetch(fileUrl);
+                if (!response.ok) {
+                    throw new Error(`Version data not found`);
                 }
+                const data = await response.json() as AllPluginVersionData;
+                setAllVersionData(data);
+            } catch (error) {
+                console.error(`Error fetching version data`, error);
+                setAllVersionData(null);
+            } finally {
+                setLoading(false);
             }
+        };
 
-            fetchData()
-        } else {
-            setVersionData(null) // Clear version data when no plugin is selected
-        }
-    }, [pluginId])
+        fetchData();
+    }, []);
 
-    return { versionData, loading }
-}
+    return { allVersionData, loading };
+};
 
-export default useGetPluginVersionData
+export default useGetPluginVersionData;

@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# infra-statistics
+src/data/infra-statistics
+
+# bundle analyzer
+bundle-analysis.html

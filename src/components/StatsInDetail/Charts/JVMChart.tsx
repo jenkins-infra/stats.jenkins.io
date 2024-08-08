@@ -1,19 +1,20 @@
 import React, { useEffect, useMemo } from 'react'
 import { Typography } from '@mui/material'
 import * as echarts from 'echarts'
-import useJVMData from '../../../hooks/useJVMData'
+import customTheme from '../../../theme/customTheme'
+
+echarts.registerTheme('customTheme', customTheme)
 
 interface JVMChartProps {
     title: string
     width?: string
     height?: string
+    data: Record<string, { dates: string[]; installations: number[] }> | null
 }
 
 const LTS_RELEASES = [6, 7, 8, 11, 17, 21, 25]
 
-const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '100%' }) => {
-    const { data, error } = useJVMData()
-
+const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '100%', data }) => {
     const chartData = useMemo(() => {
         if (!data) return { dates: [], series: [] }
 
@@ -41,7 +42,18 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
             },
             tooltip: {
                 trigger: 'axis',
-                axisPointer: { type: 'line' },
+                backgroundColor: '#333',
+                borderColor: '#777',
+                borderWidth: 1,
+                textStyle: {
+                    color: '#fff',
+                },
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#777',
+                    },
+                },
             },
             xAxis: {
                 type: 'time',
@@ -53,7 +65,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                 axisLabel: { showMinLabel: false, fontSize: 12, align: 'middle' },
                 nameTextStyle: {
                     fontSize: 12,
-                    padding: [30, 30, 10, 0],
+                    padding: [0, 0, 10, 0],
                 },
             },
             grid: { left: '0', right: '10', bottom: '20', top: '90', containLabel: true },
@@ -93,7 +105,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
         if (!data) return
 
         const chartDom = document.getElementById('jvm-chart') as HTMLElement
-        const myChart = echarts.init(chartDom, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartDom, 'customTheme', { renderer: 'svg' })
         myChart.setOption(chartOptions)
 
         const handleResize = () => myChart.resize()
@@ -105,8 +117,8 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
         }
     }, [data, chartOptions])
 
-    if (error) {
-        return <Typography color="error">Error loading data: {error.message}</Typography>
+    if (!data) {
+        return <Typography color="error">Loading data...</Typography>
     }
 
     return <div id="jvm-chart" style={{ width, height }}></div>

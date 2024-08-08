@@ -3,14 +3,14 @@ import { Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@
 
 import PluginCardChart from '../Charts/PluginCardChart'
 import PluginDetailModal from './PluginDetailModal'
-import { IPluginData } from '../../../data/plugins'
+import { IPluginData } from '../../../types/types'
 import downloadIcon from '../../../assets/downloadIcon.svg'
 
 interface PluginCardProps {
     plugin: IPluginData
 }
 
-const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
+const PluginCard: React.FC<PluginCardProps> = React.memo(({ plugin }) => {
     const [open, setOpen] = useState(false)
     const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)
@@ -21,7 +21,12 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
             (sum, installations) => sum + installations,
             0
         )
-        return (totalInstallations / 1000).toFixed(1) + 'K'
+        return (
+            (totalInstallations / 1000).toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1,
+            }) + 'K'
+        )
     }, [plugin.chartData])
 
     return (
@@ -40,7 +45,7 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
                     <CardContent>
                         <Typography
                             sx={{
-                                fontSize: '1.2rem',
+                                fontSize: '1rem',
                                 textAlign: 'center',
                                 textOverflow: 'ellipsis',
                                 overflow: 'hidden',
@@ -54,15 +59,19 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
                         </Typography>
                         <Box display="flex" alignItems="center" justifyContent="center" marginBottom="1rem">
                             <img src={downloadIcon} alt="Downloads" width={20} height={20} />
-                            <Typography variant="subtitle1" component="div" marginLeft={1}>
+                            <Typography component="div" marginLeft={1}>
                                 {totalInstallationsK}
                             </Typography>
                         </Box>
-                        <CardMedia>
+                        <CardMedia
+                            sx={{
+                                height: '100px',
+                            }}
+                        >
                             {plugin.chartData ? (
                                 <PluginCardChart data={plugin.chartData} />
                             ) : (
-                                <Typography variant="body2" color="textSecondary" align="center">
+                                <Typography color="textSecondary" align="center">
                                     No Data Available
                                 </Typography>
                             )}
@@ -73,6 +82,6 @@ const PluginCard: React.FC<PluginCardProps> = ({ plugin }) => {
             <PluginDetailModal open={open} handleClose={handleClose} plugin={plugin} />
         </>
     )
-}
+})
 
 export default PluginCard

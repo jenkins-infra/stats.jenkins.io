@@ -4,29 +4,42 @@ import './landing-page.css'
 import { Link, NavLink } from 'react-router-dom'
 import { styled } from '@mui/system'
 import { Box, Paper, Stack, Typography } from '@mui/material'
+import { keyframes } from '@emotion/react'
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
 
 const StatsLink = styled(NavLink)({
     display: 'block',
-    width: '70%',
+    width: '100%',
+    // boxSizing: 'border-box',
     marginBottom: '1rem',
-    background: '#ebedf0',
-    opacity: '0.9',
     color: 'black',
-    padding: '0.5rem 1rem',
-    border: '2px solid transparent',
-    borderRadius: '0.66rem',
-    boxShadow: '1.5px 4px 5px 0 rgba(0, 0, 0, 0.2)',
-    fontSize: '0.9rem',
-    fontFamily: 'Georgia, Times, “Times New Roman”, serif',
+    fontSize: '1rem',
+    fontFamily:
+        'system-ui, "Segoe UI", roboto, "Noto Sans", oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    backgroundColor: 'rgba(240, 240, 240, 0.8)',
+    padding: '0.5rem',
+    paddingLeft: '1rem',
+    marginLeft: '0.5rem',
+    borderRadius: '0.75rem',
+    backdropFilter: 'blur(10px)',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    transition: 'all 0.3s ease-in-out',
     '&:hover': {
-        backgroundImage: 'linear-gradient(315deg, #007FFF 0%, #005BBB 74%)',
         color: 'white',
         fontWeight: 'bold',
-        opacity: '0.7',
+        backgroundColor: '#212529',
+        transform: 'scale(1.05)',
     },
-
     '@media (max-width: 1024px)': {
-        fontSize: '0.8rem',
+        fontSize: '0.9rem',
         marginBottom: '0.8rem',
     },
     '@media (max-width: 768px)': {
@@ -37,33 +50,47 @@ const StatsLink = styled(NavLink)({
 
 const LandingPage: React.FC = () => {
     return (
-        <>
-            <Stack
+        <Stack
+            id="background"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100vh',
+                width: '100vw',
+                backgroundColor: '#f0f0f0',
+                backgroundImage: 'radial-gradient(#212529 0.9px, #f0f0f0 0.9px)',
+                backgroundSize: '18px 18px',
+                overflow: 'auto',
+                animation: `${fadeIn} 1s ease-in-out`,
+            }}
+        >
+            <Box
                 sx={{
-                    backgroundColor: '#f0f0f0',
+                    flex: '1',
+                    display: 'flex',
                     alignItems: 'center',
-                    width: '100vw',
-                    height: '100vh',
-                    overflow: 'auto',
+                    justifyContent: 'center',
                 }}
             >
                 <Paper
                     elevation={16}
                     sx={{
-                        width: '70%',
+                        width: '60%',
                         display: 'flex',
                         flexDirection: 'row',
                         alignContent: 'center',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        flex: '1',
+                        borderRadius: '1rem',
                         marginTop: '4rem',
                         marginBottom: '4rem',
-                        gap: '5rem',
+                        gap: '3.5rem',
                         backgroundColor: 'white',
-                        borderRadius: '1.5rem',
                         padding: '6rem',
-                        '@media (max-width: 768px)': {
+                        '@media (max-width: 1024px)': {
+                            // gap: '5rem',
+                        },
+                        '@media (max-width: 900px)': {
                             padding: '2rem',
                             marginTop: '2rem',
                             marginBottom: '2rem',
@@ -74,6 +101,7 @@ const LandingPage: React.FC = () => {
                 >
                     <Box
                         sx={{
+                            width: '50%',
                             marginTop: '1.5rem',
                             '@media (max-width: 768px)': {
                                 marginTop: '0',
@@ -84,7 +112,16 @@ const LandingPage: React.FC = () => {
                             <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
                         </Link>
                     </Box>
-                    <Box sx={{ textAlign: 'center', color: 'black', padding: '0.5rem' }}>
+                    <Box
+                        sx={{
+                            textAlign: 'left',
+                            color: 'black',
+                            padding: '0.5rem',
+                            '@media (max-width: 900px)': {
+                                textAlign: 'center',
+                            },
+                        }}
+                    >
                         <Box
                             sx={{
                                 margin: '3rem 0 2.3rem 0',
@@ -98,12 +135,10 @@ const LandingPage: React.FC = () => {
                                 },
                             }}
                         >
-                            <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 'bold' }}>
+                            <Typography variant="h4" sx={{ fontFamily: 'Georgia, sarif', fontWeight: 'bold' }}>
                                 Jenkins Statistics
                             </Typography>
-                            <Typography sx={{ fontFamily: 'Georgia' }}>
-                                Graphical representation of numbers and information around Jenkins
-                            </Typography>
+                            <Typography>Graphical representation of numbers and information around Jenkins</Typography>
                         </Box>
                         <Stack
                             sx={{
@@ -114,15 +149,15 @@ const LandingPage: React.FC = () => {
                             <StatsLink to={'/statistics'}>Statistics in Detail</StatsLink>
                             <StatsLink to={'/plugin-trends'}>Plugin Installation Trend</StatsLink>
                             <StatsLink to={'/plugin-versions'}>Plugin Versions by Jenkins Version</StatsLink>
-                            <StatsLink to="https://www.jenkins.io">Jenkins Plugin Dependency Graph</StatsLink>
+                            <StatsLink to={'/dep-graph'}>Jenkins Plugin Dependency Graph</StatsLink>
                         </Stack>
                     </Box>
                 </Paper>
-                <Box sx={{ width: '100%' }}>
-                    <Footer />
-                </Box>
-            </Stack>
-        </>
+            </Box>
+            <Box sx={{ width: '100%' }}>
+                <Footer />
+            </Box>
+        </Stack>
     )
 }
 

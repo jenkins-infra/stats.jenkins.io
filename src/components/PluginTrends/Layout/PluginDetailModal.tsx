@@ -7,7 +7,7 @@ import PluginInstallationsPercentageChart from '../Charts/PluginInstallationsPer
 import PluginInstallationsPerVersion from '../Charts/PluginInstallationsPerVersionChart'
 import PluginInstallationsPercentagePerVersionChart from '../Charts/PluginInstallationsPercentagePerVersionPieChart'
 import { handleJSONDownload } from '../../../utils/jsonUtils'
-import { IPluginData } from '../../../data/plugins'
+import { IPluginData } from '../../../types/types'
 import CloseIcon from '@mui/icons-material/Close'
 
 interface PluginDetailModalProps {
@@ -81,6 +81,7 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                                     sx={{
                                         fontSize: '1.25rem',
                                         fontWeight: 'bold',
+                                        fontFamily: 'Monospace',
                                     }}
                                 >
                                     {plugin.chartData.name}

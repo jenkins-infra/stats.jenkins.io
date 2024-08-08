@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
+import customTheme from '../../../../theme/customTheme'
+
+echarts.registerTheme('customTheme', customTheme)
 
 interface ExecutorsGraphProps {
     year: string
@@ -10,8 +13,7 @@ interface ExecutorsGraphProps {
 
 const ExecutorsGraph: React.FC<ExecutorsGraphProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/${year}${month}-total-executors.csv`
-    const { data, error } = useCSVData(csvPath)
+    const { data, error } = useCSVData(`${year}${month}-total-executors`)
 
     const xData = useMemo(() => data.map((row) => row[0]), [data])
     const yData = useMemo(() => data.map((row) => Number(row[1])).filter((value) => !isNaN(value)), [data])
@@ -105,7 +107,7 @@ const ExecutorsGraph: React.FC<ExecutorsGraphProps> = ({ year, month }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

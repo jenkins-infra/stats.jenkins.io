@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
+import customTheme from '../../../../theme/customTheme'
+
+echarts.registerTheme('customTheme', customTheme)
 
 interface PluginsGraph2500Props {
     year: string
@@ -10,9 +13,7 @@ interface PluginsGraph2500Props {
 
 const PluginsGraph2500: React.FC<PluginsGraph2500Props> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/${year}${month}-top-plugins2500.csv`
-    console.log(csvPath)
-    const { data, error } = useCSVData(csvPath)
+    const { data, error } = useCSVData(`${year}${month}-top-plugins2500`)
 
     const filteredData = useMemo(() => data.filter((row) => Number(row[1]) > 2500), [data])
     const xData = useMemo(() => filteredData.map((row) => row[0]), [filteredData])
@@ -67,7 +68,7 @@ const PluginsGraph2500: React.FC<PluginsGraph2500Props> = ({ year, month }) => {
                 axisTick: { show: true },
                 name: `Plugin Name (${xData.length.toLocaleString()} plugins)`,
                 nameLocation: 'middle',
-                nameGap: 85,
+                nameGap: 95,
                 nameTextStyle: { fontWeight: 'bold' },
             },
             yAxis: {
@@ -114,14 +115,14 @@ const PluginsGraph2500: React.FC<PluginsGraph2500Props> = ({ year, month }) => {
                     },
                 },
             },
-            grid: { left: '20', right: '30', bottom: '75', top: '60', containLabel: true },
+            grid: { left: '20', right: '30', bottom: '85', top: '60', containLabel: true },
         }
     }, [title, totalSum, xData, yData, downloadCSV])
 
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()
@@ -132,6 +133,10 @@ const PluginsGraph2500: React.FC<PluginsGraph2500Props> = ({ year, month }) => {
             window.removeEventListener('resize', handleResize)
         }
     }, [option])
+
+    if (!data || data.length === 0) {
+        return <div style={{ textAlign: 'center' }}>No data available for {title}</div>
+    }
 
     if (error) {
         return <div>Error loading data: {error.message}</div>

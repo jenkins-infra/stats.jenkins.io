@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { IPluginData } from '../data/plugins'
-import { SortOption } from '../data/types'
+import { IPluginData } from '../types/types'
+import { SortOption } from '../types/types'
 
 const useSortPlugins = (plugins: IPluginData[]) => {
     const [sortOption, setSortOption] = useState<SortOption>('alphabetical')

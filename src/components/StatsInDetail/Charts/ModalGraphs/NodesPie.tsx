@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
+import customTheme from '../../../../theme/customTheme'
 
+echarts.registerTheme('customTheme', customTheme)
 interface NodesPieProps {
     year: string
     month: string
@@ -10,8 +12,7 @@ interface NodesPieProps {
 
 const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
-    const csvPath = `https://raw.githubusercontent.com/jenkins-infra/infra-statistics/gh-pages/jenkins-stats/svg/${year}${month}-nodes.csv`
-    const { data, error } = useCSVData(csvPath)
+    const { data, error } = useCSVData(`${year}${month}-nodes`)
 
     const title = `Nodes by Type - ${month}/${year}`
 
@@ -101,7 +102,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
     useEffect(() => {
         if (!chartRef.current) return
 
-        const myChart = echarts.init(chartRef.current, null, { renderer: 'svg' })
+        const myChart = echarts.init(chartRef.current, 'customTheme', { renderer: 'svg' })
         myChart.setOption(option)
 
         const handleResize = () => myChart.resize()

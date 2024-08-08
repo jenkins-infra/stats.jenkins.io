@@ -1,57 +1,53 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react';
 
 interface JVMStatsPerMonth {
     [timestamp: string]: {
-        [jvm: string]: number
-    }
-}
-
-interface JVMDataResponse {
-    jvmStatsPerMonth: JVMStatsPerMonth
+        [jvm: string]: number;
+    };
 }
 
 interface ParsedJVMData {
     [key: string]: {
-        dates: string[]
-        installations: number[]
-    }
+        dates: string[];
+        installations: number[];
+    };
 }
 
 const useJVMData = () => {
-    const [data, setData] = useState<ParsedJVMData | null>(null)
-    const [error, setError] = useState<Error | null>(null)
+    const [data, setData] = useState<ParsedJVMData | null>(null);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const parseJVMData = async () => {
             try {
-                const response = await axios.get<JVMDataResponse>(
-                    'https://stats.jenkins.io/plugin-installation-trend/jvms.json'
-                )
-                const jvmData = response.data
-                const parsedData: ParsedJVMData = {}
+                const fileUrl = new URL('../data/infra-statistics/plugin-installation-trend/jvms.json', import.meta.url).href;
+                const response = await fetch(fileUrl);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch JVM data');
+                }
+                const jvmData = await response.json();
+                const parsedData: ParsedJVMData = {};
 
-                for (const [timestamp, jvms] of Object.entries(jvmData.jvmStatsPerMonth)) {
-                    const date = new Date(Number(timestamp)).toISOString().split('T')[0]
+                for (const [timestamp, jvms] of Object.entries(jvmData.jvmStatsPerMonth as JVMStatsPerMonth)) {
+                    const date = new Date(Number(timestamp)).toISOString().split('T')[0];
                     for (const [jvm, installations] of Object.entries(jvms)) {
                         if (!parsedData[jvm]) {
-                            parsedData[jvm] = { dates: [], installations: [] }
+                            parsedData[jvm] = { dates: [], installations: [] };
                         }
-                        parsedData[jvm].dates.push(date)
-                        parsedData[jvm].installations.push(installations)
+                        parsedData[jvm].dates.push(date);
+                        parsedData[jvm].installations.push(installations);
                     }
                 }
 
-                setData(parsedData)
+                setData(parsedData);
             } catch (error) {
-                setError(error as Error)
+                console.error('Error processing JVM data', error);
             }
-        }
+        };
 
-        fetchData()
-    }, [])
+        parseJVMData();
+    }, []);
 
-    return { data, error }
-}
+    return { data };
+};
 
-export default useJVMData
+export default useJVMData;
