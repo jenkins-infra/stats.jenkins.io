@@ -10,6 +10,7 @@ import useCSVData from '../../hooks/useCSVData'
 import usePluginCount from '../../hooks/useGetPluginNamesAndCount'
 import useJVMData from '../../hooks/useJVMData'
 import JVMChart from '../../components/StatsInDetail/Charts/JVMChart'
+import BackToHome from '../../components/Layout/BackToHome'
 
 const chartTitles: Record<string, string> = {
     plugins: 'Monthly Plugins Usage',
@@ -103,6 +104,7 @@ const Statistics: React.FC = () => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             padding: '3rem',
+                            paddingTop: '1rem',
                             margin: '2rem',
                             backgroundColor: 'white',
                             borderRadius: 5,
@@ -112,6 +114,7 @@ const Statistics: React.FC = () => {
                             },
                         }}
                     >
+                        <BackToHome color="black" />
                         {selectedChart !== 'JVMs' && (
                             <FormControl sx={{ alignSelf: 'flex-start', minWidth: '128px' }}>
                                 <InputLabel id="comparison-chart-select-label">Compare</InputLabel>
