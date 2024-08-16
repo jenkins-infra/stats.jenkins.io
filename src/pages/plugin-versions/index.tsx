@@ -8,14 +8,18 @@ import useGetSpecificPluginVersionData from '../../hooks/useGetSpecificPluginVer
 import SearchBar from '../../components/PluginVersions/SearchPlugins'
 import BackToSearch from '../../components/PluginVersions/BackToSearchButton'
 import useGetPluginNames from '../../hooks/useGetPluginNamesAndCount'
+import BackToHome from '../../components/Layout/BackToHome'
 
 const PluginTable: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedPlugin, setSelectedPlugin] = useState<Plugin | null>(null)
     const [parsedData, setParsedData] = useState<ParsedData | null>(null)
     const { allVersionData, loading } = useGetPluginVersionData()
-    const specificVersionData = useGetSpecificPluginVersionData(selectedPlugin ? selectedPlugin.id : null, allVersionData)
-    
+    const specificVersionData = useGetSpecificPluginVersionData(
+        selectedPlugin ? selectedPlugin.id : null,
+        allVersionData
+    )
+
     const { pluginNames } = useGetPluginNames()
 
     const pluginList = pluginNames.map((name) => ({ id: name }))
@@ -48,6 +52,11 @@ const PluginTable: React.FC = () => {
 
     return (
         <Stack sx={{ backgroundColor: '#f0f0f0', height: '100vh', width: '100vw', overflow: 'hidden' }}>
+            {!selectedPlugin && (
+                <Box sx={{ position: 'fixed', top: '4.5rem', left: '3rem', zIndex: 1000 }}>
+                    <BackToHome color="black" />
+                </Box>
+            )}
             <Box
                 sx={{
                     padding: '3rem',
