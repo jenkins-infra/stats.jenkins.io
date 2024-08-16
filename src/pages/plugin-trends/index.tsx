@@ -19,6 +19,7 @@ import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
 import { SortOption } from '../../types/types'
 import useFetchPlugins from '../../hooks/useFetchPlugins'
 import useSearchPlugins from '../../hooks/useSearchPlugins'
+import BackToHome from '../../components/Layout/BackToHome'
 
 const PluginTrends: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
@@ -46,6 +47,17 @@ const PluginTrends: React.FC = () => {
                     position: 'relative',
                 }}
             >
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        top: '4rem',
+                        left: '1rem',
+                        zIndex: 1000,
+                    }}
+                >
+                    <BackToHome color="black" />
+                </Box>
+
                 <Paper
                     elevation={12}
                     sx={{

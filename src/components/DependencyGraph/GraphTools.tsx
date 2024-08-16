@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Button, TextField, Typography } from '@mui/material'
-import BackToHome from './BackToHome'
+import BackToHome from '../Layout/BackToHome'
 
 interface GraphToolsProps {
     searchTerm: string
@@ -13,7 +13,7 @@ interface GraphToolsProps {
 const GraphTools: React.FC<GraphToolsProps> = ({ searchTerm, handleSearchChange, setSearchTerm }) => {
     return (
         <>
-            <BackToHome />
+            <BackToHome color="white" />
             <Box
                 sx={{
                     display: 'flex',
