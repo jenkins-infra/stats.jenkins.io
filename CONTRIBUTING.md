@@ -27,13 +27,6 @@ You can contribute to `stats.jenkins.io` in several ways:
 
 ## Getting Started
 
-### Prerequisites
-
-Before you begin, ensure you have the following installed:
-
--   **Node.js** (LTS version recommended)
--   **npm** or **yarn** (latest stable version)
-
 ### Installation
 
 1. **Fork the repository** to your GitHub account.
@@ -51,7 +44,7 @@ Before you begin, ensure you have the following installed:
     ```
 5. **Run the project locally**:
     ```bash
-    npm start
+    npm run dev
     ```
 
 Your local instance of the project should now be up and running!
@@ -63,7 +56,6 @@ We follow a simple branching strategy:
 -   `main` is the stable branch. All new features or bug fixes should be branched off from `main` and merged back into `main` after review.
 -   **Feature branches:** For new features, create a branch named `feature/your-feature-name`.
 -   **Bugfix branches:** For bug fixes, create a branch named `bugfix/your-bugfix-name`.
--   **Hotfix branches:** For critical fixes, use `hotfix/your-hotfix-name`.
 
 ## Commit Messages
 
@@ -90,9 +82,7 @@ Added a new echarts-based line chart to display plugin trends over time.
 
 ## Issue Tracking
 
--   **Reporting Issues:** To report a bug or request a feature, [create a new issue](https://github.com/jenkins-infra/stats.jenkins.io/issues/new).
--   **Labels:** Issues are categorized with labels. Please use the appropriate label when creating or working on issues.
--   **Assigning Issues:** You can assign an issue to yourself by leaving a comment on the issue or requesting assignment.
+-   **Reporting Issues:** To report a bug or request a feature, [create a new issue](https://github.com/jenkins-infra/stats.jenkins.io/issues/new/choose).
 
 ## Pull Request Process
 
@@ -112,13 +102,14 @@ Added a new echarts-based line chart to display plugin trends over time.
 
 ## Running Tests
 
-Before submitting a PR, ensure that all tests pass:
+We have an automated testing pipeline integrated with Jenkins CI/CD that will automatically run a series of checks when you submit a pull request. Here are the key checks that will be performed:
 
-```bash
-npm test
-```
+-   **Jenkins Build:** Ensures that the code builds successfully and passes all tests.
+-   **Typos Check:** Automatically checks for any spelling or typographical errors in the codebase.
+-   **Continuous Integration:** Confirms that the changes in the commit are valid and can be merged.
+-   **PR Merge Validation:** Validates that the commit can be successfully merged into the main branch.
 
-If you are adding new functionality, please add corresponding tests.
+These checks are performed by our Jenkins bots, such as `ci-jenkins-io[bot]` and `infra-ci-jenkins-io[bot]`, which will provide detailed feedback on your pull request.
 
 ## Updating Documentation
 
@@ -126,12 +117,10 @@ If you make changes to the code that affect the documentation, please update the
 
 ## Code of Conduct
 
-This project follows the [Jenkins Code of Conduct](https://www.jenkins.io/project/governance/code-of-conduct/). By participating, you are expected to uphold this code. Please report any unacceptable behavior to the project maintainers.
+This project follows the [Jenkins Code of Conduct](https://www.jenkins.io/project/conduct/). By participating, you are expected to uphold this code. Please report any unacceptable behavior to the project maintainers.
 
 ## Community and Communication
 
-If you have questions or need help:
+If you have questions or need help, the Jenkins community offers several channels for communication. For more detailed information on how to connect with the Jenkins community, please visit the following page:
 
--   **GitHub Discussions:** Post your questions in [GitHub Discussions](https://github.com/jenkins-infra/stats.jenkins.io/discussions).
--   **Slack:** Join the Jenkins Slack channel `#jenkins-infra` to chat with the community.
--   **Mailing List:** You can also use the Jenkins Developers mailing list for more in-depth discussions.
+[Participate and Connect - Jenkins Community](https://www.jenkins.io/participate/connect/)
