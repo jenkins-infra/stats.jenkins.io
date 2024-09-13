@@ -15,5 +15,10 @@ unzip -q -o infra-statistics-gh-pages.zip
 mv infra-statistics-gh-pages "${INFRASTATISTICS_LOCATION}"
 rm infra-statistics-gh-pages.zip
 
+# Copy folders over public folder to serve their static files
+for dir in jenkins-stats plugin-installation-trend pluginversions; do
+    cp -r "${INFRASTATISTICS_LOCATION}/${dir}" public/
+done
+
 # Fetch update-center.actual.json
 curl --silent --fail --output "${INFRASTATISTICS_LOCATION}/update-center.actual.json" --location "https://updates.jenkins.io/current/update-center.actual.json"
