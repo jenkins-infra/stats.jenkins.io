@@ -31,19 +31,23 @@ You can contribute to `stats.jenkins.io` in several ways:
 
 1. **Fork the repository** to your GitHub account.
 2. **Clone your forked repository** to your local machine:
-    ```bash
+    ```console
     git clone https://github.com/your-username/stats.jenkins.io.git
     ```
 3. **Navigate to the project directory**:
-    ```bash
+    ```console
     cd stats.jenkins.io
     ```
-4. **Install dependencies**:
-    ```bash
+4. **Retrieve data from infra-statistics:**
+    ```console
+    ./retrieve-infra-statistics-data.sh
+    ```
+5. **Install dependencies**:
+    ```console
     npm install
     ```
-5. **Run the project locally**:
-    ```bash
+6. **Run the project locally**:
+    ```console
     npm run dev
     ```
 
@@ -88,12 +92,12 @@ Added a new echarts-based line chart to display plugin trends over time.
 
 1. **Fork and clone the repository** (if you haven’t already).
 2. **Create a new branch** for your changes:
-    ```bash
+    ```console
     git checkout -b feature/your-feature-name
     ```
 3. **Make your changes** and commit them with a meaningful message.
 4. **Push your changes** to your fork:
-    ```bash
+    ```console
     git push origin feature/your-feature-name
     ```
 5. **Create a pull request** from your fork’s branch to the `main` branch of the original repository.
