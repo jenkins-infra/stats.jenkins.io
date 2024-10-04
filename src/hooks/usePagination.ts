@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { IPluginData } from '../types/types'
 
-const usePagination = (data: IPluginData[], itemsPerPage: number) => {
+const usePagination = (data: IPluginData[], itemsPerPage: number, searchTerm: string) => {
     const [page, setPage] = useState<number>(1)
+
+    useEffect(() => {
+        setPage(1)
+    }, [searchTerm])
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value)

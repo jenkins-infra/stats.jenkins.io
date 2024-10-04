@@ -14,11 +14,11 @@ import {
     Autocomplete,
 } from '@mui/material'
 import useSortPlugins from '../../hooks/useSortPlugins'
-import usePagination from '../../hooks/usePagination'
-import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
-import { SortOption } from '../../types/types'
+import { SortOption } from '../../types/types';
 import useFetchPlugins from '../../hooks/useFetchPlugins'
 import useSearchPlugins from '../../hooks/useSearchPlugins'
+import usePagination from '../../hooks/usePagination'
+import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
 import BackToHome from '../../components/Layout/BackToHome'
 
 const PluginTrends: React.FC = () => {
@@ -26,9 +26,10 @@ const PluginTrends: React.FC = () => {
     const { plugins, loading } = useFetchPlugins()
     const { filteredPlugins } = useSearchPlugins(plugins, searchTerm)
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
+
     const itemsPerPage = 72
 
-    const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage)
+    const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage, searchTerm)
 
     const pluginOptions = useMemo(() => filteredPlugins.map((plugin) => plugin.id), [filteredPlugins])
     const filterOptions = (options: string[], { inputValue }: { inputValue: string }) => {
