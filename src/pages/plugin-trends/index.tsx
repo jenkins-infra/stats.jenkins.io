@@ -14,6 +14,7 @@ import {
     Autocomplete,
 } from '@mui/material'
 import useSortPlugins from '../../hooks/useSortPlugins'
+import { SortOption } from '../../types/types';
 import useFetchPlugins from '../../hooks/useFetchPlugins'
 import useSearchPlugins from '../../hooks/useSearchPlugins'
 import usePagination from '../../hooks/usePagination'
