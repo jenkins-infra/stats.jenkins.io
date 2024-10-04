@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import {
     Paper,
     Stack,
@@ -14,11 +14,10 @@ import {
     Autocomplete,
 } from '@mui/material'
 import useSortPlugins from '../../hooks/useSortPlugins'
-import usePagination from '../../hooks/usePagination'
-import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
-import { SortOption } from '../../types/types'
 import useFetchPlugins from '../../hooks/useFetchPlugins'
 import useSearchPlugins from '../../hooks/useSearchPlugins'
+import usePagination from '../../hooks/usePagination'
+import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
 import BackToHome from '../../components/Layout/BackToHome'
 
 const PluginTrends: React.FC = () => {
@@ -28,22 +27,8 @@ const PluginTrends: React.FC = () => {
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
 
     const itemsPerPage = 72
-    const totalPages = Math.ceil(filteredPlugins.length / itemsPerPage) // Calculate total pages based on filtered plugins
 
-    const [page, setPage] = useState<number>(1)
-
-    useEffect(() => {
-        setPage(1)
-    }, [searchTerm])
-
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value)
-    }
-
-    const paginatedData = useMemo(() => {
-        const startIndex = (page - 1) * itemsPerPage
-        return filteredPlugins.slice(startIndex, startIndex + itemsPerPage)
-    }, [filteredPlugins, page, itemsPerPage])
+    const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage, searchTerm)
 
     const pluginOptions = useMemo(() => filteredPlugins.map((plugin) => plugin.id), [filteredPlugins])
     const filterOptions = (options: string[], { inputValue }: { inputValue: string }) => {
