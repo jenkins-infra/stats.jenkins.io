@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {
     Paper,
     Stack,
@@ -26,9 +26,24 @@ const PluginTrends: React.FC = () => {
     const { plugins, loading } = useFetchPlugins()
     const { filteredPlugins } = useSearchPlugins(plugins, searchTerm)
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
-    const itemsPerPage = 72
 
-    const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage)
+    const itemsPerPage = 72
+    const totalPages = Math.ceil(filteredPlugins.length / itemsPerPage) // Calculate total pages based on filtered plugins
+
+    const [page, setPage] = useState<number>(1)
+
+    useEffect(() => {
+        setPage(1)
+    }, [searchTerm])
+
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value)
+    }
+
+    const paginatedData = useMemo(() => {
+        const startIndex = (page - 1) * itemsPerPage
+        return filteredPlugins.slice(startIndex, startIndex + itemsPerPage)
+    }, [filteredPlugins, page, itemsPerPage])
 
     const pluginOptions = useMemo(() => filteredPlugins.map((plugin) => plugin.id), [filteredPlugins])
     const filterOptions = (options: string[], { inputValue }: { inputValue: string }) => {
