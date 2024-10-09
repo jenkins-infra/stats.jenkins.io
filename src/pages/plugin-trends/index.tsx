@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import {
     Paper,
     Stack,
@@ -18,23 +18,39 @@ import { SortOption } from '../../types/types';
 import useFetchPlugins from '../../hooks/useFetchPlugins'
 import useSearchPlugins from '../../hooks/useSearchPlugins'
 import usePagination from '../../hooks/usePagination'
+import usePaginationState from '../../hooks/usePaginationState'
 import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
 import BackToHome from '../../components/Layout/BackToHome'
 
 const PluginTrends: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
+    const { page, setPage, handlePageChange } = usePaginationState()
+    const [lastPage, setLastPage] = useState<number>(1)
     const { plugins, loading } = useFetchPlugins()
     const { filteredPlugins } = useSearchPlugins(plugins, searchTerm)
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
 
     const itemsPerPage = 72
 
-    const { page, handlePageChange, paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage, searchTerm)
+    const { paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage, page)
 
     const pluginOptions = useMemo(() => filteredPlugins.map((plugin) => plugin.id), [filteredPlugins])
     const filterOptions = (options: string[], { inputValue }: { inputValue: string }) => {
         return inputValue.length === 0 ? [] : options
     }
+
+    const prevSearchTerm = useRef<string>('')
+
+    useEffect(() => {
+        if (prevSearchTerm.current === '' && searchTerm !== '') {
+            setLastPage(page)
+            setPage(1)
+        } else if (prevSearchTerm.current !== '' && searchTerm === '') {
+            setPage(lastPage)
+        }
+
+        prevSearchTerm.current = searchTerm
+    }, [lastPage, page, searchTerm, setPage])
 
     return (
         <>
