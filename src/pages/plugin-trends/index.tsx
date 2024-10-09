@@ -128,7 +128,7 @@ const PluginTrends: React.FC = () => {
                     </Box>
                 </Paper>
                 <Box sx={{ marginTop: '7rem', width: '100%' }}>
-                    {loading ? (
+                    {plugins.length === 0 ? (
                         <Box
                             sx={{
                                 display: 'flex',
@@ -164,6 +164,18 @@ const PluginTrends: React.FC = () => {
                                     </Grid>
                                 ))}
                             </Grid>
+                            {loading && (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        marginTop: '2rem',
+                                    }}
+                                >
+                                    <CircularProgress />
+                                </Box>
+                            )}
                             <Pagination
                                 count={totalPages}
                                 page={page}
