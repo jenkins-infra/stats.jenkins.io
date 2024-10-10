@@ -31,6 +31,14 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
         setModalData(null)
     }
 
+    data.sort((a, b) => {
+        const yearDiff = Number(b.year) - Number(a.year);
+        if (yearDiff === 0) {
+            return Number(b.month) - Number(a.month);
+        }
+        return yearDiff;
+    });
+
     const filteredData = year === 'all' ? data : data.filter((row) => row.year === year)
 
     return (
