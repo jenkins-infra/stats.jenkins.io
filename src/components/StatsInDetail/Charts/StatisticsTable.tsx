@@ -33,6 +33,25 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
 
     const filteredData = year === 'all' ? data : data.filter((row) => row.year === year)
 
+    //Created a fuction to sort the filtered Data
+    const sortData = (dataArray: { year: string; month: string }[]) => {
+        return dataArray.sort((a, b) => {
+          const yearA = Number(a.year);
+          const yearB = Number(b.year);
+          const monthA = Number(a.month);
+          const monthB = Number(b.month);
+      
+          if (yearA !== yearB) {
+            return yearB - yearA; // Compare years in descending order
+          } else {
+            return monthB - monthA; // Compare months in descending order
+          }
+        });
+      };
+      
+      //Sorting the filtered data
+      const sortedData = sortData(filteredData);  
+
     return (
         <>
             <TableContainer
@@ -116,7 +135,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                             },
                         }}
                     >
-                        {filteredData.map((row, index) => (
+                        {sortedData.map((row, index) => (
                             <TableRow key={index}>
                                 <TableCell align="center">{row.year}</TableCell>
                                 <TableCell align="center">
