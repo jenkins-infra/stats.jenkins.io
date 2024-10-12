@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
     Box,
     Typography,
@@ -93,6 +93,16 @@ const Drawer: React.FC<DrawerProps> = ({
         toggleSidebar()
     }
 
+    const sortedYearList = useMemo(() => {
+        return Array.from(
+            new Set(
+                data
+                .map((row) => row.year)
+                .sort((y1, y2) => parseInt(y2) - parseInt(y1))
+            )
+        );
+    }, []);
+
     const DrawerContent = (
         <List>
             <StyledAccordion defaultExpanded>
@@ -125,7 +135,7 @@ const Drawer: React.FC<DrawerProps> = ({
                         >
                             <ListText primary="All Data" />
                         </ListButton>
-                        {[...new Set(data.map((row) => row.year))].map((year) => (
+                        {sortedYearList.map((year) => (
                             <ListButton
                                 key={year}
                                 selected={selectedYear === year}

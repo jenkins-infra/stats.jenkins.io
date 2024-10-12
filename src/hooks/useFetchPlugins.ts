@@ -1,65 +1,103 @@
-import { useState, useEffect } from 'react'
-import { IPluginData } from '../types/types'
-import useGetPluginNames from './useGetPluginNamesAndCount'
+import { useState, useEffect } from 'react';
+import { IPluginData } from '../types/types';
+import useGetPluginNames from './useGetPluginNamesAndCount';
 
-const BATCH_SIZE = 100
+const BATCH_SIZE = 100;
 
-const useFetchPlugins = () => {
-    const [plugins, setPlugins] = useState<IPluginData[]>([])
-    const [loading, setLoading] = useState<boolean>(true)
-    const { pluginNames } = useGetPluginNames()
+interface UseFetchPluginsResult {
+    plugins: IPluginData[];
+    loading: boolean;
+    error: Error | null;
+}
+
+const useFetchPlugins = (): UseFetchPluginsResult => {
+    const [plugins, setPlugins] = useState<IPluginData[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<Error | null>(null);
+    const { pluginNames } = useGetPluginNames();
 
     useEffect(() => {
-        const fetchPluginsInBatch = async (batch: string[]) => {
-            const pluginData = await Promise.all(
-                batch.map(async (name) => {
+        if (pluginNames.length === 0) {
+            setLoading(false);
+            return;
+        }
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        const fetchPluginsInBatch = async (
+            batch: string[],
+            fetchedIds: Set<string>
+        ): Promise<IPluginData[]> => {
+
+            const namesToFetch = batch.filter((name) => !fetchedIds.has(name));
+
+            const results = await Promise.allSettled(
+                namesToFetch.map(async (name): Promise<IPluginData> => {
                     const fileUrl = new URL(
                         `../data/infra-statistics/plugin-installation-trend/${name}.stats.json`,
                         import.meta.url
-                    ).href
-                    const response = await fetch(fileUrl)
+                    ).href;
+                    const response = await fetch(fileUrl, { signal });
                     if (!response.ok) {
-                        throw new Error(`JSON file for plugin with id "${name}" not found`)
+                        throw new Error(`JSON file for plugin with id "${name}" not found`);
                     }
-                    const chartData = await response.json()
-                    return { id: name, chartData }
+                    const chartData = await response.json();
+                    fetchedIds.add(name);
+                    return { id: name, chartData };
                 })
-            )
-            return pluginData
-        }
+            );
 
-        const fetchAllPlugins = async () => {
-            setLoading(true)
+            return results
+                .filter(
+                    (result): result is PromiseFulfilledResult<IPluginData> =>
+                        result.status === 'fulfilled'
+                )
+                .map((result) => result.value);
+        };
+
+        const fetchAllPlugins = async (): Promise<void> => {
+            setLoading(true);
+            setError(null);
+
             try {
-                const allPlugins: IPluginData[] = []
-                const fetchedIds = new Set<string>()
+                const allPlugins: IPluginData[] = [];
+                const fetchedIds = new Set<string>();
+
                 for (let i = 0; i < pluginNames.length; i += BATCH_SIZE) {
-                    const batch = pluginNames.slice(i, i + BATCH_SIZE)
-                    const batchData = await fetchPluginsInBatch(batch)
-                    batchData.forEach((plugin) => {
-                        if (!fetchedIds.has(plugin.id)) {
-                            fetchedIds.add(plugin.id)
-                            allPlugins.push(plugin)
-                        }
-                    })
-                    setPlugins([...allPlugins])
-                    setLoading(false)
+                    const batch = pluginNames.slice(i, i + BATCH_SIZE);
+                    const batchData = await fetchPluginsInBatch(batch, fetchedIds);
+                    allPlugins.push(...batchData);
+
+                    if (signal.aborted) {
+                        return;
+                    }
+
+                    setPlugins([...allPlugins]);
                 }
-            } catch (error) {
-                console.error('Error fetching plugin data', error)
+
+                if (!signal.aborted) {
+                    setPlugins(allPlugins);
+                }
+            } catch (err) {
+                if (!signal.aborted) {
+                    setError(err as Error);
+                }
             } finally {
-                setLoading(false)
+                if (!signal.aborted) {
+                    setLoading(false);
+                }
             }
-        }
+        };
 
-        if (pluginNames.length > 0) {
-            fetchAllPlugins()
-        } else {
-            setLoading(false)
-        }
-    }, [pluginNames])
+        fetchAllPlugins();
 
-    return { plugins, loading }
-}
+        return () => {
+            controller.abort();
+        };
+    }, [pluginNames]);
 
-export default useFetchPlugins
+    return { plugins, loading, error };
+};
+
+export default useFetchPlugins;

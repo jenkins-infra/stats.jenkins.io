@@ -1,20 +1,12 @@
-import { useState } from 'react'
 import { IPluginData } from '../types/types'
 
-const usePagination = (data: IPluginData[], itemsPerPage: number) => {
-    const [page, setPage] = useState<number>(1)
-
-    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value)
-    }
-
+const usePagination = (data: IPluginData[], itemsPerPage: number, page: number) => {
+    const totalPages = Math.ceil(data.length / itemsPerPage)
     const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 
     return {
-        page,
-        handlePageChange,
         paginatedData,
-        totalPages: Math.ceil(data.length / itemsPerPage),
+        totalPages,
     }
 }
 
