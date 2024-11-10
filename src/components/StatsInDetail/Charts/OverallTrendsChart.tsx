@@ -85,7 +85,12 @@ const Chart: React.FC<ChartProps> = ({
             title: {
                 text: title,
                 left: 'center',
-                textStyle: { fontSize: 18, fontWeight: 'bold' },
+                textStyle: {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color:
+                        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : '',
+                },
             },
             tooltip: {
                 trigger: 'axis',

@@ -14,7 +14,7 @@ import {
     Autocomplete,
 } from '@mui/material'
 import useSortPlugins from '../../hooks/useSortPlugins'
-import { SortOption } from '../../types/types';
+import { SortOption } from '../../types/types'
 import useFetchPlugins from '../../hooks/useFetchPlugins'
 import useSearchPlugins from '../../hooks/useSearchPlugins'
 import usePagination from '../../hooks/usePagination'
@@ -62,6 +62,9 @@ const PluginTrends: React.FC = () => {
                     height: '100vh',
                     overflow: 'auto',
                     position: 'relative',
+                    '@media (prefers-color-scheme: dark)': {
+                        backgroundColor: '#333333',
+                    },
                 }}
             >
                 <Box
@@ -72,7 +75,13 @@ const PluginTrends: React.FC = () => {
                         zIndex: 1000,
                     }}
                 >
-                    <BackToHome color="black" />
+                    <BackToHome
+                        color={
+                            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                                ? 'white'
+                                : 'black'
+                        }
+                    />
                 </Box>
 
                 <Paper
@@ -98,6 +107,9 @@ const PluginTrends: React.FC = () => {
                             alignItems: 'stretch',
                             gap: '1rem',
                             padding: '1rem',
+                        },
+                        '@media (prefers-color-scheme: dark)': {
+                            backgroundColor: '#212529',
                         },
                     }}
                 >

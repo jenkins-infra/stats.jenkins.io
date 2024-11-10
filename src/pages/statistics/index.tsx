@@ -67,6 +67,9 @@ const Statistics: React.FC = () => {
                     width: '100%',
                     flexDirection: 'row',
                     backgroundColor: '#d5d5d5',
+                    '@media (prefers-color-scheme: dark)': {
+                        backgroundColor: '#333333',
+                    },
                 }}
             >
                 <Drawer
@@ -112,9 +115,18 @@ const Statistics: React.FC = () => {
                                 padding: '1rem',
                                 margin: '1rem',
                             },
+                            '@media (prefers-color-scheme: dark)': {
+                                backgroundColor: 'black',
+                            },
                         }}
                     >
-                        <BackToHome color="black" />
+                        <BackToHome
+                            color={
+                                window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? 'white'
+                                    : 'black'
+                            }
+                        />
                         {selectedChart !== 'JVMs' && (
                             <FormControl sx={{ alignSelf: 'flex-start', minWidth: '128px' }}>
                                 <InputLabel id="comparison-chart-select-label">Compare</InputLabel>
