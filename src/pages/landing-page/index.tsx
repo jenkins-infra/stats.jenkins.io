@@ -88,7 +88,7 @@ const LandingPage: React.FC = () => {
                         marginTop: '4rem',
                         marginBottom: '4rem',
                         gap: '3.5rem',
-                        backgroundColor: '#f0f0f0',
+                        backgroundColor: 'white',
                         padding: '6rem',
                         '@media (max-width: 1024px)': {
                             // gap: '5rem',
