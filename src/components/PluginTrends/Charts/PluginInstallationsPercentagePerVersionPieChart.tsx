@@ -45,7 +45,12 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
             title: {
                 text: `Installations by Version (%)  (${formattedDate})`,
                 left: 'center',
-                textStyle: { fontSize: 16, fontWeight: 'bold' },
+                textStyle: {
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color:
+                        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : '',
+                },
             },
             tooltip: {
                 trigger: 'item',
