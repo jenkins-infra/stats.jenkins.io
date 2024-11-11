@@ -9,7 +9,7 @@ import SearchBar from '../../components/PluginVersions/SearchPlugins'
 import BackToSearch from '../../components/PluginVersions/BackToSearchButton'
 import useGetPluginNames from '../../hooks/useGetPluginNamesAndCount'
 import BackToHome from '../../components/Layout/BackToHome'
-
+import useSystemTheme from '../../hooks/useSystemTheme'
 const PluginTable: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedPlugin, setSelectedPlugin] = useState<Plugin | null>(null)
@@ -19,7 +19,7 @@ const PluginTable: React.FC = () => {
         selectedPlugin ? selectedPlugin.id : null,
         allVersionData
     )
-
+    const { systemTheme } = useSystemTheme()
     const { pluginNames } = useGetPluginNames()
 
     const pluginList = pluginNames.map((name) => ({ id: name }))
@@ -65,13 +65,7 @@ const PluginTable: React.FC = () => {
         >
             {!selectedPlugin && (
                 <Box sx={{ position: 'fixed', top: '4.5rem', left: '3rem', zIndex: 1000 }}>
-                    <BackToHome
-                        color={
-                            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-                                ? 'white'
-                                : 'black'
-                        }
-                    />
+                    <BackToHome color={systemTheme === 'dark' ? 'white' : 'black'} />
                 </Box>
             )}
             <Box

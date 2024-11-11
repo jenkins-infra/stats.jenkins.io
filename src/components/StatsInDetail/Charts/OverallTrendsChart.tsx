@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useCallback, useRef } from 'react'
 import * as echarts from 'echarts'
 import { handleCSVDownload } from '../../../utils/csvUtils'
 import customTheme from '../../../theme/customTheme'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
@@ -25,6 +26,7 @@ const Chart: React.FC<ChartProps> = ({
     secondChart, // Optional second chart
 }) => {
     const chartRef = useRef<echarts.ECharts | null>(null)
+    const { systemTheme } = useSystemTheme()
 
     const downloadCSV = useCallback(
         () => handleCSVDownload(csvData[selectedChart], title),
@@ -88,8 +90,7 @@ const Chart: React.FC<ChartProps> = ({
                 textStyle: {
                     fontSize: 18,
                     fontWeight: 'bold',
-                    color:
-                        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : '',
+                    color: systemTheme === 'dark' ? 'white' : '',
                 },
             },
             tooltip: {

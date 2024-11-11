@@ -21,7 +21,7 @@ import usePagination from '../../hooks/usePagination'
 import usePaginationState from '../../hooks/usePaginationState'
 import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
 import BackToHome from '../../components/Layout/BackToHome'
-
+import useSystemTheme from '../../hooks/useSystemTheme'
 const PluginTrends: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const { page, setPage, handlePageChange } = usePaginationState()
@@ -29,7 +29,7 @@ const PluginTrends: React.FC = () => {
     const { plugins, loading } = useFetchPlugins()
     const { filteredPlugins } = useSearchPlugins(plugins, searchTerm)
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
-
+    const { systemTheme } = useSystemTheme()
     const itemsPerPage = 72
 
     const { paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage, page)
@@ -75,13 +75,7 @@ const PluginTrends: React.FC = () => {
                         zIndex: 1000,
                     }}
                 >
-                    <BackToHome
-                        color={
-                            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-                                ? 'white'
-                                : 'black'
-                        }
-                    />
+                    <BackToHome color={systemTheme === 'dark' ? 'white' : 'black'} />
                 </Box>
 
                 <Paper

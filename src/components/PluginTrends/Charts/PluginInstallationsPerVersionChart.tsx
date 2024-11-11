@@ -3,11 +3,14 @@ import * as echarts from 'echarts'
 import { PluginChartProps } from '../../../types/types'
 import dayjs from 'dayjs'
 import customTheme from '../../../theme/customTheme'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
 const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
+
+    const { systemTheme } = useSystemTheme()
 
     const formattedData = useMemo(() => {
         if (!data || !data.installationsPerVersion) return []
@@ -33,8 +36,7 @@ const PluginInstallationsPerVersion: React.FC<PluginChartProps> = ({ data }) => 
                 textStyle: {
                     fontSize: 16,
                     fontWeight: 'bold',
-                    color:
-                        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : '',
+                    color: systemTheme === 'dark' ? 'white' : '',
                 },
             },
             tooltip: {

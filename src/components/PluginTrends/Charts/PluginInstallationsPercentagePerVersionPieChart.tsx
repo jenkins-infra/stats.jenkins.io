@@ -3,11 +3,13 @@ import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../types/types'
 import customTheme from '../../../theme/customTheme'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
 const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
+    const { systemTheme } = useSystemTheme()
 
     const formattedData = useMemo(() => {
         if (!data || !data.installationsPercentagePerVersion) return []
@@ -48,8 +50,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                 textStyle: {
                     fontSize: 16,
                     fontWeight: 'bold',
-                    color:
-                        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : '',
+                    color: systemTheme === 'dark' ? 'white' : '',
                 },
             },
             tooltip: {
