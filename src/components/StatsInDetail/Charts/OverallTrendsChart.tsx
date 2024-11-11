@@ -205,7 +205,7 @@ const Chart: React.FC<ChartProps> = ({
             }
         }
         return baseOption
-    }, [chartData, title, pluginCount, downloadCSV, selectedChart, secondChart])
+    }, [chartData, title, pluginCount, downloadCSV, selectedChart, secondChart, systemTheme])
 
     useEffect(() => {
         if (Object.keys(csvData).length === 0) return
