@@ -206,7 +206,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                 },
             ],
         }
-    }, [chartData])
+    }, [chartData, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return

@@ -130,7 +130,7 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 },
             ],
         }
-    }, [formattedData])
+    }, [formattedData, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return

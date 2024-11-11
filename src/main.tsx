@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import ReactDOM from 'react-dom/client'
 import LandingPage from './pages/landing-page/index.tsx'
 import Statistics from './pages/statistics/index.tsx'
@@ -38,9 +38,11 @@ const router = createBrowserRouter([
 function App() {
     const { systemTheme } = useSystemTheme()
 
+    const theme = useMemo(() => getTheme(systemTheme), [systemTheme])
+
     return (
         <React.StrictMode>
-            <ThemeProvider theme={getTheme(systemTheme)}>
+            <ThemeProvider theme={theme}>
                 <Stack
                     sx={{
                         height: '100vh',

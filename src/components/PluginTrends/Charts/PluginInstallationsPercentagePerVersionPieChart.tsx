@@ -96,7 +96,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                 },
             },
         }
-    }, [formattedData, formattedDate])
+    }, [formattedData, formattedDate, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return
