@@ -81,6 +81,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                         formatter: ({ name, percent }: { name: string; percent: number }): string =>
                             `${truncateLabel(name, 10)} (${percent.toFixed(1)}%)`,
                         fontSize: 11,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                     },
                     labelLine: {
                         length: 20,

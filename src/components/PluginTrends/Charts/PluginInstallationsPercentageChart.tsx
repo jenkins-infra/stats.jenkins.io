@@ -84,6 +84,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                 data: chartData.formattedPercentageData.map((item) => item.date),
                 axisLabel: {
                     fontSize: 12,
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                 },
                 axisLine: {
                     show: true,
@@ -101,10 +102,12 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                     name: 'Percentage (%)',
                     nameTextStyle: {
                         fontSize: 12,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                         padding: [0, 0, 0, 10],
                     },
                     axisLabel: {
                         fontSize: 12,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                         formatter: function (value: number) {
                             return value === 0 ? '' : `${value}%`
                         },
@@ -130,10 +133,12 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                     name: 'Installations',
                     nameTextStyle: {
                         fontSize: 12,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                         padding: [0, 10, 0, 0],
                     },
                     axisLabel: {
                         fontSize: 12,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                         formatter: function (value: number) {
                             return value === 0 ? '' : `${value / 1000}k`
                         },

@@ -92,6 +92,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
                     label: {
                         formatter: '{b} ({d}%)',
                         fontSize: 11,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                     },
                     labelLine: {
                         length: 20,
