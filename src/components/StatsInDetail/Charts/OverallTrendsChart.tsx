@@ -90,7 +90,7 @@ const Chart: React.FC<ChartProps> = ({
                 textStyle: {
                     fontSize: 18,
                     fontWeight: 'bold',
-                    color: systemTheme === 'dark' ? 'white' : '',
+                    color: systemTheme === 'dark' ? 'white' : 'dark',
                 },
             },
             tooltip: {
@@ -124,7 +124,7 @@ const Chart: React.FC<ChartProps> = ({
             xAxis: {
                 type: 'category',
                 data: chartData[selectedChart]?.dates,
-                axisLabel: {},
+                axisLabel: { color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
                 axisTick: { show: true, alignWithLabel: true },
             },
             yAxis: [

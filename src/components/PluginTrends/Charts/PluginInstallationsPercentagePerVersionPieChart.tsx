@@ -50,7 +50,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                 textStyle: {
                     fontSize: 16,
                     fontWeight: 'bold',
-                    color: systemTheme === 'dark' ? 'white' : '',
+                    color: systemTheme === 'dark' ? 'white' : 'black',
                 },
             },
             tooltip: {

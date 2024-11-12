@@ -67,6 +67,10 @@ const GraphModal: React.FC<GraphModalProps> = ({ open, onClose, type, year, mont
                     padding: 4,
                     backgroundColor: 'white',
                     borderRadius: 5,
+
+                    '@media (prefers-color-scheme: dark)': {
+                        backgroundColor: '#212529',
+                    },
                 }}
             >
                 {renderGraph()}
