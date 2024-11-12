@@ -120,6 +120,9 @@ const Chart: React.FC<ChartProps> = ({
                     },
                     {} as Record<string, boolean>
                 ),
+                textStyle: {
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
+                },
             },
             xAxis: {
                 type: 'category',
