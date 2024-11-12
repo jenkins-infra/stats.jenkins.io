@@ -5,6 +5,7 @@ import GraphModal from './GraphModal'
 import { GraphType } from '../../../types/types'
 import { InsertChartOutlined } from '@mui/icons-material'
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 // Utility function to get the month abbreviation
 const getMonth = (month: string) => {
@@ -25,7 +26,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
         setModalData({ type, month, year })
         setModalOpen(true)
     }
-
+    const { systemTheme } = useSystemTheme()
     const handleCloseModal = () => {
         setModalOpen(false)
         setModalData(null)
@@ -36,13 +37,13 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
     // Optimized function to sort data by year and month in descending order
     const sortData = (dataArray: { year: string; month: string }[]): { year: string; month: string }[] => {
         return dataArray.sort((a, b) => {
-            const yearDiff = Number(b.year) - Number(a.year);
-            return yearDiff !== 0 ? yearDiff : Number(b.month) - Number(a.month);
-        });
-    };
+            const yearDiff = Number(b.year) - Number(a.year)
+            return yearDiff !== 0 ? yearDiff : Number(b.month) - Number(a.month)
+        })
+    }
 
     // Sorting the filtered data
-    const sortedData = sortData(filteredData);
+    const sortedData = sortData(filteredData)
 
     return (
         <>
@@ -120,10 +121,10 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                 fontSize: '0.875rem',
                             },
                             '& tr:nth-of-type(odd)': {
-                                backgroundColor: '#f9f9f9',
+                                backgroundColor: systemTheme === 'dark' ? '#1a1a1a' : '#f9f9f9',
                             },
                             '& tr:hover': {
-                                backgroundColor: '#f1f1f1',
+                                backgroundColor: systemTheme === 'dark' ? '#2b2b2b' : '#f1f1f1',
                             },
                         }}
                     >

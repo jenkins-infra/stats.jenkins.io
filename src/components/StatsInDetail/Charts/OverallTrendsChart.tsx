@@ -132,13 +132,13 @@ const Chart: React.FC<ChartProps> = ({
                     type: 'value',
                     name: selectedChart.charAt(0).toUpperCase() + selectedChart.slice(1),
                     nameTextStyle: {
-                        color: secondChart ? seriesColors[selectedChart] : '',
+                        color: secondChart ? seriesColors[selectedChart] : systemTheme === 'dark' ? '#f0f0f0' : '',
                     },
                     axisLabel: {
                         fontSize: 12,
                         showMinLabel: false,
                         align: 'middle',
-                        color: secondChart ? seriesColors[selectedChart] : '',
+                        color: secondChart ? seriesColors[selectedChart] : systemTheme === 'dark' ? '#f0f0f0' : '',
                     },
                     splitLine: { lineStyle: { type: 'dashed' } },
                 },
@@ -200,7 +200,7 @@ const Chart: React.FC<ChartProps> = ({
                     text: `Available Plugins:  ${pluginCount.toLocaleString()}`,
                     fontSize: 14,
                     fontWeight: 'bold',
-                    fill: 'blue',
+                    fill: systemTheme === 'dark' ? 'purple' : 'blue',
                 },
             }
         }
