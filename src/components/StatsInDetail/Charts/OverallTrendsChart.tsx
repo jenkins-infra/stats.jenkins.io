@@ -203,7 +203,7 @@ const Chart: React.FC<ChartProps> = ({
                     text: `Available Plugins:  ${pluginCount.toLocaleString()}`,
                     fontSize: 14,
                     fontWeight: 'bold',
-                    fill: systemTheme === 'dark' ? 'purple' : 'blue',
+                    fill: systemTheme === 'dark' ? '#e95b1e' : 'blue',
                 },
             }
         }

@@ -101,7 +101,7 @@ const LandingPage: React.FC = () => {
                             gap: '1rem',
                         },
                         '@media (prefers-color-scheme: dark)': {
-                            backgroundColor: '#212529',
+                            backgroundColor: '#1b1b22',
                         },
                     }}
                 >

@@ -64,7 +64,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                             '& th': {
                                 fontSize: '0.875rem',
                                 padding: '8px',
-                                backgroundColor: '#212529',
+                                backgroundColor: '#3A3A3A',
                                 color: 'white',
                                 fontWeight: 'bold',
                             },
@@ -121,10 +121,10 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ year }) => {
                                 fontSize: '0.875rem',
                             },
                             '& tr:nth-of-type(odd)': {
-                                backgroundColor: systemTheme === 'dark' ? '#1a1a1a' : '#f9f9f9',
+                                backgroundColor: systemTheme === 'dark' ? '#2b2b2b' : '#f9f9f9',
                             },
                             '& tr:hover': {
-                                backgroundColor: systemTheme === 'dark' ? '#2b2b2b' : '#f1f1f1',
+                                backgroundColor: systemTheme === 'dark' ? '#3b3b3b' : '#f1f1f1',
                             },
                         }}
                     >

@@ -70,7 +70,7 @@ const Statistics: React.FC = () => {
                     flexDirection: 'row',
                     backgroundColor: '#d5d5d5',
                     '@media (prefers-color-scheme: dark)': {
-                        backgroundColor: '#333333',
+                        backgroundColor: '#1b1b22',
                     },
                 }}
             >
@@ -118,7 +118,7 @@ const Statistics: React.FC = () => {
                                 margin: '1rem',
                             },
                             '@media (prefers-color-scheme: dark)': {
-                                backgroundColor: 'black',
+                                backgroundColor: '#16161d',
                             },
                         }}
                     >
