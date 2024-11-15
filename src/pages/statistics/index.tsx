@@ -11,6 +11,7 @@ import usePluginCount from '../../hooks/useGetPluginNamesAndCount'
 import useJVMData from '../../hooks/useJVMData'
 import JVMChart from '../../components/StatsInDetail/Charts/JVMChart'
 import BackToHome from '../../components/Layout/BackToHome'
+import useSystemTheme from '../../hooks/useSystemTheme'
 
 const chartTitles: Record<string, string> = {
     plugins: 'Monthly Plugins Usage',
@@ -31,6 +32,7 @@ const Statistics: React.FC = () => {
     const jenkinsData = useCSVData('total-jenkins').data
     const nodesData = useCSVData('total-nodes').data
     const jvmData = useJVMData().data
+    const { systemTheme } = useSystemTheme()
 
     const csvData: Record<string, string[][]> = {
         plugins: pluginData,
@@ -67,6 +69,9 @@ const Statistics: React.FC = () => {
                     width: '100%',
                     flexDirection: 'row',
                     backgroundColor: '#d5d5d5',
+                    '@media (prefers-color-scheme: dark)': {
+                        backgroundColor: '#1b1b22',
+                    },
                 }}
             >
                 <Drawer
@@ -112,9 +117,12 @@ const Statistics: React.FC = () => {
                                 padding: '1rem',
                                 margin: '1rem',
                             },
+                            '@media (prefers-color-scheme: dark)': {
+                                backgroundColor: '#16161d',
+                            },
                         }}
                     >
-                        <BackToHome color="black" />
+                        <BackToHome color={systemTheme === 'dark' ? 'white' : 'black'} />
                         {selectedChart !== 'JVMs' && (
                             <FormControl sx={{ alignSelf: 'flex-start', minWidth: '128px' }}>
                                 <InputLabel id="comparison-chart-select-label">Compare</InputLabel>

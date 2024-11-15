@@ -3,11 +3,13 @@ import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../types/types'
 import customTheme from '../../../theme/customTheme'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
 const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
+    const { systemTheme } = useSystemTheme()
 
     const chartData = useMemo(() => {
         if (!data || !data.installationsPercentage || !data.installations) {
@@ -45,7 +47,11 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
             title: {
                 text: 'Monthly Installations (%)',
                 left: 'center',
-                textStyle: { fontSize: 16, fontWeight: 'bold' },
+                textStyle: {
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: systemTheme === 'dark' ? 'white' : 'black',
+                },
             },
             tooltip: {
                 trigger: 'axis',
@@ -78,6 +84,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                 data: chartData.formattedPercentageData.map((item) => item.date),
                 axisLabel: {
                     fontSize: 12,
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                 },
                 axisLine: {
                     show: true,
@@ -95,10 +102,12 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                     name: 'Percentage (%)',
                     nameTextStyle: {
                         fontSize: 12,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                         padding: [0, 0, 0, 10],
                     },
                     axisLabel: {
                         fontSize: 12,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                         formatter: function (value: number) {
                             return value === 0 ? '' : `${value}%`
                         },
@@ -124,10 +133,12 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                     name: 'Installations',
                     nameTextStyle: {
                         fontSize: 12,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                         padding: [0, 10, 0, 0],
                     },
                     axisLabel: {
                         fontSize: 12,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                         formatter: function (value: number) {
                             return value === 0 ? '' : `${value / 1000}k`
                         },
@@ -200,7 +211,7 @@ const PluginInstallationsPercentageChart: React.FC<PluginChartProps> = ({ data }
                 },
             ],
         }
-    }, [chartData])
+    }, [chartData, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return

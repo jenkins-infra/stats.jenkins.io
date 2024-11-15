@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useCallback, useRef } from 'react'
 import * as echarts from 'echarts'
 import { handleCSVDownload } from '../../../utils/csvUtils'
 import customTheme from '../../../theme/customTheme'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
@@ -25,6 +26,7 @@ const Chart: React.FC<ChartProps> = ({
     secondChart, // Optional second chart
 }) => {
     const chartRef = useRef<echarts.ECharts | null>(null)
+    const { systemTheme } = useSystemTheme()
 
     const downloadCSV = useCallback(
         () => handleCSVDownload(csvData[selectedChart], title),
@@ -85,7 +87,11 @@ const Chart: React.FC<ChartProps> = ({
             title: {
                 text: title,
                 left: 'center',
-                textStyle: { fontSize: 18, fontWeight: 'bold' },
+                textStyle: {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: systemTheme === 'dark' ? 'white' : 'dark',
+                },
             },
             tooltip: {
                 trigger: 'axis',
@@ -114,11 +120,14 @@ const Chart: React.FC<ChartProps> = ({
                     },
                     {} as Record<string, boolean>
                 ),
+                textStyle: {
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
+                },
             },
             xAxis: {
                 type: 'category',
                 data: chartData[selectedChart]?.dates,
-                axisLabel: {},
+                axisLabel: { color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
                 axisTick: { show: true, alignWithLabel: true },
             },
             yAxis: [
@@ -126,13 +135,13 @@ const Chart: React.FC<ChartProps> = ({
                     type: 'value',
                     name: selectedChart.charAt(0).toUpperCase() + selectedChart.slice(1),
                     nameTextStyle: {
-                        color: secondChart ? seriesColors[selectedChart] : '',
+                        color: secondChart ? seriesColors[selectedChart] : systemTheme === 'dark' ? '#f0f0f0' : '',
                     },
                     axisLabel: {
                         fontSize: 12,
                         showMinLabel: false,
                         align: 'middle',
-                        color: secondChart ? seriesColors[selectedChart] : '',
+                        color: secondChart ? seriesColors[selectedChart] : systemTheme === 'dark' ? '#f0f0f0' : '',
                     },
                     splitLine: { lineStyle: { type: 'dashed' } },
                 },
@@ -194,12 +203,12 @@ const Chart: React.FC<ChartProps> = ({
                     text: `Available Plugins:  ${pluginCount.toLocaleString()}`,
                     fontSize: 14,
                     fontWeight: 'bold',
-                    fill: 'blue',
+                    fill: systemTheme === 'dark' ? '#e95b1e' : 'blue',
                 },
             }
         }
         return baseOption
-    }, [chartData, title, pluginCount, downloadCSV, selectedChart, secondChart])
+    }, [chartData, title, pluginCount, downloadCSV, selectedChart, secondChart, systemTheme])
 
     useEffect(() => {
         if (Object.keys(csvData).length === 0) return

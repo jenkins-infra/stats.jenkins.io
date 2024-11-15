@@ -3,11 +3,13 @@ import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../types/types'
 import customTheme from '../../../theme/customTheme'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
 const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef(null)
+    const { systemTheme } = useSystemTheme()
 
     const formattedData = useMemo(() => {
         if (!data || !data.installationsPercentagePerVersion) return []
@@ -45,7 +47,11 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
             title: {
                 text: `Installations by Version (%)  (${formattedDate})`,
                 left: 'center',
-                textStyle: { fontSize: 16, fontWeight: 'bold' },
+                textStyle: {
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: systemTheme === 'dark' ? 'white' : 'black',
+                },
             },
             tooltip: {
                 trigger: 'item',
@@ -75,6 +81,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                         formatter: ({ name, percent }: { name: string; percent: number }): string =>
                             `${truncateLabel(name, 10)} (${percent.toFixed(1)}%)`,
                         fontSize: 11,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                     },
                     labelLine: {
                         length: 20,
@@ -90,7 +97,7 @@ const PluginInstallationsPercentagePerVersionChart: React.FC<PluginChartProps> =
                 },
             },
         }
-    }, [formattedData, formattedDate])
+    }, [formattedData, formattedDate, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return

@@ -3,11 +3,13 @@ import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 import { PluginChartProps } from '../../../types/types'
 import customTheme from '../../../theme/customTheme'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
 const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
+    const { systemTheme } = useSystemTheme()
 
     const formattedData = useMemo(() => {
         if (!data || !data.installations) return []
@@ -22,7 +24,11 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
             title: {
                 text: 'Monthly Installations',
                 left: 'center',
-                textStyle: { fontSize: 16, fontWeight: 'bold' },
+                textStyle: {
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: systemTheme === 'dark' ? 'white' : 'black',
+                },
             },
             tooltip: {
                 trigger: 'axis',
@@ -45,6 +51,7 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 data: formattedData.map((item) => item.date),
                 axisLabel: {
                     fontSize: 12,
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                 },
                 axisLine: {
                     show: true,
@@ -62,9 +69,11 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 nameTextStyle: {
                     fontSize: 12,
                     padding: [0, 0, 0, 10],
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                 },
                 axisLabel: {
                     fontSize: 12,
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                     formatter: function (value: number) {
                         return value === 0 ? '' : `${value / 1000}k` // Hide the 0 label
                     },
@@ -124,7 +133,7 @@ const PluginInstallationsChart: React.FC<PluginChartProps> = ({ data }) => {
                 },
             ],
         }
-    }, [formattedData])
+    }, [formattedData, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return

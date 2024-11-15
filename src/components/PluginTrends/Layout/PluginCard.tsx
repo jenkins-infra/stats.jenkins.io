@@ -38,6 +38,12 @@ const PluginCard: React.FC<PluginCardProps> = React.memo(({ plugin }) => {
                     backgroundColor: 'white',
                     '&:hover': {
                         backgroundColor: 'rgba(0, 123, 255, 0.02)',
+                        '@media (prefers-color-scheme: dark)': {
+                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        },
+                    },
+                    '@media (prefers-color-scheme: dark)': {
+                        backgroundColor: '#212529',
                     },
                 }}
             >
@@ -53,6 +59,9 @@ const PluginCard: React.FC<PluginCardProps> = React.memo(({ plugin }) => {
                                 color: '#212529',
                                 marginBottom: '0.5rem',
                                 '&:hover': { color: '#007bff' },
+                                '@media (prefers-color-scheme: dark)': {
+                                    color: 'white',
+                                },
                             }}
                         >
                             {plugin.id}

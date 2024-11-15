@@ -33,6 +33,10 @@ const HeaderBox = styled(Paper)({
     borderRadius: '0.5rem',
     backgroundColor: '#ffffff',
     marginBottom: '1rem',
+
+    '@media (prefers-color-scheme: dark)': {
+        backgroundColor: '#16161d',
+    },
 })
 
 const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose, plugin }) => {
@@ -67,12 +71,21 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                     maxHeight: '90vh',
                     margin: 'auto',
                     boxSizing: 'border-box',
+
+                    '@media (prefers-color-scheme: dark)': {
+                        backgroundColor: '#212529',
+                    },
                 }}
             >
                 {plugin.chartData ? (
                     <>
                         <HeaderBox elevation={8}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <Link
                                     underline="hover"
                                     color="text.primary"
@@ -122,22 +135,50 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                         </HeaderBox>
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
-                                <GraphCard elevation={8}>
+                                <GraphCard
+                                    elevation={8}
+                                    sx={{
+                                        '@media (prefers-color-scheme: dark)': {
+                                            backgroundColor: '#16161d',
+                                        },
+                                    }}
+                                >
                                     <PluginInstallationsChart data={plugin.chartData} />
                                 </GraphCard>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <GraphCard elevation={8}>
+                                <GraphCard
+                                    elevation={8}
+                                    sx={{
+                                        '@media (prefers-color-scheme: dark)': {
+                                            backgroundColor: '#16161d',
+                                        },
+                                    }}
+                                >
                                     <PluginInstallationsPercentageChart data={plugin.chartData} />
                                 </GraphCard>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <GraphCard elevation={8}>
+                                <GraphCard
+                                    elevation={8}
+                                    sx={{
+                                        '@media (prefers-color-scheme: dark)': {
+                                            backgroundColor: '#16161d',
+                                        },
+                                    }}
+                                >
                                     <PluginInstallationsPerVersion data={plugin.chartData} />
                                 </GraphCard>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <GraphCard elevation={8}>
+                                <GraphCard
+                                    elevation={8}
+                                    sx={{
+                                        '@media (prefers-color-scheme: dark)': {
+                                            backgroundColor: '#16161d',
+                                        },
+                                    }}
+                                >
                                     <PluginInstallationsPercentagePerVersionChart data={plugin.chartData} />
                                 </GraphCard>
                             </Grid>

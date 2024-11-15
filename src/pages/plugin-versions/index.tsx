@@ -9,7 +9,7 @@ import SearchBar from '../../components/PluginVersions/SearchPlugins'
 import BackToSearch from '../../components/PluginVersions/BackToSearchButton'
 import useGetPluginNames from '../../hooks/useGetPluginNamesAndCount'
 import BackToHome from '../../components/Layout/BackToHome'
-
+import useSystemTheme from '../../hooks/useSystemTheme'
 const PluginTable: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedPlugin, setSelectedPlugin] = useState<Plugin | null>(null)
@@ -19,7 +19,7 @@ const PluginTable: React.FC = () => {
         selectedPlugin ? selectedPlugin.id : null,
         allVersionData
     )
-
+    const { systemTheme } = useSystemTheme()
     const { pluginNames } = useGetPluginNames()
 
     const pluginList = pluginNames.map((name) => ({ id: name }))
@@ -51,10 +51,21 @@ const PluginTable: React.FC = () => {
     }, [selectedPlugin, specificVersionData])
 
     return (
-        <Stack sx={{ backgroundColor: '#f0f0f0', height: '100vh', width: '100vw', overflow: 'hidden' }}>
+        <Stack
+            id="background"
+            sx={{
+                backgroundColor: '#f0f0f0',
+                height: '100vh',
+                width: '100vw',
+                overflow: 'hidden',
+                '@media (prefers-color-scheme: dark)': {
+                    backgroundColor: '#333333',
+                },
+            }}
+        >
             {!selectedPlugin && (
                 <Box sx={{ position: 'fixed', top: '4.5rem', left: '3rem', zIndex: 1000 }}>
-                    <BackToHome color="black" />
+                    <BackToHome color={systemTheme === 'dark' ? 'white' : 'black'} />
                 </Box>
             )}
             <Box
@@ -75,11 +86,23 @@ const PluginTable: React.FC = () => {
                                     color: '#333',
                                     fontFamily: 'monospace',
                                     marginBottom: '0.3rem',
+                                    '@media (prefers-color-scheme: dark)': {
+                                        color: 'white',
+                                    },
                                 }}
                             >
                                 Plugin Versions
                             </Typography>
-                            <Typography sx={{ fontSize: '1rem', color: '#333', fontFamily: 'monospace' }}>
+                            <Typography
+                                sx={{
+                                    fontSize: '1rem',
+                                    color: '#333',
+                                    fontFamily: 'monospace',
+                                    '@media (prefers-color-scheme: dark)': {
+                                        color: 'white',
+                                    },
+                                }}
+                            >
                                 Search for a plugin or select one from the dropdown menu
                             </Typography>
                         </Box>

@@ -3,6 +3,7 @@ import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
 import customTheme from '../../../../theme/customTheme'
+import useSystemTheme from '../../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
@@ -14,6 +15,7 @@ interface JenkinsGraphProps {
 const JenkinsGraph: React.FC<JenkinsGraphProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
     const { data, error } = useCSVData(`${year}${month}-jenkins`)
+    const { systemTheme } = useSystemTheme()
 
     const xData = useMemo(() => data.map((row) => row[0]), [data])
     const yData = useMemo(() => data.map((row) => Number(row[1])).filter((value) => !isNaN(value)), [data])
@@ -28,7 +30,7 @@ const JenkinsGraph: React.FC<JenkinsGraphProps> = ({ year, month }) => {
             title: {
                 text: `${title} (Total: ${totalSum.toLocaleString()})`,
                 left: 'center',
-                textStyle: { fontSize: 16, fontWeight: 'bold' },
+                textStyle: { fontSize: 16, fontWeight: 'bold', color: systemTheme === 'dark' ? '#f0f0f0' : '#212529' },
             },
             tooltip: {
                 trigger: 'axis',
@@ -48,22 +50,22 @@ const JenkinsGraph: React.FC<JenkinsGraphProps> = ({ year, month }) => {
             xAxis: {
                 type: 'category',
                 data: xData,
-                axisLabel: { fontSize: 12 },
+                axisLabel: { fontSize: 12, color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
                 axisLine: { lineStyle: { color: '#777' } },
                 axisTick: { show: true },
                 name: `Version (${xData.length.toLocaleString()} Versions)`,
                 nameLocation: 'middle',
                 nameGap: 30,
-                nameTextStyle: { fontWeight: 'bold' },
+                nameTextStyle: { fontWeight: 'bold', color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
             },
             yAxis: {
                 type: 'value',
-                axisLabel: { fontSize: 12 },
+                axisLabel: { fontSize: 12, color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
                 axisLine: { lineStyle: { color: '#777' } },
                 axisTick: { show: true },
                 splitLine: { lineStyle: { type: 'dashed' } },
                 name: 'Installations',
-                nameTextStyle: { fontWeight: 'bold' },
+                nameTextStyle: { fontWeight: 'bold', color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
             },
             series: [
                 {
@@ -103,7 +105,7 @@ const JenkinsGraph: React.FC<JenkinsGraphProps> = ({ year, month }) => {
 
             grid: { left: '20', right: '30', bottom: '75', top: '60', containLabel: true },
         }
-    }, [title, totalSum, xData, yData, downloadCSV])
+    }, [title, totalSum, xData, yData, downloadCSV, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return

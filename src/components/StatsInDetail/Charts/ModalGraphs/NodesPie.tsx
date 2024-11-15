@@ -3,6 +3,7 @@ import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
 import customTheme from '../../../../theme/customTheme'
+import useSystemTheme from '../../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 interface NodesPieProps {
@@ -13,6 +14,7 @@ interface NodesPieProps {
 const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
     const { data, error } = useCSVData(`${year}${month}-nodes`)
+    const { systemTheme } = useSystemTheme()
 
     const title = `Nodes by Type - ${month}/${year}`
 
@@ -37,7 +39,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
             title: {
                 text: `${title} (Total: ${totalSum.toLocaleString()})`,
                 left: 'center',
-                textStyle: { fontSize: 16, fontWeight: 'bold' },
+                textStyle: { fontSize: 16, fontWeight: 'bold', color: systemTheme === 'dark' ? '#f0f0f0' : '#212529' },
             },
             tooltip: {
                 trigger: 'item',
@@ -69,6 +71,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
                 data: topData.map((item) => item.name),
                 textStyle: {
                     fontSize: 10,
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                 },
                 scrollBehavior: 'smooth',
             },
@@ -89,6 +92,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
                     label: {
                         formatter: '{b} ({d}%)',
                         fontSize: 11,
+                        color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                     },
                     labelLine: {
                         length: 20,
@@ -97,7 +101,7 @@ const NodesPie: React.FC<NodesPieProps> = ({ year, month }) => {
                 },
             ],
         }
-    }, [title, totalSum, downloadCSV, topData])
+    }, [title, totalSum, downloadCSV, topData, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return

@@ -6,7 +6,18 @@ interface BackToSearchProps {
 }
 
 const BackToSearch: React.FC<BackToSearchProps> = ({ onClick }) => (
-    <Box sx={{ width: '100%', position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#f0f0f0' }}>
+    <Box
+        sx={{
+            width: '100%',
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            backgroundColor: '#f0f0f0',
+            '@media (prefers-color-scheme: dark)': {
+                backgroundColor: '#333333',
+            },
+        }}
+    >
         <Button
             size="small"
             onClick={onClick}
@@ -16,6 +27,13 @@ const BackToSearch: React.FC<BackToSearchProps> = ({ onClick }) => (
                 '&:hover': {
                     color: 'blue',
                     backgroundColor: '#f0f0f0',
+                    '@media (prefers-color-scheme: dark)': {
+                        backgroundColor: '#16161d',
+                    },
+                },
+                '@media (prefers-color-scheme: dark)': {
+                    backgroundColor: '#333333',
+                    color: 'white',
                 },
             }}
         >

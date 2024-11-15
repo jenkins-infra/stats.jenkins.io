@@ -128,3 +128,8 @@ export interface GraphData {
     nodes: Node[]
     links: Link[]
 }
+
+export interface MediaQueryEvent {
+    matches: boolean
+    media: string
+}

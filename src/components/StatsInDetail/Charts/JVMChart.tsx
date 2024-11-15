@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { Typography } from '@mui/material'
 import * as echarts from 'echarts'
 import customTheme from '../../../theme/customTheme'
+import useSystemTheme from '../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 
@@ -15,6 +16,8 @@ interface JVMChartProps {
 const LTS_RELEASES = [6, 7, 8, 11, 17, 21, 25]
 
 const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '100%', data }) => {
+    const { systemTheme } = useSystemTheme()
+
     const chartData = useMemo(() => {
         if (!data) return { dates: [], series: [] }
 
@@ -38,7 +41,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
             title: {
                 text: title,
                 left: 'center',
-                textStyle: { fontSize: 18, fontWeight: 'bold' },
+                textStyle: { fontSize: 18, fontWeight: 'bold', color: systemTheme === 'dark' ? '#f0f0f0' : '#212529' },
             },
             tooltip: {
                 trigger: 'axis',
@@ -56,16 +59,23 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                 },
             },
             xAxis: {
+                axisLabel: { color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
                 type: 'time',
             },
             yAxis: {
                 type: 'value',
                 splitLine: { lineStyle: { type: 'dashed' } },
                 name: 'Installations',
-                axisLabel: { showMinLabel: false, fontSize: 12, align: 'middle' },
+                axisLabel: {
+                    showMinLabel: false,
+                    fontSize: 12,
+                    align: 'middle',
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
+                },
                 nameTextStyle: {
                     fontSize: 12,
                     padding: [0, 0, 10, 0],
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                 },
             },
             grid: { left: '0', right: '10', bottom: '20', top: '90', containLabel: true },
@@ -98,7 +108,7 @@ const JVMChart: React.FC<JVMChartProps> = ({ title, width = '100%', height = '10
                 padding: 10,
             },
         }),
-        [chartData, title]
+        [chartData, title, systemTheme]
     )
 
     useEffect(() => {

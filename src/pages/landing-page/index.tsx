@@ -58,10 +58,13 @@ const LandingPage: React.FC = () => {
                 height: '100vh',
                 width: '100vw',
                 backgroundColor: '#f0f0f0',
-                backgroundImage: 'radial-gradient(#212529 0.9px, #f0f0f0 0.9px)',
+                backgroundImage: 'radial-gradient(#16161d 0.9px, #f0f0f0 0.9px)',
                 backgroundSize: '18px 18px',
                 overflow: 'auto',
                 animation: `${fadeIn} 1s ease-in-out`,
+                '@media (prefers-color-scheme: dark)': {
+                    backgroundImage: 'radial-gradient(#f0f0f0 0.9px, #16161d 0.9px)',
+                },
             }}
         >
             <Box
@@ -97,6 +100,9 @@ const LandingPage: React.FC = () => {
                             flexDirection: 'column',
                             gap: '1rem',
                         },
+                        '@media (prefers-color-scheme: dark)': {
+                            backgroundColor: '#1b1b22',
+                        },
                     }}
                 >
                     <Box
@@ -119,6 +125,9 @@ const LandingPage: React.FC = () => {
                             padding: '0.5rem',
                             '@media (max-width: 900px)': {
                                 textAlign: 'center',
+                            },
+                            '@media (prefers-color-scheme: dark)': {
+                                color: 'white',
                             },
                         }}
                     >

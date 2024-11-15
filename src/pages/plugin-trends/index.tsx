@@ -14,14 +14,14 @@ import {
     Autocomplete,
 } from '@mui/material'
 import useSortPlugins from '../../hooks/useSortPlugins'
-import { SortOption } from '../../types/types';
+import { SortOption } from '../../types/types'
 import useFetchPlugins from '../../hooks/useFetchPlugins'
 import useSearchPlugins from '../../hooks/useSearchPlugins'
 import usePagination from '../../hooks/usePagination'
 import usePaginationState from '../../hooks/usePaginationState'
 import PluginCard from '../../components/PluginTrends/Layout/PluginCard'
 import BackToHome from '../../components/Layout/BackToHome'
-
+import useSystemTheme from '../../hooks/useSystemTheme'
 const PluginTrends: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const { page, setPage, handlePageChange } = usePaginationState()
@@ -29,7 +29,7 @@ const PluginTrends: React.FC = () => {
     const { plugins, loading } = useFetchPlugins()
     const { filteredPlugins } = useSearchPlugins(plugins, searchTerm)
     const { sortOption, setSortOption } = useSortPlugins(filteredPlugins)
-
+    const { systemTheme } = useSystemTheme()
     const itemsPerPage = 72
 
     const { paginatedData, totalPages } = usePagination(filteredPlugins, itemsPerPage, page)
@@ -62,6 +62,9 @@ const PluginTrends: React.FC = () => {
                     height: '100vh',
                     overflow: 'auto',
                     position: 'relative',
+                    '@media (prefers-color-scheme: dark)': {
+                        backgroundColor: '#333333',
+                    },
                 }}
             >
                 <Box
@@ -72,7 +75,7 @@ const PluginTrends: React.FC = () => {
                         zIndex: 1000,
                     }}
                 >
-                    <BackToHome color="black" />
+                    <BackToHome color={systemTheme === 'dark' ? 'white' : 'black'} />
                 </Box>
 
                 <Paper
@@ -98,6 +101,9 @@ const PluginTrends: React.FC = () => {
                             alignItems: 'stretch',
                             gap: '1rem',
                             padding: '1rem',
+                        },
+                        '@media (prefers-color-scheme: dark)': {
+                            backgroundColor: '#212529',
                         },
                     }}
                 >

@@ -3,6 +3,7 @@ import * as echarts from 'echarts'
 import useCSVData from '../../../../hooks/useCSVData'
 import { handleCSVDownload } from '../../../../utils/csvUtils'
 import customTheme from '../../../../theme/customTheme'
+import useSystemTheme from '../../../../hooks/useSystemTheme'
 
 echarts.registerTheme('customTheme', customTheme)
 interface PluginsGraph1000Props {
@@ -13,6 +14,7 @@ interface PluginsGraph1000Props {
 const PluginsGraph1000: React.FC<PluginsGraph1000Props> = ({ year, month }) => {
     const chartRef = useRef<HTMLDivElement | null>(null)
     const { data, error } = useCSVData(`${year}${month}-top-plugins1000`)
+    const { systemTheme } = useSystemTheme()
 
     const filteredData = useMemo(() => data.filter((row) => Number(row[1]) > 1000), [data])
     const xData = useMemo(() => filteredData.map((row) => row[0]), [filteredData])
@@ -30,7 +32,7 @@ const PluginsGraph1000: React.FC<PluginsGraph1000Props> = ({ year, month }) => {
             title: {
                 text: `${title} (Total: ${totalSum.toLocaleString()})`,
                 left: 'center',
-                textStyle: { fontSize: 16, fontWeight: 'bold' },
+                textStyle: { fontSize: 16, fontWeight: 'bold', color: systemTheme === 'dark' ? '#f0f0f0' : '#212529' },
             },
             tooltip: {
                 trigger: 'axis',
@@ -53,6 +55,7 @@ const PluginsGraph1000: React.FC<PluginsGraph1000Props> = ({ year, month }) => {
                 axisLabel: {
                     show: true,
                     rotate: 45,
+                    color: systemTheme === 'dark' ? '#f0f0f0' : '#777',
                     formatter: (value: string) => {
                         if (value.length > 15) {
                             return value.slice(0, 12) + '...'
@@ -68,16 +71,16 @@ const PluginsGraph1000: React.FC<PluginsGraph1000Props> = ({ year, month }) => {
                 name: `Plugin Name (${xData.length.toLocaleString()} plugins)`,
                 nameLocation: 'middle',
                 nameGap: 95,
-                nameTextStyle: { fontWeight: 'bold' },
+                nameTextStyle: { fontWeight: 'bold', color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
             },
             yAxis: {
                 type: 'value',
-                axisLabel: { fontSize: 12 },
+                axisLabel: { fontSize: 12, color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
                 axisLine: { lineStyle: { color: '#777' } },
                 axisTick: { show: true },
                 splitLine: { lineStyle: { type: 'dashed' } },
                 name: 'Installations',
-                nameTextStyle: { fontWeight: 'bold' },
+                nameTextStyle: { fontWeight: 'bold', color: systemTheme === 'dark' ? '#f0f0f0' : '#777' },
             },
             series: [
                 {
@@ -116,7 +119,7 @@ const PluginsGraph1000: React.FC<PluginsGraph1000Props> = ({ year, month }) => {
             },
             grid: { left: '20', right: '30', bottom: '85', top: '60', containLabel: true },
         }
-    }, [title, totalSum, xData, yData, downloadCSV])
+    }, [title, totalSum, xData, yData, downloadCSV, systemTheme])
 
     useEffect(() => {
         if (!chartRef.current) return
