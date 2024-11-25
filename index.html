@@ -2,12 +2,27 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <link href='/favicon.ico' rel='shortcut icon' type='image/x-icon'>
-        <link href='/apple-touch-icon.png' rel='apple-touch-icon' sizes='180x180'>
-        <link href='/favicon-32x32.png' rel='icon' sizes='32x32' type='image/png'>
-        <link href='/favicon-16x16.png' rel='icon' sizes='16x16' type='image/png'>
+        <link href="/favicon.ico" rel="icon" type="image/x-icon" />
+        <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+        <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
+        <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <meta property="og:title" content="Jenkins Statistics" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:image" content="https://raw.githubusercontent.com/jenkins-infra/jenkins.io/refs/heads/master/content/images/gsoc/opengraph.png" />
+        <meta property="og:url" content="https://stats.jenkins.io" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:description" content="This site shows statistics related to Jenkins infrastructure" />
+        <meta property="og:site_name" content="Jenkins Statistics" />
+        <meta name="twitter:image:alt" content="Jenkins Statistics" />
+
+        <!--  Non-essential, but required for analytics  -->
+        <!-- <meta property="fb:app_id" content="your_app_id" /> -->
+        <!-- <meta name="twitter:site" content="@twitter-handle" /> -->
+
         <title>Jenkins Statistics</title>
+
         <!-- Load necessary scripts for jio-navbar -->
         <script type="module" src="https://unpkg.com/@jenkinsci/jenkins-io-components?module"></script>
         <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.6.0/webcomponents-loader.js"></script>
