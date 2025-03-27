@@ -4,6 +4,7 @@
     height: 100%;
     overflow: auto;
     color: black;
+    padding-top: 10px;
 }
 
 #versionsContainer table {
