@@ -14,7 +14,7 @@
         "@emotion/react": "^11.11.4",
         "@emotion/styled": "^11.11.5",
         "@jenkinsci/jenkins-io-components": "^1.33.0",
-        "@mui/icons-material": "^6.0.0",
+        "@mui/icons-material": "^7.0.0",
         "dayjs": "^1.11.11",
         "echarts": "^5.5.0",
         "papaparse": "^5.4.1",
