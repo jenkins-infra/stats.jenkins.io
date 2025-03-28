@@ -1,4 +1,4 @@
-function generateDateArray(startYear: number, startMonth: number, endYear: number, endMonth: number):{ year: string; month: string }[]{
+function generateDateArray(startYear: number, startMonth: number, endYear: number, endMonth: number): { year: string; month: string }[] {
     const dateArray: { year: string; month: string }[] = []
     let currentYear = startYear
     let currentMonth = startMonth
