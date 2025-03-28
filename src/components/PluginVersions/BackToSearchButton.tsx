@@ -23,6 +23,7 @@ const BackToSearch: React.FC<BackToSearchProps> = ({ onClick }) => (
             onClick={onClick}
             sx={{
                 color: '#333',
+                marginBottom: '10px',
                 backgroundColor: '#f0f0f0',
                 '&:hover': {
                     color: 'blue',
