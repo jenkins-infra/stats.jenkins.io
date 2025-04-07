@@ -15,6 +15,7 @@ import {
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MenuIcon from '@mui/icons-material/Menu'
+import ClearIcon from '@mui/icons-material/Clear';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { data } from '../../../utils/generateDateArray'
@@ -260,7 +261,7 @@ const Drawer: React.FC<DrawerProps> = ({
                         onClick={toggleSidebar}
                         sx={{ color: 'white' }}
                     >
-                        <MenuIcon />
+                        <ClearIcon />
                     </IconButton>
                 </Box>
 
