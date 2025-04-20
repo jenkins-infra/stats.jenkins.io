@@ -29,7 +29,8 @@ const ListButton = styled(ListItemButton)({
     },
     borderRadius: '0.5rem',
     width: '90%',
-    margin: 'auto',
+    margin: '0.2rem auto', // Add spacing between list items
+    boxSizing: 'border-box', // Ensure proper box model behavior
 })
 
 const ListText = styled(ListItemText)({
