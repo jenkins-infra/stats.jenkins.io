@@ -10,8 +10,13 @@ import PluginTrends from './pages/plugin-trends/index.tsx'
 import PluginVersions from './pages/plugin-versions/index.tsx'
 import DependencyGraph from './pages/dep-graph/index.tsx'
 import NavBar from './components/Layout/NavBar.tsx'
+import InfoHeader from './components/Layout/InfoHeader.tsx'
 import { Stack } from '@mui/material'
 import useSystemTheme from './hooks/useSystemTheme.ts'
+
+// using current time as build time, feel free to change it to the actual build time
+const BUILD_TIME = new Date().toISOString()
+const UPDATE_FREQUENCY = '24 hours' // using 24hours but ensure it matches the actual update frequency from Jenkins
 
 const router = createBrowserRouter([
     {
@@ -35,10 +40,23 @@ const router = createBrowserRouter([
         element: <DependencyGraph />,
     },
 ])
+
 function App() {
     const { systemTheme } = useSystemTheme()
-
     const theme = useMemo(() => getTheme(systemTheme), [systemTheme])
+
+    // Format build time to more readable format
+    const formattedBuildTime = useMemo(() => {
+        const date = new Date(BUILD_TIME)
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZoneName: 'short',
+        })
+    }, [])
 
     return (
         <React.StrictMode>
@@ -50,6 +68,7 @@ function App() {
                     }}
                 >
                     <NavBar />
+                    <InfoHeader generationTime={formattedBuildTime} updateFrequency={UPDATE_FREQUENCY} />
                     <RouterProvider router={router} />
                 </Stack>
             </ThemeProvider>
