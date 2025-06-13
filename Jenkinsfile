@@ -17,7 +17,7 @@ pipeline {
   stages {
     stage('Check for typos') {
       steps {
-        sh 'typos --format sarig > typos.sarif || true'
+        sh 'typos --format sarif > typos.sarif || true'
       }
       post {
         always {
