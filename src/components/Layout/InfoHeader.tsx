@@ -34,4 +34,4 @@ const InfoHeader: React.FC<InfoHeaderProps> = ({ generationTime, updateFrequency
     )
 }
 
-export default InfoHeader 
+export default InfoHeader
