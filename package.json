@@ -46,6 +46,6 @@
         "prettier": "3.6.0",
         "rollup-plugin-visualizer": "^6.0.0",
         "typescript": "^5.7.2",
-        "vite": "^6.2.5"
+        "vite": "^7.0.0"
     }
 }
