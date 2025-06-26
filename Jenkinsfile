@@ -52,6 +52,8 @@ pipeline {
     stage('Build') {
       steps {
         sh '''
+        # Set the build time to the current UTC time
+        export VITE_BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
         npm run build
         '''
       }
