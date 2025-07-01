@@ -23,7 +23,7 @@
         "react-force-graph-3d": "^1.24.3",
         "react-router-dom": "^7.0.0",
         "react-window": "^1.8.10",
-        "three": "^0.177.0"
+        "three": "^0.178.0"
     },
     "devDependencies": {
         "@eslint/compat": "^1.1.1",
