@@ -3,6 +3,7 @@ import * as echarts from 'echarts'
 import { handleCSVDownload } from '../../../utils/csvUtils'
 import customTheme from '../../../theme/customTheme'
 import useSystemTheme from '../../../hooks/useSystemTheme'
+import useIsMobile from '../../../hooks/useIsMobile'
 
 echarts.registerTheme('customTheme', customTheme)
 
@@ -27,6 +28,7 @@ const Chart: React.FC<ChartProps> = ({
 }) => {
     const chartRef = useRef<echarts.ECharts | null>(null)
     const { systemTheme } = useSystemTheme()
+    const isMobile = useIsMobile()
 
     const downloadCSV = useCallback(
         () => handleCSVDownload(csvData[selectedChart], title),
@@ -111,7 +113,7 @@ const Chart: React.FC<ChartProps> = ({
             legend: {
                 show: true,
                 data: [selectedChart, ...(secondChart ? [secondChart] : [])],
-                top: 100,
+                top: isMobile ? 120 : 100,
                 left: 'center',
                 selected: Object.keys(chartData).reduce(
                     (acc, chart) => {
@@ -174,6 +176,12 @@ const Chart: React.FC<ChartProps> = ({
                 },
             ],
             toolbox: {
+                ...(isMobile && {
+                    top: '60',
+                    right: 'center',
+                    left: 'center',
+                    orient: 'horizontal',
+                }),
                 feature: {
                     restore: {
                         title: 'Reset Zoom',
@@ -191,14 +199,14 @@ const Chart: React.FC<ChartProps> = ({
                     magicType: { show: false, type: ['bar', 'line'] },
                 },
             },
-            grid: { left: '0', right: '10', bottom: '70', top: '90', containLabel: true },
+            grid: { left: '0', right: '10', bottom: '70', top: isMobile ? '140' : '90', containLabel: true },
         }
 
         if (title.toLowerCase().includes('plugins') && pluginCount !== undefined) {
             ;(baseOption as echarts.EChartsOption).graphic = {
                 type: 'text',
                 left: 'center',
-                top: '40',
+                top: isMobile ? '50' : '50',
                 style: {
                     text: `Available Plugins:  ${pluginCount.toLocaleString()}`,
                     fontSize: 14,
@@ -208,7 +216,7 @@ const Chart: React.FC<ChartProps> = ({
             }
         }
         return baseOption
-    }, [chartData, title, pluginCount, downloadCSV, selectedChart, secondChart, systemTheme])
+    }, [chartData, title, pluginCount, downloadCSV, selectedChart, secondChart, systemTheme, isMobile])
 
     useEffect(() => {
         if (Object.keys(csvData).length === 0) return
