@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-const JioNavbar = () => <jio-navbar property="https://contributors.jenkins.io"></jio-navbar>
+type JioNavbarProps = {
+  property: string;
+};
+
+const JioNavbar: React.FC<JioNavbarProps> = ({ property }) => {
+  return <div>{property}</div>;
+};
 
 const NavBar: React.FC = () => {
-    return <JioNavbar />
-}
+  return <JioNavbar property="https://contributors.jenkins.io" />;
+};
 
-export default NavBar
+export default NavBar;
+
