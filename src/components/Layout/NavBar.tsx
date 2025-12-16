@@ -29,7 +29,7 @@ const JioNavbar: React.FC<JioNavbarProps> = ({ property }) => {
 };
 
 const NavBar: React.FC = () => {
-  const propertyUrl = "https://contributors.jenkins.io";
+  const propertyUrl = "https://stats.jenkins.io";
 
   return <JioNavbar property={propertyUrl} />;
 };
