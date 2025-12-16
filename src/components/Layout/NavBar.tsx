@@ -1,3 +1,18 @@
+// import React from 'react';
+
+// type JioNavbarProps = {
+//   property: string;
+// };
+
+// const JioNavbar: React.FC<JioNavbarProps> = ({ property }) => {
+//   return <div>{property}</div>;
+// };
+
+// const NavBar: React.FC = () => {
+//   return <JioNavbar property="https://contributors.jenkins.io" />;
+// };
+
+// export default NavBar;
 import React from 'react';
 
 type JioNavbarProps = {
@@ -5,11 +20,18 @@ type JioNavbarProps = {
 };
 
 const JioNavbar: React.FC<JioNavbarProps> = ({ property }) => {
-  return <div>{property}</div>;
+  // Render a real <nav> with the property displayed
+  return (
+    <nav>
+      <div>{property}</div>
+    </nav>
+  );
 };
 
 const NavBar: React.FC = () => {
-  return <JioNavbar property="https://contributors.jenkins.io" />;
+  const propertyUrl = "https://contributors.jenkins.io";
+
+  return <JioNavbar property={propertyUrl} />;
 };
 
 export default NavBar;
