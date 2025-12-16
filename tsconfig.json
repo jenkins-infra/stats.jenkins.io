@@ -21,7 +21,10 @@
         "noFallthroughCasesInSwitch": true
     },
     "include": [
-        "src",
+        
+        "src/custom-elements.d.ts",
     ],
+   
+
     "references": [{ "path": "./tsconfig.node.json" }]
 }
