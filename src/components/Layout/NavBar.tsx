@@ -1,22 +1,21 @@
-import React from 'react';
-
-type JioNavbarProps = {
-  property: string;
-};
-
-const JioNavbar: React.FC<JioNavbarProps> = ({ property }) => {
-  // Render a real <nav> with the property displayed
-  return (
-    <nav>
-      <div>{property}</div>
-    </nav>
-  );
-};
+import React, { useEffect } from 'react'
 
 const NavBar: React.FC = () => {
-  const propertyUrl = "https://stats.jenkins.io";
+  useEffect(() => {
+    // Prevent duplicate injection
+    if (document.querySelector('jio-navbar')) return
 
-  return <JioNavbar property={propertyUrl} />;
-};
+    const navbar = document.createElement('jio-navbar')
+    navbar.setAttribute('property', 'https://stats.jenkins.io')
 
-export default NavBar;
+    const container = document.getElementById('jenkins-navbar')
+    if (container) {
+      container.appendChild(navbar)
+    }
+  }, [])
+
+  return <div id="jenkins-navbar" />
+}
+
+export default NavBar
+
