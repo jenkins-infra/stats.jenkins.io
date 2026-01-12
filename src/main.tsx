@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react'
 import ReactDOM from 'react-dom/client'
+// Initialize Jenkins IO components from bundled npm package (not CDN)
+// This ensures offline development and resilience against CDN outages
+import './lib/jenkins-io-components'
 import LandingPage from './pages/landing-page/index.tsx'
 import Statistics from './pages/statistics/index.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'

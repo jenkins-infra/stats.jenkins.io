@@ -12,6 +12,12 @@ export default defineConfig({
         }),
     ],
     optimizeDeps: {
-        include: ['react-force-graph-3d'],
+        include: [
+            'react-force-graph-3d',
+            // Bundle Jenkins IO components and their dependencies
+            // This ensures the web components work offline and don't rely on CDN
+            '@jenkinsci/jenkins-io-components',
+            'lit',
+        ],
     },
 })

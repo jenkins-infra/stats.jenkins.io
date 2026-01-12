@@ -23,19 +23,28 @@
 
         <title>Jenkins Statistics</title>
 
-        <!-- Load necessary scripts for jio-navbar -->
-        <script type="module" src="https://unpkg.com/@jenkinsci/jenkins-io-components?module"></script>
-        <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.6.0/webcomponents-loader.js"></script>
-        <script src="https://unpkg.com/lit@2.4.0/polyfill-support.js"></script>
+        <!--
+            Jenkins IO Components (@jenkinsci/jenkins-io-components) are now
+            bundled via npm package in src/lib/jenkins-io-components.ts.
+            This provides:
+            - Offline development capability
+            - Resilience against CDN outages
+            - Consistent versioning with package.json
+
+            Ionicons CDN is kept as a fallback for icons used by jio-navbar/jio-footer.
+            These are loaded asynchronously and gracefully degrade if unavailable.
+        -->
         <script
             data="ionicons"
             src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/8.0.13/ionicons/ionicons.esm.js"
             type="module"
+            async
         ></script>
         <script
             data="ionicons"
             nomodule=""
             src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/8.0.13/ionicons/ionicons.js"
+            async
         ></script>
     </head>
     <body>
