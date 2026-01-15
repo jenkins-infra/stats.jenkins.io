@@ -43,7 +43,7 @@
         "eslint-plugin-react-hooks": "^5.0.0",
         "eslint-plugin-react-refresh": "^0.4.7",
         "globals": "^17.0.0",
-        "prettier": "3.7.4",
+        "prettier": "3.8.0",
         "rollup-plugin-visualizer": "^6.0.0",
         "typescript": "^5.7.2",
         "vite": "^7.1.5"
