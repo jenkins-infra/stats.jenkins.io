@@ -9,7 +9,7 @@ const usePluginData = () => {
     useEffect(() => {
         const fetchPlugins = async () => {
             try {
-                const fileUrl = new URL(`../data/infra-statistics/update-center.actual.json`, import.meta.url).href
+                const fileUrl = `/infra-statistics/update-center.actual.json`
                 const response = await fetch(fileUrl)
                 if (!response.ok) {
                     throw new Error('Network response was not ok')

@@ -8,7 +8,7 @@ const usePluginData = () => {
     useEffect(() => {
         const fetchPluginData = async () => {
             try {
-                const fileUrl = new URL('../data/infra-statistics/plugin-installation-trend/latestNumbers.json', import.meta.url).href;
+                const fileUrl = '/infra-statistics/plugin-installation-trend/latestNumbers.json';
                 const response = await fetch(fileUrl);
                 if (!response.ok) {
                     throw new Error('Failed to fetch plugin data');
