@@ -24,6 +24,8 @@ export default [{
         "docs/",
         "jsdoc/",
         "dist/",
+        "public/infra-statistics/",
+        "bundle-analysis.html",
     ],
 }, ...fixupConfigRules(compat.extends(
     "eslint:recommended",
