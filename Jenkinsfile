@@ -11,7 +11,7 @@ pipeline {
   }
 
   environment {
-    INFRASTATISTICS_LOCATION = 'src/data/infra-statistics'
+    INFRASTATISTICS_LOCATION = 'public/infra-statistics'
   }
 
   stages {
