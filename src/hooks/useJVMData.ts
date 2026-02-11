@@ -19,7 +19,7 @@ const useJVMData = () => {
     useEffect(() => {
         const parseJVMData = async () => {
             try {
-                const fileUrl = '/infra-statistics/plugin-installation-trend/jvms.json';
+                const fileUrl = new URL('../data/infra-statistics/plugin-installation-trend/jvms.json', import.meta.url).href;
                 const response = await fetch(fileUrl);
                 if (!response.ok) {
                     throw new Error('Failed to fetch JVM data');

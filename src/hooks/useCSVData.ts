@@ -8,7 +8,7 @@ const useCSVData = (csvFileName: string) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fileUrl = `/infra-statistics/jenkins-stats/svg/${csvFileName}.csv`;
+                const fileUrl = new URL(`../data/infra-statistics/jenkins-stats/svg/${csvFileName}.csv`, import.meta.url).href;
                 const response = await fetch(fileUrl);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch CSV file: ${response.statusText}`);

@@ -23,8 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
-# infra-statistics data (now consolidated in public/)
-public/infra-statistics
+# infra-statistics
+src/data/infra-statistics
+public/plugin-installation-trend
+public/jenkins-stats
+public/pluginversions
 
 # bundle analyzer
 bundle-analysis.html

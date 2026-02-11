@@ -8,7 +8,7 @@ const useGetPluginVersionData = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fileUrl = `/infra-statistics/plugin-installation-trend/jenkins-version-per-plugin-version.json`;
+                const fileUrl = new URL(`../data/infra-statistics/plugin-installation-trend/jenkins-version-per-plugin-version.json`, import.meta.url).href;
                 const response = await fetch(fileUrl);
                 if (!response.ok) {
                     throw new Error(`Version data not found`);

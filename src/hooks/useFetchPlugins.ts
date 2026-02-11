@@ -34,7 +34,10 @@ const useFetchPlugins = (): UseFetchPluginsResult => {
 
             const results = await Promise.allSettled(
                 namesToFetch.map(async (name): Promise<IPluginData> => {
-                    const fileUrl = `/infra-statistics/plugin-installation-trend/${name}.stats.json`;
+                    const fileUrl = new URL(
+                        `../data/infra-statistics/plugin-installation-trend/${name}.stats.json`,
+                        import.meta.url
+                    ).href;
                     const response = await fetch(fileUrl, { signal });
                     if (!response.ok) {
                         throw new Error(`JSON file for plugin with id "${name}" not found`);
