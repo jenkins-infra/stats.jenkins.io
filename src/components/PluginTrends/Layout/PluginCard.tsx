@@ -1,10 +1,8 @@
 import React, { useState, useMemo } from 'react'
-import { Card, CardActionArea, CardContent, CardMedia, Typography, Box } from '@mui/material'
-
+import { Card, CardActionArea, CardContent, CardMedia, Typography, Box, Tooltip } from '@mui/material'
 import PluginCardChart from '../Charts/PluginCardChart'
 import PluginDetailModal from './PluginDetailModal'
 import { IPluginData } from '../../../types/types'
-import downloadIcon from '../../../assets/downloadIcon.svg'
 
 interface PluginCardProps {
     plugin: IPluginData
@@ -67,10 +65,11 @@ const PluginCard: React.FC<PluginCardProps> = React.memo(({ plugin }) => {
                             {plugin.id}
                         </Typography>
                         <Box display="flex" alignItems="center" justifyContent="center" marginBottom="1rem">
-                            <img src={downloadIcon} alt="Downloads" width={20} height={20} />
-                            <Typography component="div" marginLeft={1}>
-                                {totalInstallationsK}
-                            </Typography>
+                            <Tooltip title="Total plugin installations" arrow>
+                                <Typography component="div">
+                                    {totalInstallationsK}
+                                </Typography>
+                            </Tooltip>
                         </Box>
                         <CardMedia
                             sx={{

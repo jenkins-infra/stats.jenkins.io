@@ -3,7 +3,7 @@ import Footer from '../../components/Layout/Footer'
 import './landing-page.css'
 import { Link, NavLink } from 'react-router-dom'
 import { styled } from '@mui/system'
-import { Box, Paper, Stack, Typography } from '@mui/material'
+import { Box, Paper, Stack, Typography, Tooltip } from '@mui/material'
 import { keyframes } from '@emotion/react'
 
 const fadeIn = keyframes`
@@ -115,7 +115,9 @@ const LandingPage: React.FC = () => {
                         }}
                     >
                         <Link to={'https://www.jenkins.io'} target="_blank" rel="noopener noreferrer">
-                            <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
+                            <Tooltip title="Jenkins official mascot – The Jenkins Butler" arrow>
+                                <img src={jenkinsButler} className="logo" alt="Jenkins Butler Logo" />
+                            </Tooltip>
                         </Link>
                     </Box>
                     <Box
