@@ -1,0 +1,43 @@
+.notfound-page {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  color: var(--mui-palette-text-primary, #f5f5f5);
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.notfound-image {
+  width: 260px;
+  max-width: 70vw;
+  margin: 0.5rem auto 1.6rem;
+}
+
+.notfound-heading {
+  font-size: 2.2rem;
+  margin: 0.5rem 0;
+}
+
+.notfound-text {
+  font-size: 1.1rem;
+  max-width: 30rem;
+  margin: 0.5rem auto 1.4rem;
+  line-height: 1.4;
+}
+
+.notfound-action {
+  margin-top: 0.5rem;
+}
+
+.notfound-link {
+  color: var(--mui-palette-primary-main, #1976d2);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.notfound-link:hover,
+.notfound-link:focus {
+  text-decoration: underline;
+}
