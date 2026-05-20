@@ -25,7 +25,6 @@ pipeline {
       }
       steps {
         sh '''
-        asdf install
         npm install
         '''
       }
