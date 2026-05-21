@@ -82,7 +82,7 @@ To get started with this project, you will need the following installed on your 
 3. **Install dependencies:**
 
     ```sh
-    npm install
+    npm ci
     ```
 
 ## Building the Website Locally
