@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './NotFound.css'
 import fireJenkins from '../assets/fire-jenkins.svg'
@@ -6,11 +6,14 @@ import fireJenkins from '../assets/fire-jenkins.svg'
 const NotFoundPage = () => {
   const title = 'Page not found'
 
+  useEffect(() => {
+    document.title = title
+  }, [title])
+
   return (
     <main className="notfound-page">
-      <title>{title}</title>
       <img src={fireJenkins} alt="Jenkins icon" className="notfound-image" />
-      <h1 className="notfound-heading">Page not found</h1>
+      <h1 className="notfound-heading">{title}</h1>
       <p className="notfound-text">
         Sorry{' '}
         <span role="img" aria-label="Pensive emoji">
