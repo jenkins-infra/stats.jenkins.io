@@ -26,12 +26,18 @@ pipeline {
       }
     }
 
-    stage('Install dependencies') {
+    stage('Check Tooling') {
       steps {
         sh '''
-        asdf install
-        npm install
+        node --version
+        npm --version
         '''
+      }
+    }
+
+    stage('Install dependencies') {
+      steps {
+        sh 'npm ci'
       }
     }
 

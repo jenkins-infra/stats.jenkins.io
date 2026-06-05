@@ -44,7 +44,7 @@ You can contribute to `stats.jenkins.io` in several ways:
     ```
 5. **Install dependencies**:
     ```console
-    npm install
+    npm ci
     ```
 6. **Run the project locally**:
     ```console
