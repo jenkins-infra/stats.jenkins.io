@@ -19,6 +19,26 @@ interface GraphModalProps {
     month: string
 }
 
+const GRAPH_LABELS: Record<GraphType, string> = {
+    jenkins: 'Jenkins installations by version',
+    jobs: 'Job executions',
+    nodes: 'Nodes by type',
+    nodesPie: 'Nodes by type breakdown',
+    plugins: 'Plugin installations',
+    'top-plugins500': 'Top plugins with more than 500 installations',
+    'top-plugins1000': 'Top plugins with more than 1000 installations',
+    'top-plugins2500': 'Top plugins with more than 2500 installations',
+    'total-executors': 'Executors per install',
+}
+
+const getMonthName = (month: string) => {
+    const monthIndex = Number(month) - 1
+    if (!Number.isInteger(monthIndex) || monthIndex < 0 || monthIndex > 11) {
+        return month
+    }
+    return new Date(2000, monthIndex, 1).toLocaleString('default', { month: 'long' })
+}
+
 const GraphModal: React.FC<GraphModalProps> = ({ open, onClose, type, year, month }) => {
     const renderGraph = () => {
         switch (type) {
@@ -58,6 +78,9 @@ const GraphModal: React.FC<GraphModalProps> = ({ open, onClose, type, year, mont
         >
             <Paper
                 elevation={16}
+                role="dialog"
+                aria-modal="true"
+                aria-label={`${GRAPH_LABELS[type]} chart for ${getMonthName(month)} ${year}`}
                 sx={{
                     width: '70vw',
                     height: '60vh',

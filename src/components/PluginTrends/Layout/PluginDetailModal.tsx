@@ -59,6 +59,9 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
         >
             <Paper
                 elevation={16}
+                role="dialog"
+                aria-modal="true"
+                aria-label={plugin.chartData ? `${plugin.chartData.name} plugin details` : 'Plugin details'}
                 sx={{
                     width: '90%',
                     maxWidth: '1400px',
@@ -119,6 +122,7 @@ const PluginDetailModal: React.FC<PluginDetailModalProps> = ({ open, handleClose
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <IconButton
                                     onClick={handleClose}
+                                    aria-label="Close plugin details"
                                     sx={{
                                         p: 0,
                                         ml: 1,
