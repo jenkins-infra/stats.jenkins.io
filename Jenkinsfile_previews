@@ -1,3 +1,11 @@
+@Library('pipeline-library@pull/1055/head') _
+
+// TODO: remove that Jenkinsfile_preview after having updated stats.jenkins.io job config in infra.ci.jenkins.io
+buildWebsite([
+  deployFolder: 'dist',
+])
+
+/*
 pipeline {
   options {
     timeout(time: 60, unit: 'MINUTES')
@@ -76,3 +84,4 @@ pipeline {
     }
   }
 }
+*/
