@@ -7,10 +7,10 @@ import { InsertChartOutlined } from '@mui/icons-material'
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
 import useSystemTheme from '../../../hooks/useSystemTheme'
 
-// Utility function to get the month abbreviation
+// Utility function to get the month abbreviation.
+// Day is pinned to 1 so a month shorter than today's date cannot overflow into the next one.
 const getMonth = (month: string) => {
-    const date = new Date()
-    date.setMonth(Number(month) - 1)
+    const date = new Date(2000, Number(month) - 1, 1)
     return date.toLocaleString('default', { month: 'short' })
 }
 
