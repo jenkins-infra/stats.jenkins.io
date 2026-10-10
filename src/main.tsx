@@ -12,7 +12,6 @@ import DependencyGraph from './pages/dep-graph/index.tsx'
 import NavBar from './components/Layout/NavBar.tsx'
 import { Stack } from '@mui/material'
 import useSystemTheme from './hooks/useSystemTheme.ts'
-import NotFoundPage from './pages/NotFound.tsx'
 
 const router = createBrowserRouter([
     {
@@ -34,10 +33,6 @@ const router = createBrowserRouter([
     {
         path: '/dep-graph',
         element: <DependencyGraph />,
-    },
-    {
-        path: '*',
-        element: <NotFoundPage />,
     },
 ])
 function App() {
